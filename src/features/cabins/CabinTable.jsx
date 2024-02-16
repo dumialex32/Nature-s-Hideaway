@@ -1,4 +1,9 @@
+import { useQuery } from "react-query";
 import styled from "styled-components";
+import { getCabins } from "../../services/apiCabins";
+import Spinner from "../../ui/Spinner";
+import Row from "../../ui/Row";
+import CabinRow from "./CabinRow";
 
 const Table = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -23,3 +28,29 @@ const TableHeader = styled.header`
   color: var(--color-grey-600);
   padding: 1.6rem 2.4rem;
 `;
+
+function CabinTable() {
+  const { data: cabins, isLoading, error } = useQuery(["cabins"], getCabins);
+
+  console.log(cabins, isLoading, error);
+  if (isLoading) return <Spinner />;
+
+  return (
+    <Table>
+      <TableHeader>
+        <div>Cabin</div>
+        <div>Name</div>
+        <div>Capacity</div>
+        <div>Price</div>
+        <div>Discount</div>
+        <div>Filter/sort</div>
+      </TableHeader>
+
+      {cabins.map((cabin) => (
+        <CabinRow key={cabin.id} cabin={cabin} />
+      ))}
+    </Table>
+  );
+}
+
+export default CabinTable;
