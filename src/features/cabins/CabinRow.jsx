@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import Button from "../../ui/Button";
+import { useMutation } from "react-query";
+import { deleteCabins } from "../../services/apiCabins";
 
 const TableRow = styled.div`
   display: grid;
@@ -41,6 +43,10 @@ const Discount = styled.div`
 `;
 
 function CabinRow({ cabin }) {
+  const { mutate } = useMutation({
+    mutationFn: deleteCabins,
+  });
+
   const {
     image,
     name,
@@ -57,7 +63,7 @@ function CabinRow({ cabin }) {
       <Discount>{discount}</Discount>
       <Price>{price}</Price>
 
-      <Button variation="secondary" size="small">
+      <Button variation="secondary" size="small" onClick={() => mutate()}>
         Delete
       </Button>
     </TableRow>
