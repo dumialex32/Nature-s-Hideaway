@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import Button from "../../ui/Button";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { deleteCabins } from "../../services/apiCabins";
+import toast from "react-hot-toast";
 
 const TableRow = styled.div`
   display: grid;
@@ -43,11 +44,21 @@ const Discount = styled.div`
 `;
 
 function CabinRow({ cabin }) {
+  const queryClient = useQueryClient();
+
   const { mutate } = useMutation({
     mutationFn: deleteCabins,
+    onSuccess: () => {
+      toast.success("Cabin has successfuly deleted");
+      queryClient.invalidateQueries({ queryKey: ["cabins"] });
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
   });
 
   const {
+    id: cabinId,
     image,
     name,
     regularPrice: price,
@@ -63,7 +74,11 @@ function CabinRow({ cabin }) {
       <Discount>{discount}</Discount>
       <Price>{price}</Price>
 
-      <Button variation="secondary" size="small" onClick={() => mutate()}>
+      <Button
+        variation="secondary"
+        size="small"
+        onClick={() => mutate(cabinId)}
+      >
         Delete
       </Button>
     </TableRow>
