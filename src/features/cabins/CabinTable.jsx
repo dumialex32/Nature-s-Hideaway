@@ -36,14 +36,13 @@ function CabinTable() {
   if (isLoading) return <Spinner />;
 
   return (
-    <Table>
-      <TableHeader>
+    <Table role="table">
+      <TableHeader role="row">
         <div>Cabin</div>
         <div>Name</div>
         <div>Capacity</div>
         <div>Price</div>
         <div>Discount</div>
-        <div>Filter/sort</div>
       </TableHeader>
 
       {cabins.map((cabin) => (

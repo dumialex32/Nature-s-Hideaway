@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Button from "../../ui/Button";
 
 const TableRow = styled.div`
   display: grid;
@@ -55,6 +56,10 @@ function CabinRow({ cabin }) {
       <div>Can have up to {capacity}</div>
       <Discount>{discount}</Discount>
       <Price>{price}</Price>
+
+      <Button variation="secondary" size="small">
+        Delete
+      </Button>
     </TableRow>
   );
 }
