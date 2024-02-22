@@ -48,7 +48,7 @@ function App() {
 
       <Toaster
         position="top-center"
-        gutter={18}
+        gutter={12}
         containerStyle={{ margin: "8px" }}
         toastOptions={{
           style: {

@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 
-import { createEditCabin } from "../../services/apiCabins";
+import { createCabin } from "../../services/apiCabins";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useState } from "react";
@@ -12,16 +12,9 @@ import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import toast from "react-hot-toast";
 import FormRow from "../../ui/FormRow";
-import { supabaseUrl } from "../../services/supabase";
 
-function CreateCabinForm({ openForm, onSetOpenForm, cabinToEdit = {} }) {
+function CreateCabinForm({ openForm, onSetOpenForm }) {
   const queryClient = useQueryClient();
-
-  // Edit the current cabin
-  const { id: editId, ...editValues } = cabinToEdit;
-
-  const isEditSession = Boolean(editId);
-  console.log(isEditSession);
 
   const {
     register,
@@ -29,12 +22,10 @@ function CreateCabinForm({ openForm, onSetOpenForm, cabinToEdit = {} }) {
     reset,
     getValues,
     formState: { errors },
-  } = useForm({
-    defaultValues: isEditSession ? editValues : null,
-  });
+  } = useForm({});
 
   const { mutate, status } = useMutation({
-    mutationFn: createEditCabin,
+    mutationFn: createCabin,
     onSuccess: () => {
       toast.success("Cabin was succesffuly added");
       queryClient.invalidateQueries(["cabins"]);
@@ -45,13 +36,9 @@ function CreateCabinForm({ openForm, onSetOpenForm, cabinToEdit = {} }) {
   });
 
   function onSubmit(data) {
-    console.log(data.image);
-    const newCabin = {
-      ...data,
-      image: data.image instanceof FileList ? data.image[0] : data.image,
-    };
-    console.log(editId);
-    mutate({ newCabin, editId });
+    console.log(data);
+    // const newCabin = { ...data, image: data.image[0] };
+    // mutate(newCabin);
   }
 
   function onError(errors) {}
@@ -123,7 +110,7 @@ function CreateCabinForm({ openForm, onSetOpenForm, cabinToEdit = {} }) {
           accept="image/*"
           type="file"
           {...register("image", {
-            required: isEditSession ? false : "This field is required",
+            required: "This field is required",
           })}
         />
       </FormRow>
@@ -133,9 +120,7 @@ function CreateCabinForm({ openForm, onSetOpenForm, cabinToEdit = {} }) {
         <Button variation="secondary" type="reset">
           Cancel
         </Button>
-        <Button disabled={status === "pending"}>
-          {(isEditSession && "Edit") || "Create cabin"}
-        </Button>
+        <Button disabled={status === "pending"}>Add cabin</Button>
       </FormRow>
     </Form>
   );
