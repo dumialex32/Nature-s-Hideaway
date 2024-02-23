@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { createEditCabin } from "../../services/apiCabins";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
@@ -12,7 +12,7 @@ import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import toast from "react-hot-toast";
 import FormRow from "../../ui/FormRow";
-import { supabaseUrl } from "../../services/supabase";
+import { isString } from "lodash";
 
 function CreateCabinForm({ openForm, onSetOpenForm, cabinToEdit = {} }) {
   const queryClient = useQueryClient();
@@ -21,7 +21,6 @@ function CreateCabinForm({ openForm, onSetOpenForm, cabinToEdit = {} }) {
   const { id: editId, ...editValues } = cabinToEdit;
 
   const isEditSession = Boolean(editId);
-  console.log(isEditSession);
 
   const {
     register,
@@ -30,13 +29,19 @@ function CreateCabinForm({ openForm, onSetOpenForm, cabinToEdit = {} }) {
     getValues,
     formState: { errors },
   } = useForm({
-    defaultValues: isEditSession ? editValues : null,
+    defaultValues: editId ? editValues : null,
   });
 
   const { mutate, status } = useMutation({
     mutationFn: createEditCabin,
     onSuccess: () => {
-      toast.success("Cabin was succesffuly added");
+      toast.success(
+        `${
+          isEditSession
+            ? "Edit cabin was succesffuly done"
+            : "Cabin was sucesffully created"
+        }`
+      );
       queryClient.invalidateQueries(["cabins"]);
       // onSetOpenForm(!openForm);
       reset();
@@ -45,12 +50,13 @@ function CreateCabinForm({ openForm, onSetOpenForm, cabinToEdit = {} }) {
   });
 
   function onSubmit(data) {
-    console.log(data.image);
-    const newCabin = {
-      ...data,
-      image: data.image instanceof FileList ? data.image[0] : data.image,
-    };
-    console.log(editId);
+    const newCabin = !isString(data.image)
+      ? {
+          ...data,
+          image: data.image instanceof FileList ? data.image[0] : data.image,
+        }
+      : { ...data };
+
     mutate({ newCabin, editId });
   }
 
