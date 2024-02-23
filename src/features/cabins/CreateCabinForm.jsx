@@ -3,8 +3,6 @@ import { useForm } from "react-hook-form";
 import { createEditCabin } from "../../services/apiCabins";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { useEffect, useState } from "react";
-
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 import Button from "../../ui/Button";
@@ -14,7 +12,7 @@ import toast from "react-hot-toast";
 import FormRow from "../../ui/FormRow";
 import { isString } from "lodash";
 
-function CreateCabinForm({ openForm, onSetOpenForm, cabinToEdit = {} }) {
+function CreateCabinForm({ onSetOpenForm, cabinToEdit = {} }) {
   const queryClient = useQueryClient();
 
   // Edit the current cabin
@@ -136,7 +134,11 @@ function CreateCabinForm({ openForm, onSetOpenForm, cabinToEdit = {} }) {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button
+          variation="secondary"
+          type="reset"
+          onClick={() => onSetOpenForm}
+        >
           Cancel
         </Button>
         <Button disabled={status === "pending"}>

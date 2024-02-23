@@ -7,7 +7,6 @@ import CreateCabinForm from "../features/cabins/CreateCabinForm";
 
 function Cabins() {
   const [openForm, setOpenForm] = useState(false);
-
   return (
     <>
       <Row type="horizontal">
@@ -30,7 +29,7 @@ function Cabins() {
       </Row>
       {openForm && (
         <Row>
-          <CreateCabinForm openForm={openForm} onSetOpenForm={setOpenForm} />
+          <CreateCabinForm />
         </Row>
       )}
     </>

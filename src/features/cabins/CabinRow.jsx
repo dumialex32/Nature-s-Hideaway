@@ -1,13 +1,13 @@
 import styled from "styled-components";
-
-import { formatCurrency } from "../../utils/helpers";
-import Button from "../../ui/Button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteCabin } from "../../services/apiCabins";
 import toast from "react-hot-toast";
-import CreateCabinForm from "./CreateCabinForm";
 import { useState } from "react";
 
+import { formatCurrency } from "../../utils/helpers";
+import { deleteCabin } from "../../services/apiCabins";
+import Button from "../../ui/Button";
+
+import CreateCabinForm from "./CreateCabinForm";
 const TableRow = styled.div`
   display: grid;
   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
@@ -64,6 +64,7 @@ function CabinRow({ cabin }) {
 
   const queryClient = useQueryClient();
 
+  // react query useMutation
   const { mutate, status } = useMutation({
     mutationFn: deleteCabin,
     onSuccess: () => {
@@ -83,7 +84,11 @@ function CabinRow({ cabin }) {
         <Cabin>{name}</Cabin>
         <div>Fits up to {maxCapacity} guests</div>
         <Price>{formatCurrency(regularPrice)}</Price>
-        <Discount>{formatCurrency(discount)}</Discount>
+        {discount ? (
+          <Discount>{formatCurrency(discount)}</Discount>
+        ) : (
+          <span>&mdash;</span>
+        )}
         <div>
           <Button
             variation="secondary"
