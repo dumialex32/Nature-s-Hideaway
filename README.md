@@ -1,8 +1,3 @@
-# React + Vite
+Nature-s-Hideaway
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Nature-s-Hideaway is a comprehensive hotel management application designed specifically for hotel employees. This application provides a user-friendly interface for managing cabins, bookings, and guest information, along with essential features such as user authentication, cabin management, booking management, and insightful dashboard analytics.
