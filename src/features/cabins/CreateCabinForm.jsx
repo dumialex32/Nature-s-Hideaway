@@ -3,18 +3,24 @@ import { useForm } from "react-hook-form";
 import { createEditCabin } from "../../services/apiCabins";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+import { isString } from "lodash";
+
+import useCreateCabin from "./useCreateCabinHook";
+
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
-import toast from "react-hot-toast";
 import FormRow from "../../ui/FormRow";
-import { isString } from "lodash";
+import Spinner from "../../ui/Spinner";
+import { useEffect } from "react";
 
-function CreateCabinForm({ onSetOpenForm, cabinToEdit = {} }) {
-  const queryClient = useQueryClient();
-
+function CreateCabinForm({
+  onEditOpenForm,
+  onCreateOpenForm,
+  cabinToEdit = {},
+}) {
   // Edit the current cabin
   const { id: editId, ...editValues } = cabinToEdit;
 
@@ -30,22 +36,13 @@ function CreateCabinForm({ onSetOpenForm, cabinToEdit = {} }) {
     defaultValues: editId ? editValues : null,
   });
 
-  const { mutate, status } = useMutation({
-    mutationFn: createEditCabin,
-    onSuccess: () => {
-      toast.success(
-        `${
-          isEditSession
-            ? "Edit cabin was succesffuly done"
-            : "Cabin was sucesffully created"
-        }`
-      );
-      queryClient.invalidateQueries(["cabins"]);
-      // onSetOpenForm(!openForm);
-      reset();
-    },
-    onError: (err) => toast.error(err.message),
-  });
+  const { mutateCreateCabin, mutateCreateStatus } = useCreateCabin();
+
+  useEffect(() => {
+    if (mutateCreateStatus === "success")
+      (isEditSession && onEditOpenForm()) ||
+        (!isEditSession && onCreateOpenForm());
+  }, [isEditSession, mutateCreateStatus, onCreateOpenForm, onEditOpenForm]);
 
   function onSubmit(data) {
     const newCabin = !isString(data.image)
@@ -55,10 +52,14 @@ function CreateCabinForm({ onSetOpenForm, cabinToEdit = {} }) {
         }
       : { ...data };
 
-    mutate({ newCabin, editId });
+    mutateCreateCabin({ newCabin, editId });
+
+    reset();
   }
 
   function onError(errors) {}
+
+  if (mutateCreateStatus === "pending") return <Spinner />;
 
   return (
     <Form onSubmit={handleSubmit(onSubmit, onError)}>
@@ -137,11 +138,11 @@ function CreateCabinForm({ onSetOpenForm, cabinToEdit = {} }) {
         <Button
           variation="secondary"
           type="reset"
-          onClick={() => onSetOpenForm}
+          onClick={isEditSession ? onEditOpenForm : onCreateOpenForm}
         >
           Cancel
         </Button>
-        <Button disabled={status === "pending"}>
+        <Button disabled={mutateCreateStatus === "pending"}>
           {(isEditSession && "Edit") || "Create cabin"}
         </Button>
       </FormRow>

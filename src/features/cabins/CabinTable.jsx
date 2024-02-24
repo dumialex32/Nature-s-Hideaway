@@ -29,7 +29,7 @@ const TableHeader = styled.header`
   padding: 1.6rem 2.4rem;
 `;
 
-function CabinTable({ onSetOpenForm }) {
+function CabinTable() {
   const {
     isLoading,
     data: cabins,
@@ -53,7 +53,7 @@ function CabinTable({ onSetOpenForm }) {
       </TableHeader>
 
       {cabins.map((cabin) => (
-        <CabinRow key={cabin.id} cabin={cabin} onSetOpenForm={onSetOpenForm} />
+        <CabinRow key={cabin.id} cabin={cabin} />
       ))}
     </Table>
   );

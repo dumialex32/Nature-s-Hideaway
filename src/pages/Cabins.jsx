@@ -7,6 +7,11 @@ import CreateCabinForm from "../features/cabins/CreateCabinForm";
 
 function Cabins() {
   const [openForm, setOpenForm] = useState(false);
+
+  function handleCreateOpenForm() {
+    setOpenForm(!openForm);
+  }
+  console.log(openForm);
   return (
     <>
       <Row type="horizontal">
@@ -19,17 +24,13 @@ function Cabins() {
       </Row>
 
       <Row type="horizontal">
-        <Button
-          variation="primary"
-          size="large"
-          onClick={() => setOpenForm(!openForm)}
-        >
+        <Button variation="primary" size="large" onClick={handleCreateOpenForm}>
           {!openForm ? "Add cabin" : "Close"}
         </Button>
       </Row>
       {openForm && (
         <Row>
-          <CreateCabinForm />
+          <CreateCabinForm onCreateOpenForm={handleCreateOpenForm} />
         </Row>
       )}
     </>

@@ -1,13 +1,14 @@
 import styled from "styled-components";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
-import { useState } from "react";
 
 import { formatCurrency } from "../../utils/helpers";
-import { deleteCabin } from "../../services/apiCabins";
+
 import Button from "../../ui/Button";
+import Spinner from "../../ui/Spinner";
 
 import CreateCabinForm from "./CreateCabinForm";
+import useDeleteCabin from "./useDeleteCabinHook";
+import { useState } from "react";
+
 const TableRow = styled.div`
   display: grid;
   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
@@ -49,8 +50,6 @@ const Discount = styled.div`
 `;
 
 function CabinRow({ cabin }) {
-  const [showForm, setShowForm] = useState(false);
-
   const {
     id: cabinId,
     name,
@@ -60,23 +59,18 @@ function CabinRow({ cabin }) {
     image,
   } = cabin;
 
+  const [openForm, setOpenForm] = useState(false);
+
+  function handleEditOpenForm() {
+    setOpenForm(!openForm);
+  }
+
   const cabinImgName = cabin.image.split("/").at(-1);
 
-  const queryClient = useQueryClient();
-
   // react query useMutation
-  const { mutate, status } = useMutation({
-    mutationFn: deleteCabin,
-    onSuccess: () => {
-      toast.success("Cabin sucesffuly deleted");
+  const { mutateDeleteCabin, mutateDeleteStatus } = useDeleteCabin();
 
-      queryClient.invalidateQueries({
-        queryKey: ["cabins"],
-      });
-    },
-    onError: (err) => toast.error(err.message),
-  });
-
+  if (mutateDeleteStatus === "pending") return <Spinner />;
   return (
     <>
       <TableRow role="row">
@@ -93,21 +87,26 @@ function CabinRow({ cabin }) {
           <Button
             variation="secondary"
             size="small"
-            onClick={() => mutate({ cabinId, cabinImgName })}
-            disabled={status === "pending"}
+            onClick={() => mutateDeleteCabin({ cabinId, cabinImgName })}
+            disabled={mutateDeleteStatus === "pending"}
           >
             Delete
           </Button>
           <Button
             variation="secondary"
             size="small"
-            onClick={() => setShowForm(!showForm)}
+            onClick={handleEditOpenForm}
           >
             Edit
           </Button>
         </div>
       </TableRow>
-      {showForm && <CreateCabinForm cabinToEdit={cabin} />}
+      {openForm && (
+        <CreateCabinForm
+          cabinToEdit={cabin}
+          onEditOpenForm={handleEditOpenForm}
+        />
+      )}
     </>
   );
 }
