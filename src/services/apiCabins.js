@@ -1,6 +1,6 @@
 import supabase, { supabaseUrl } from "./supabase";
 
-import { has, isString } from "lodash";
+import { has, isString, slice } from "lodash";
 
 export async function getCabins() {
   try {
@@ -40,14 +40,28 @@ export async function createEditCabin({ newCabin, editId }) {
   try {
     const hasImgPath =
       isString(newCabin.image) && newCabin.image.startsWith(supabaseUrl);
+    console.log(hasImgPath);
+    let prevImg;
 
+    if (editId && !hasImgPath) {
+      const { data: imageData } = await supabase
+        .from("cabins")
+        .select("image")
+        .eq("id", editId)
+        .single();
+      console.log(imageData);
+      prevImg = imageData.image.split("/").pop();
+    }
+    console.log(prevImg);
     const imageName = hasImgPath
-      ? null
+      ? newCabin.image.split("/").pop()
       : `${Math.random()}-${newCabin.image.name}`.replaceAll("/", "");
-
+    console.log(imageName);
     const imagePath = hasImgPath
       ? newCabin.image
       : `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`;
+
+    // Get the previous image
 
     let query = supabase.from("cabins");
 
@@ -63,6 +77,9 @@ export async function createEditCabin({ newCabin, editId }) {
     // Upload image
     // If cabin create is successfull, store image in bucket
     if (hasImgPath) return data; // do not upload a new image if hasImgPath
+
+    // Before upload the new image, remove the prev one
+    if (prevImg) await supabase.storage.from("cabin-images").remove([prevImg]);
 
     const { error: storageError } = await supabase.storage
       .from("cabin-images")

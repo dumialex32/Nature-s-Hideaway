@@ -45,6 +45,7 @@ function CreateCabinForm({
   }, [isEditSession, mutateCreateStatus, onCreateOpenForm, onEditOpenForm]);
 
   function onSubmit(data) {
+    console.log(data);
     const newCabin = !isString(data.image)
       ? {
           ...data,
@@ -52,9 +53,15 @@ function CreateCabinForm({
         }
       : { ...data };
 
-    mutateCreateCabin({ newCabin, editId });
-
-    reset();
+    mutateCreateCabin(
+      { newCabin, editId },
+      {
+        onSuccess: (data) => {
+          console.log(data);
+          reset();
+        },
+      }
+    );
   }
 
   function onError(errors) {}
