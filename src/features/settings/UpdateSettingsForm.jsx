@@ -1,23 +1,83 @@
-import Form from '../../ui/Form';
-import FormRow from '../../ui/FormRow';
-import Input from '../../ui/Input';
+import { useForm } from "react-hook-form";
+import Form from "../../ui/Form";
+import FormRow from "../../ui/FormRow";
+import Input from "../../ui/Input";
+import Button from "../../ui/Button";
+import styled from "styled-components";
 
-function UpdateSettingsForm() {
+const StyledError = styled.div`
+  color: var(--color-red-700);
+  font-weight: 500;
+`;
+
+function UpdateSettingsForm({ settings }) {
+  console.log({ ...settings });
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm({
+    defaultValues: { ...settings },
+  });
+
+  console.log(errors);
+
+  function onSubmit() {
+    console.log("test");
+  }
+
   return (
-    <Form>
-      <FormRow label='Minimum nights/booking'>
-        <Input type='number' id='min-nights' />
-      </FormRow>
-      <FormRow label='Maximum nights/booking'>
-        <Input type='number' id='max-nights' />
-      </FormRow>
-      <FormRow label='Maximum guests/booking'>
-        <Input type='number' id='max-guests' />
-      </FormRow>
-      <FormRow label='Breakfast price'>
-        <Input type='number' id='breakfast-price' />
-      </FormRow>
-    </Form>
+    <>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <FormRow
+          label="Minimum nights/booking"
+          error={errors?.minNights?.message}
+        >
+          <Input
+            type="number"
+            id="minNights"
+            {...register("minNights", { required: "This label is required" })}
+          />
+        </FormRow>
+
+        <FormRow
+          label="Maximum nights/booking"
+          error={errors?.maxNights?.message}
+        >
+          <Input
+            type="number"
+            id="maxNights"
+            {...register("maxNights", { required: "This label is required" })}
+          />
+        </FormRow>
+        <FormRow
+          label="Maximum guests/booking"
+          error={errors?.maxGuests?.message}
+        >
+          <Input
+            type="number"
+            id="maxGuests"
+            {...register("maxGuests", { required: "This label is required" })}
+          />
+        </FormRow>
+        <FormRow
+          label="Breakfast price"
+          error={errors?.breakfastPrice?.message}
+        >
+          <Input
+            type="number"
+            id="breakfastPrice"
+            {...register("breakfastPrice", {
+              required: "This label is required",
+            })}
+          />
+        </FormRow>
+
+        <Button variations="primary" size="large">
+          Submit
+        </Button>
+      </Form>
+    </>
   );
 }
 
