@@ -8,6 +8,8 @@ import Spinner from "../../ui/Spinner";
 import CreateCabinForm from "./CreateCabinForm";
 import useDeleteCabin from "./useDeleteCabinHook";
 import { useState } from "react";
+import Row from "../../ui/Row";
+import useCreateCabin from "./useCreateCabinHook";
 
 const TableRow = styled.div`
   display: grid;
@@ -60,9 +62,25 @@ function CabinRow({ cabin }) {
   } = cabin;
 
   const [openForm, setOpenForm] = useState(false);
+  const {
+    mutateCreateEditCabin: mutateDuplicateCabin,
+    mutateCreateEditStatus,
+  } = useCreateCabin();
 
   function handleEditOpenForm() {
     setOpenForm(!openForm);
+  }
+
+  function duplicateCabin() {
+    const newCabin = {
+      name,
+      maxCapacity,
+      regularPrice,
+      discount,
+      image,
+    };
+
+    mutateDuplicateCabin({ newCabin });
   }
 
   const cabinImgName = cabin.image.split("/").at(-1);
@@ -83,7 +101,7 @@ function CabinRow({ cabin }) {
         ) : (
           <span>&mdash;</span>
         )}
-        <div>
+        <Row>
           <Button
             variation="secondary"
             size="small"
@@ -99,7 +117,10 @@ function CabinRow({ cabin }) {
           >
             Edit
           </Button>
-        </div>
+          <Button variation="secondary" size="small" onClick={duplicateCabin}>
+            Duplicate
+          </Button>
+        </Row>
       </TableRow>
       {openForm && (
         <CreateCabinForm

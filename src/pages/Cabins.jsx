@@ -11,7 +11,7 @@ function Cabins() {
   function handleCreateOpenForm() {
     setOpenForm(!openForm);
   }
-  console.log(openForm);
+
   return (
     <>
       <Row type="horizontal">

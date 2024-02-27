@@ -5,8 +5,8 @@ import toast from "react-hot-toast";
 function useCreateCabin(editSession) {
   const queryClient = useQueryClient();
 
-  const { mutate: mutateCreateCabin, status: mutateCreateStatus } = useMutation(
-    {
+  const { mutate: mutateCreateEditCabin, status: mutateCreateEditStatus } =
+    useMutation({
       mutationFn: createEditCabin,
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["cabins"] });
@@ -20,10 +20,9 @@ function useCreateCabin(editSession) {
       },
 
       onError: (err) => toast.error(err.message),
-    }
-  );
+    });
 
-  return { mutateCreateCabin, mutateCreateStatus };
+  return { mutateCreateEditCabin, mutateCreateEditStatus };
 }
 
 export default useCreateCabin;

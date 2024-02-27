@@ -36,13 +36,13 @@ function CreateCabinForm({
     defaultValues: editId ? editValues : null,
   });
 
-  const { mutateCreateCabin, mutateCreateStatus } = useCreateCabin();
+  const { mutateCreateEditCabin, mutateCreateEditStatus } = useCreateCabin();
 
   useEffect(() => {
-    if (mutateCreateStatus === "success")
+    if (mutateCreateEditStatus === "success")
       (isEditSession && onEditOpenForm()) ||
         (!isEditSession && onCreateOpenForm());
-  }, [isEditSession, mutateCreateStatus, onCreateOpenForm, onEditOpenForm]);
+  }, [isEditSession, mutateCreateEditStatus, onCreateOpenForm, onEditOpenForm]);
 
   function onSubmit(data) {
     console.log(data);
@@ -53,7 +53,7 @@ function CreateCabinForm({
         }
       : { ...data };
 
-    mutateCreateCabin(
+    mutateCreateEditCabin(
       { newCabin, editId },
       {
         onSuccess: (data) => {
@@ -66,7 +66,7 @@ function CreateCabinForm({
 
   function onError(errors) {}
 
-  if (mutateCreateStatus === "pending") return <Spinner />;
+  if (mutateCreateEditStatus === "pending") return <Spinner />;
 
   return (
     <Form onSubmit={handleSubmit(onSubmit, onError)}>
@@ -149,7 +149,7 @@ function CreateCabinForm({
         >
           Cancel
         </Button>
-        <Button disabled={mutateCreateStatus === "pending"}>
+        <Button disabled={mutateCreateEditStatus === "pending"}>
           {(isEditSession && "Edit") || "Create cabin"}
         </Button>
       </FormRow>
