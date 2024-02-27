@@ -18,22 +18,24 @@ export async function getCabins() {
   }
 }
 
-export async function deleteCabin({ cabinId, cabinImgName }) {
+export async function deleteCabin({ cabin, curCabins }) {
   try {
-    console.log(cabinImgName);
-
-    // check if there are multiple cabins with same photo
-    const { data: curCabins } = await supabase.from("cabins").select("*");
+    console.log(cabin);
     console.log(curCabins);
 
+    // check if there are multiple cabins with same photo
+    //   const { data: curCabins } = await supabase.from("cabins").select("*");
+    //   console.log(curCabins);
+
     const matchingImgCabins = curCabins.filter(
-      (cab) => getCabinName(cab.image) === cabinImgName
+      (cab) => cab.image === cabin.image
     );
-    console.log(matchingImgCabins.length);
+    console.log(matchingImgCabins);
+
     const { error: cabinDeleteError } = await supabase
       .from("cabins")
       .delete()
-      .eq("id", cabinId);
+      .eq("id", cabin.id);
 
     if (cabinDeleteError) throw new Error("This cabin could not be deleted");
 
@@ -41,7 +43,7 @@ export async function deleteCabin({ cabinId, cabinImgName }) {
 
     const { error: deleteBucketError } = await supabase.storage
       .from("cabin-images")
-      .remove([cabinImgName]);
+      .remove([getCabinName(cabin.image)]);
 
     if (deleteBucketError)
       throw new Error("There was a problem deleting the image from bucket");

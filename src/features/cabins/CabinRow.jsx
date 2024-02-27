@@ -9,7 +9,7 @@ import CreateCabinForm from "./CreateCabinForm";
 import useDeleteCabin from "./useDeleteCabinHook";
 import { useState } from "react";
 import Row from "../../ui/Row";
-import useCreateCabin from "./useCreateCabinHook";
+import useCreateCabin from "./useCreateEditCabinHook";
 
 const TableRow = styled.div`
   display: grid;
@@ -51,7 +51,7 @@ const Discount = styled.div`
   color: var(--color-green-700);
 `;
 
-function CabinRow({ cabin }) {
+function CabinRow({ cabin, curCabins }) {
   const {
     id: cabinId,
     name,
@@ -83,8 +83,6 @@ function CabinRow({ cabin }) {
     mutateDuplicateCabin({ newCabin });
   }
 
-  const cabinImgName = cabin.image.split("/").at(-1);
-
   // react query useMutation
   const { mutateDeleteCabin, mutateDeleteStatus } = useDeleteCabin();
 
@@ -105,7 +103,7 @@ function CabinRow({ cabin }) {
           <Button
             variation="secondary"
             size="small"
-            onClick={() => mutateDeleteCabin({ cabinId, cabinImgName })}
+            onClick={() => mutateDeleteCabin({ cabin, curCabins })}
             disabled={mutateDeleteStatus === "pending"}
           >
             Delete

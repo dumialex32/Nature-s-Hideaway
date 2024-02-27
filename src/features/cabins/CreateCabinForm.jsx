@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { isString } from "lodash";
 
-import useCreateCabin from "./useCreateCabinHook";
+import useCreateCabin from "./useCreateEditCabinHook";
 
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
