@@ -23,7 +23,8 @@ function CreateCabinForm({
 }) {
   // Edit the current cabin
   const { id: editId, ...editValues } = cabinToEdit;
-
+  const prevImg = cabinToEdit?.image;
+  console.log(prevImg);
   const isEditSession = Boolean(editId);
 
   const {
@@ -36,7 +37,9 @@ function CreateCabinForm({
     defaultValues: editId ? editValues : null,
   });
 
-  const { mutateCreateEditCabin, mutateCreateEditStatus } = useCreateCabin();
+  const { mutateCreateEditCabin, mutateCreateEditStatus } = useCreateCabin({
+    isEditSession,
+  });
 
   useEffect(() => {
     if (mutateCreateEditStatus === "success")
@@ -49,12 +52,13 @@ function CreateCabinForm({
     const newCabin = !isString(data.image)
       ? {
           ...data,
+
           image: data.image instanceof FileList ? data.image[0] : data.image,
         }
       : { ...data };
 
     mutateCreateEditCabin(
-      { newCabin, editId },
+      { newCabin, editId, prevImg },
       {
         onSuccess: (data) => {
           console.log(data);

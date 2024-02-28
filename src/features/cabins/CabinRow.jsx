@@ -7,7 +7,7 @@ import Spinner from "../../ui/Spinner";
 
 import CreateCabinForm from "./CreateCabinForm";
 import useDeleteCabin from "./useDeleteCabinHook";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Row from "../../ui/Row";
 import useCreateCabin from "./useCreateEditCabinHook";
 
@@ -62,16 +62,21 @@ function CabinRow({ cabin, curCabins }) {
   } = cabin;
 
   const [openForm, setOpenForm] = useState(false);
-  const {
-    mutateCreateEditCabin: mutateDuplicateCabin,
-    mutateCreateEditStatus,
-  } = useCreateCabin();
+  const isDuplicateSession = useRef(false);
+  console.log(isDuplicateSession);
+
+  const { mutateCreateEditCabin: mutateDuplicateCabin } = useCreateCabin({
+    isDuplicateSession: isDuplicateSession.current,
+  });
 
   function handleEditOpenForm() {
     setOpenForm(!openForm);
   }
 
   function duplicateCabin() {
+    isDuplicateSession.current = true;
+
+    console.log(image);
     const newCabin = {
       name,
       maxCapacity,

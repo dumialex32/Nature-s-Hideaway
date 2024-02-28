@@ -1,4 +1,5 @@
 import { differenceInDays, formatDistance, parseISO } from "date-fns";
+import { isEmpty } from "lodash";
 
 // We want to make this function work for both Date objects and strings (which come from Supabase)
 export const subtractDates = (dateStr1, dateStr2) =>
@@ -27,3 +28,13 @@ export const formatCurrency = (value) =>
   new Intl.NumberFormat("en", { style: "currency", currency: "USD" }).format(
     value
   );
+
+// If any property is empty, it returns true; otherwise, it returns false.
+export function anyPropertyIsEmpty(obj) {
+  for (let key in obj) {
+    if (isEmpty(obj[key])) {
+      return true;
+    }
+  }
+  return false;
+}

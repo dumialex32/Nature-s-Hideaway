@@ -32,6 +32,7 @@ const TableHeader = styled.header`
 
 function CabinTable() {
   const { cabins, isLoading, error } = useGetCabins();
+  console.log(cabins);
 
   if (isLoading) return <Spinner />;
 

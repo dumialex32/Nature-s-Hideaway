@@ -37,7 +37,6 @@ const Label = styled.label`
 `;
 
 function FormRow({ children, label, error }) {
-  console.log(error);
   return (
     <StyledFormRow>
       {label && <Label htmlFor={`${children.props.id}`}>{label}</Label>}

@@ -2,7 +2,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createEditCabin } from "../../services/apiCabins";
 import toast from "react-hot-toast";
 
-function useCreateCabin(editSession) {
+function useCreateCabin({ isEditSession, isDuplicateSession }) {
+  console.log(isEditSession, isDuplicateSession);
   const queryClient = useQueryClient();
 
   const { mutate: mutateCreateEditCabin, status: mutateCreateEditStatus } =
@@ -11,10 +12,10 @@ function useCreateCabin(editSession) {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["cabins"] });
         toast.success(
-          `${
-            editSession
-              ? "Cabin was succesfully created"
-              : "Edit was succesfully done"
+          `The ${
+            isDuplicateSession ? "duplicate" : isEditSession ? "edit" : "cabin"
+          } has been succesfully ${
+            !isDuplicateSession && !isEditSession ? "creted" : "done"
           }`
         );
       },

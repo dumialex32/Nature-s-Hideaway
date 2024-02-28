@@ -5,26 +5,52 @@ import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import styled from "styled-components";
 
+import useGetSettings from "./useGetSettingsHook";
+import Spinner from "../../ui/Spinner";
+import { useEffect, useMemo } from "react";
+import { anyPropertyIsEmpty } from "../../utils/helpers";
+
 const StyledError = styled.div`
   color: var(--color-red-700);
   font-weight: 500;
 `;
 
-function UpdateSettingsForm({ settings }) {
-  console.log({ ...settings });
+function UpdateSettingsForm() {
+  const { settings, status, error } = useGetSettings();
+
+  const defaultValues = useMemo(
+    () => ({
+      minNights: settings?.minBookingLength,
+      maxNights: settings?.maxBookingLength,
+      maxGuests: settings?.maxGuestsPerBooking,
+      breakfastPrice: settings?.breakfastPrice,
+    }),
+    [settings]
+  );
+
+  console.log(defaultValues);
+
   const {
     register,
-    formState: { errors },
     handleSubmit,
+    reset,
+    getValues,
+    formState: { errors },
   } = useForm({
-    defaultValues: { ...settings },
+    defaultValues: defaultValues,
   });
 
-  console.log(errors);
+  useEffect(() => {
+    if (anyPropertyIsEmpty(defaultValues)) {
+      reset(defaultValues);
+    }
+  }, [defaultValues]);
 
   function onSubmit() {
     console.log("test");
   }
+
+  if (status === "pending") return <Spinner />;
 
   return (
     <>

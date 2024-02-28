@@ -20,17 +20,9 @@ export async function getCabins() {
 
 export async function deleteCabin({ cabin, curCabins }) {
   try {
-    console.log(cabin);
-    console.log(curCabins);
-
-    // check if there are multiple cabins with same photo
-    //   const { data: curCabins } = await supabase.from("cabins").select("*");
-    //   console.log(curCabins);
-
     const matchingImgCabins = curCabins.filter(
       (cab) => cab.image === cabin.image
     );
-    console.log(matchingImgCabins);
 
     const { error: cabinDeleteError } = await supabase
       .from("cabins")
@@ -53,22 +45,10 @@ export async function deleteCabin({ cabin, curCabins }) {
   }
 }
 
-export async function createEditCabin({ newCabin, editId }) {
+export async function createEditCabin({ newCabin, editId, prevImg }) {
   try {
     const hasImgPath =
       isString(newCabin.image) && newCabin.image.startsWith(supabaseUrl);
-    if (hasImgPath) console.log(getCabinName(newCabin.image));
-    let prevImg;
-
-    if (editId && !hasImgPath) {
-      const { data: imageData } = await supabase
-        .from("cabins")
-        .select("image")
-        .eq("id", editId)
-        .single();
-
-      prevImg = getCabinName(imageData.image);
-    }
 
     const imageName = hasImgPath
       ? getCabinName(newCabin.image)
@@ -77,8 +57,6 @@ export async function createEditCabin({ newCabin, editId }) {
     const imagePath = hasImgPath
       ? newCabin.image
       : `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`;
-
-    // Get the previous image
 
     let query = supabase.from("cabins");
 
@@ -95,8 +73,10 @@ export async function createEditCabin({ newCabin, editId }) {
     if (hasImgPath) return data; // do not upload a new image if hasImgPath
 
     // Before upload the new image, remove the prev one
-    if (prevImg && hasImgPath)
-      await supabase.storage.from("cabin-images").remove([prevImg]);
+    if (prevImg && !hasImgPath)
+      await supabase.storage
+        .from("cabin-images")
+        .remove([getCabinName(prevImg)]);
 
     const { error: storageError } = await supabase.storage
       .from("cabin-images")
