@@ -7,44 +7,28 @@ import styled from "styled-components";
 
 import useGetSettings from "./useGetSettingsHook";
 import Spinner from "../../ui/Spinner";
-import { useEffect, useMemo } from "react";
-import { anyPropertyIsEmpty } from "../../utils/helpers";
 
 const StyledError = styled.div`
   color: var(--color-red-700);
   font-weight: 500;
 `;
 
-function UpdateSettingsForm() {
-  const { settings, status, error } = useGetSettings();
-
-  const defaultValues = useMemo(
-    () => ({
-      minNights: settings?.minBookingLength,
-      maxNights: settings?.maxBookingLength,
-      maxGuests: settings?.maxGuestsPerBooking,
-      breakfastPrice: settings?.breakfastPrice,
-    }),
-    [settings]
-  );
-
-  console.log(defaultValues);
+function UpdateSettingsForm({ settings }) {
+  console.log(settings);
+  const defaultValues = {
+    minNights: settings.minBookingLength,
+    maxNights: settings.maxBookingLength,
+    maxGuests: settings.maxGuestsPerBooking,
+    breakfastPrice: settings.breakfastPrice,
+  };
 
   const {
     register,
     handleSubmit,
-    reset,
-    getValues,
     formState: { errors },
   } = useForm({
     defaultValues: defaultValues,
   });
-
-  useEffect(() => {
-    if (anyPropertyIsEmpty(defaultValues)) {
-      reset(defaultValues);
-    }
-  }, [defaultValues]);
 
   function onSubmit() {
     console.log("test");

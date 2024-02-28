@@ -6,7 +6,8 @@ const StyledMain = styled.main`
   overflow: scroll;
 `;
 
-function Main({ children }) {
+function Main(props) {
+  const { children } = props;
   return <StyledMain>{children}</StyledMain>;
 }
 
