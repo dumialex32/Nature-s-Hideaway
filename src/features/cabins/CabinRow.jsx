@@ -4,6 +4,9 @@ import { formatCurrency } from "../../utils/helpers";
 
 import Button from "../../ui/Button";
 import Spinner from "../../ui/Spinner";
+import { HiOutlineTrash } from "react-icons/hi";
+import { HiOutlineDuplicate } from "react-icons/hi";
+import { HiOutlinePencilAlt } from "react-icons/hi";
 
 import CreateCabinForm from "./CreateCabinForm";
 import useDeleteCabin from "./useDeleteCabinHook";
@@ -63,7 +66,6 @@ function CabinRow({ cabin, curCabins }) {
 
   const [openForm, setOpenForm] = useState(false);
   const isDuplicateSession = useRef(false);
-  console.log(isDuplicateSession);
 
   const { mutateCreateEditCabin: mutateDuplicateCabin } = useCreateCabin({
     isDuplicateSession: isDuplicateSession.current,
@@ -76,7 +78,6 @@ function CabinRow({ cabin, curCabins }) {
   function duplicateCabin() {
     isDuplicateSession.current = true;
 
-    console.log(image);
     const newCabin = {
       name,
       maxCapacity,
@@ -104,26 +105,26 @@ function CabinRow({ cabin, curCabins }) {
         ) : (
           <span>&mdash;</span>
         )}
-        <Row>
+        <div>
           <Button
             variation="secondary"
             size="small"
             onClick={() => mutateDeleteCabin({ cabin, curCabins })}
             disabled={mutateDeleteStatus === "pending"}
           >
-            Delete
+            <HiOutlineTrash size={"18"} />
           </Button>
           <Button
             variation="secondary"
             size="small"
             onClick={handleEditOpenForm}
           >
-            Edit
+            <HiOutlinePencilAlt size={"18"} />
           </Button>
           <Button variation="secondary" size="small" onClick={duplicateCabin}>
-            Duplicate
+            <HiOutlineDuplicate size={"18"} />
           </Button>
-        </Row>
+        </div>
       </TableRow>
       {openForm && (
         <CreateCabinForm

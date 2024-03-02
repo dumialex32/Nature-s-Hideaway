@@ -4,21 +4,36 @@ import Heading from "../ui/Heading";
 import UpdateSettingsForm from "../features/settings/UpdateSettingsForm";
 import useGetSettings from "../features/settings/useGetSettingsHook";
 import Spinner from "../ui/Spinner";
+import styled from "styled-components";
+import Error from "../ui/Error";
+
+const FormContainer = styled.div`
+  max-width: 100rem;
+`;
 
 const Settings = () => {
-  const { settings, status, error } = useGetSettings();
-  const isPending = "pending" === status;
+  const { settings, settingsStatus, settingsError } = useGetSettings();
+  const isPending = "pending" === settingsStatus;
 
-  return isPending ? (
-    <Spinner />
-  ) : (
-    <div>
+  console.log(settings);
+  console.log(settingsError);
+
+  return (
+    <FormContainer>
       <Row>
         <Heading as="h1">Settings</Heading>
       </Row>
-
-      <Row>{settings ? <UpdateSettingsForm settings={settings} /> : null}</Row>
-    </div>
+      {isPending && !settingsError && <Spinner />}
+      {!isPending && settingsError && <Error>{settingsError.message}</Error>}
+      <Row>
+        {settings ? (
+          <UpdateSettingsForm
+            defaultSettings={settings[0]}
+            curSettings={settings[1]}
+          />
+        ) : null}
+      </Row>
+    </FormContainer>
   );
 };
 

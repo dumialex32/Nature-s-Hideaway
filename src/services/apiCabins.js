@@ -49,28 +49,34 @@ export async function createEditCabin({ newCabin, editId, prevImg }) {
   try {
     const hasImgPath =
       isString(newCabin.image) && newCabin.image.startsWith(supabaseUrl);
-
     const imageName = hasImgPath
       ? getCabinName(newCabin.image)
       : `${Math.random()}-${newCabin.image.name}`.replaceAll("/", "");
-
     const imagePath = hasImgPath
       ? newCabin.image
       : `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`;
 
     let query = supabase.from("cabins");
 
-    if (!editId) query = query.insert([{ ...newCabin, image: imagePath }]);
+    if (!editId) {
+      query = query.insert([{ ...newCabin, image: imagePath }]);
+    }
 
-    if (editId)
+    if (editId) {
       query = query.update({ ...newCabin, image: imagePath }).eq("id", editId);
+    }
 
     const { data, error } = await query.select().single();
 
-    if (error) throw new Error("There was a problem creating the cabin");
+    if (error) {
+      throw new Error("There was a problem creating the cabin");
+    }
+
     // Upload image
     // If cabin create is successfull, store image in bucket
-    if (hasImgPath) return data; // do not upload a new image if hasImgPath
+    if (hasImgPath) {
+      return data;
+    } // do not upload a new image if hasImgPath
 
     // Before upload the new image, remove the prev one
     if (prevImg && !hasImgPath)

@@ -4,14 +4,14 @@ import { getSettings } from "../../services/apiSettings";
 function useGetSettings() {
   const {
     data: settings,
-    status,
-    error,
+    status: settingsStatus,
+    error: settingsError,
   } = useQuery({
     queryKey: ["settings"],
     queryFn: getSettings,
   });
 
-  return { settings, status, error };
+  return { settings, settingsStatus, settingsError };
 }
 
 export default useGetSettings;

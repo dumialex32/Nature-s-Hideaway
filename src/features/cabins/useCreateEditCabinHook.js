@@ -3,7 +3,6 @@ import { createEditCabin } from "../../services/apiCabins";
 import toast from "react-hot-toast";
 
 function useCreateCabin({ isEditSession, isDuplicateSession }) {
-  console.log(isEditSession, isDuplicateSession);
   const queryClient = useQueryClient();
 
   const { mutate: mutateCreateEditCabin, status: mutateCreateEditStatus } =

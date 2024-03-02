@@ -4,89 +4,95 @@ import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import styled from "styled-components";
-
-import useGetSettings from "./useGetSettingsHook";
-import Spinner from "../../ui/Spinner";
+import { useUpdateSettings } from "./useUpdateSettingsHook";
+import Row from "../../ui/Row";
 
 const StyledError = styled.div`
   color: var(--color-red-700);
   font-weight: 500;
 `;
 
-function UpdateSettingsForm({ settings }) {
-  console.log(settings);
-  const defaultValues = {
-    minNights: settings.minBookingLength,
-    maxNights: settings.maxBookingLength,
-    maxGuests: settings.maxGuestsPerBooking,
-    breakfastPrice: settings.breakfastPrice,
+function UpdateSettingsForm({ curSettings, defaultSettings }) {
+  const { updateSettings, settingsStatus } = useUpdateSettings();
+
+  const defSettings = {
+    breakfastPrice: defaultSettings.breakfastPrice,
+    maxBookingLength: defaultSettings.maxBookingLength,
+    maxGuestsPerBooking: defaultSettings.maxGuestsPerBooking,
+    minBookingLength: defaultSettings.minBookingLength,
   };
 
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    defaultValues: defaultValues,
-  });
+    minBookingLength,
+    breakfastPrice,
+    maxGuestsPerBooking,
+    maxBookingLength,
+  } = curSettings;
 
-  function onSubmit() {
-    console.log("test");
+  function handleSettingChange(e, field) {
+    const { value } = e.target;
+    if (!value) return;
+
+    const newSetting = { [field]: value };
+    updateSettings(newSetting);
   }
 
-  if (status === "pending") return <Spinner />;
+  function handleDefaultSettingsChange() {
+    updateSettings(defSettings);
+  }
 
   return (
     <>
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <FormRow
-          label="Minimum nights/booking"
-          error={errors?.minNights?.message}
-        >
+      <Form>
+        <FormRow label="Minimum nights/booking">
           <Input
             type="number"
             id="minNights"
-            {...register("minNights", { required: "This label is required" })}
+            value={minBookingLength}
+            disabled={settingsStatus === "pending"}
+            onChange={(e) => handleSettingChange(e, "minBookingLength")}
           />
         </FormRow>
 
-        <FormRow
-          label="Maximum nights/booking"
-          error={errors?.maxNights?.message}
-        >
+        <FormRow label="Maximum nights/booking">
           <Input
             type="number"
             id="maxNights"
-            {...register("maxNights", { required: "This label is required" })}
-          />
-        </FormRow>
-        <FormRow
-          label="Maximum guests/booking"
-          error={errors?.maxGuests?.message}
-        >
-          <Input
-            type="number"
-            id="maxGuests"
-            {...register("maxGuests", { required: "This label is required" })}
-          />
-        </FormRow>
-        <FormRow
-          label="Breakfast price"
-          error={errors?.breakfastPrice?.message}
-        >
-          <Input
-            type="number"
-            id="breakfastPrice"
-            {...register("breakfastPrice", {
-              required: "This label is required",
-            })}
+            value={maxBookingLength}
+            disabled={settingsStatus === "pending"}
+            onChange={(e) => handleSettingChange(e, "maxBookingLength")}
           />
         </FormRow>
 
-        <Button variations="primary" size="large">
-          Submit
-        </Button>
+        <FormRow label="Maximum guests/booking">
+          <Input
+            type="number"
+            id="maxGuests"
+            value={maxGuestsPerBooking}
+            disabled={settingsStatus === "pending"}
+            onChange={(e) => handleSettingChange(e, "maxGuestsPerBooking")}
+          />
+        </FormRow>
+
+        <FormRow label="Breakfast price">
+          <Input
+            type="number"
+            id="breakfastPrice"
+            value={breakfastPrice}
+            disabled={settingsStatus === "pending"}
+            onChange={(e) => handleSettingChange(e, "breakfastPrice")}
+          />
+        </FormRow>
       </Form>
+      <Row type="">
+        <Button
+          variation="primary"
+          size="medium"
+          onClick={handleDefaultSettingsChange}
+        >
+          Default settings
+        </Button>
+      </Row>
     </>
   );
 }
