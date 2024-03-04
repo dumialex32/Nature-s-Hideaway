@@ -64,15 +64,15 @@ function CabinRow({ cabin, curCabins }) {
     image,
   } = cabin;
 
-  const [openForm, setOpenForm] = useState(false);
+  const [isOpenEditForm, setIsOpenEditForm] = useState(false);
   const isDuplicateSession = useRef(false);
 
   const { mutateCreateEditCabin: mutateDuplicateCabin } = useCreateCabin({
     isDuplicateSession: isDuplicateSession.current,
   });
 
-  function handleEditOpenForm() {
-    setOpenForm(!openForm);
+  function handleIsOpenEditForm() {
+    setIsOpenEditForm(!isOpenEditForm);
   }
 
   function duplicateCabin() {
@@ -117,7 +117,7 @@ function CabinRow({ cabin, curCabins }) {
           <Button
             variation="secondary"
             size="small"
-            onClick={handleEditOpenForm}
+            onClick={handleIsOpenEditForm}
           >
             <HiOutlinePencilAlt size={"18"} />
           </Button>
@@ -126,10 +126,10 @@ function CabinRow({ cabin, curCabins }) {
           </Button>
         </div>
       </TableRow>
-      {openForm && (
+      {isOpenEditForm && (
         <CreateCabinForm
           cabinToEdit={cabin}
-          onEditOpenForm={handleEditOpenForm}
+          onCloseEditForm={handleIsOpenEditForm}
         />
       )}
     </>

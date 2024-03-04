@@ -14,17 +14,12 @@ import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import FormRow from "../../ui/FormRow";
 import Spinner from "../../ui/Spinner";
-import { useEffect } from "react";
 
-function CreateCabinForm({
-  onEditOpenForm,
-  onCreateOpenForm,
-  cabinToEdit = {},
-}) {
+function CreateCabinForm({ onCloseEditForm, onCloseModal, cabinToEdit = {} }) {
   // Edit the current cabin
   const { id: editId, ...editValues } = cabinToEdit;
   const prevImg = cabinToEdit?.image;
-  console.log(prevImg);
+  console.log(onCloseModal);
   const isEditSession = Boolean(editId);
 
   const {
@@ -40,12 +35,6 @@ function CreateCabinForm({
   const { mutateCreateEditCabin, mutateCreateEditStatus } = useCreateCabin({
     isEditSession,
   });
-
-  useEffect(() => {
-    if (mutateCreateEditStatus === "success")
-      (isEditSession && onEditOpenForm()) ||
-        (!isEditSession && onCreateOpenForm());
-  }, [isEditSession, mutateCreateEditStatus, onCreateOpenForm, onEditOpenForm]);
 
   function onSubmit(data) {
     console.log(data);
@@ -63,6 +52,7 @@ function CreateCabinForm({
         onSuccess: (data) => {
           console.log(data);
           reset();
+          (isEditSession && onCloseEditForm?.()) || onCloseModal?.();
         },
       }
     );
@@ -73,7 +63,10 @@ function CreateCabinForm({
   if (mutateCreateEditStatus === "pending") return <Spinner />;
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit, onError)}>
+    <Form
+      type={onCloseModal && "modal"}
+      onSubmit={handleSubmit(onSubmit, onError)}
+    >
       <FormRow label="Cabin Name" error={errors?.name?.message}>
         <Input
           type="text"
@@ -149,7 +142,9 @@ function CreateCabinForm({
         <Button
           variation="secondary"
           type="reset"
-          onClick={isEditSession ? onEditOpenForm : onCreateOpenForm}
+          onClick={() =>
+            isEditSession ? onCloseEditForm?.() : onCloseModal?.()
+          }
         >
           Cancel
         </Button>

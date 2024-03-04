@@ -1,17 +1,9 @@
 import Row from "../ui/Row";
 import Heading from "../ui/Heading";
 import CabinTable from "../features/cabins/CabinTable";
-import Button from "../ui/Button";
-import { useState } from "react";
-import CreateCabinForm from "../features/cabins/CreateCabinForm";
+import AddCabin from "../features/cabins/AddCabin";
 
 function Cabins() {
-  const [openForm, setOpenForm] = useState(false);
-
-  function handleCreateOpenForm() {
-    setOpenForm(!openForm);
-  }
-
   return (
     <>
       <Row type="horizontal">
@@ -21,18 +13,9 @@ function Cabins() {
 
       <Row>
         <CabinTable />
-      </Row>
 
-      <Row type="horizontal">
-        <Button variation="primary" size="large" onClick={handleCreateOpenForm}>
-          {!openForm ? "Add cabin" : "Close"}
-        </Button>
+        <AddCabin />
       </Row>
-      {openForm && (
-        <Row>
-          <CreateCabinForm onCreateOpenForm={handleCreateOpenForm} />
-        </Row>
-      )}
     </>
   );
 }
