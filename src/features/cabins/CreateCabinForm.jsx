@@ -19,7 +19,7 @@ function CreateCabinForm({ onCloseEditForm, onCloseModal, cabinToEdit = {} }) {
   // Edit the current cabin
   const { id: editId, ...editValues } = cabinToEdit;
   const prevImg = cabinToEdit?.image;
-  console.log(onCloseModal);
+
   const isEditSession = Boolean(editId);
 
   const {
@@ -37,7 +37,6 @@ function CreateCabinForm({ onCloseEditForm, onCloseModal, cabinToEdit = {} }) {
   });
 
   function onSubmit(data) {
-    console.log(data);
     const newCabin = !isString(data.image)
       ? {
           ...data,

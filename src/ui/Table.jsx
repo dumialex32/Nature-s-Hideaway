@@ -1,3 +1,4 @@
+import { createContext, useContext, useState } from "react";
 import styled from "styled-components";
 
 const StyledTable = styled.div`
@@ -58,3 +59,46 @@ const Empty = styled.p`
   text-align: center;
   margin: 2.4rem;
 `;
+
+const TableContext = createContext();
+
+function Table({ children, columns }) {
+  const [tableFor, setTableFor] = useState("");
+
+  return (
+    <TableContext.Provider value={{ columns }}>
+      <StyledTable>{children}</StyledTable>
+    </TableContext.Provider>
+  );
+}
+
+function TableHeader({ children }) {
+  const { columns } = useTable();
+
+  return <StyledHeader columns={columns}>{children}</StyledHeader>;
+}
+
+function TableBody({ data, render }) {
+  return <StyledBody>{data.map(render)}</StyledBody>;
+}
+
+function TableRow({ children }) {
+  const { columns } = useTable();
+  console.log(children);
+
+  return <StyledRow columns={columns}>{children}</StyledRow>;
+}
+
+Table.TableHeader = TableHeader;
+Table.TableRow = TableRow;
+Table.TableBody = TableBody;
+
+export default Table;
+
+const useTable = () => {
+  const context = useContext(TableContext);
+  if (context === undefined)
+    throw new Error("Table context used outside of context provider");
+
+  return context;
+};

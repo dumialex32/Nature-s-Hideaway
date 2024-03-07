@@ -1,4 +1,11 @@
-import { cloneElement, createContext, useContext, useState } from "react";
+import {
+  cloneElement,
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { createPortal } from "react-dom";
 import { HiX } from "react-icons/hi";
 import styled from "styled-components";
@@ -56,7 +63,6 @@ const ModalContext = createContext();
 
 function Modal({ children }) {
   const [openName, setOpenName] = useState("");
-  console.log(openName);
 
   const close = () => setOpenName("");
   const open = setOpenName;
@@ -76,17 +82,27 @@ function Open({ children, opens: opensWindowName }) {
 
 function Window({ children }) {
   const { onClose, openName } = useContext(ModalContext);
+  const modalRef = useRef();
+
+  useEffect(() => {
+    function clickOutsideModal(e) {
+      console.log(e.target);
+      if (modalRef.current && !modalRef.current.contains(e.target)) onClose();
+    }
+    document.addEventListener("click", clickOutsideModal, true);
+
+    return () => document.removeEventListener("click", clickOutsideModal);
+  }, [onClose]);
 
   if (!openName) return;
 
-  console.log(cloneElement(children, { onClick: () => onClose }));
-
   return createPortal(
     <Overlay>
-      <StyledModal>
+      <StyledModal ref={modalRef}>
         <Button>
           <HiX onClick={onClose} />
         </Button>
+
         {cloneElement(children, { onCloseModal: onClose })}
       </StyledModal>
     </Overlay>,

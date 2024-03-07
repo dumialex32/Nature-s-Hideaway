@@ -4,6 +4,7 @@ import { formatCurrency } from "../../utils/helpers";
 
 import Button from "../../ui/Button";
 import Spinner from "../../ui/Spinner";
+import Confirm from "../../ui/Confirm";
 import { HiOutlineTrash } from "react-icons/hi";
 import { HiOutlineDuplicate } from "react-icons/hi";
 import { HiOutlinePencilAlt } from "react-icons/hi";
@@ -11,21 +12,22 @@ import { HiOutlinePencilAlt } from "react-icons/hi";
 import CreateCabinForm from "./CreateCabinForm";
 import useDeleteCabin from "./useDeleteCabinHook";
 import { useRef, useState } from "react";
-import Row from "../../ui/Row";
 import useCreateCabin from "./useCreateEditCabinHook";
+import Modal from "../../ui/Modal";
+import Table from "../../ui/Table";
 
-const TableRow = styled.div`
-  display: grid;
-  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
-  column-gap: 2.4rem;
-  align-items: center;
-  padding: 1.4rem 2.4rem;
-  background-color: var(--color-grey-0);
+// const TableRow = styled.div`
+//   display: grid;
+//   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
+//   column-gap: 2.4rem;
+//   align-items: center;
+//   padding: 1.4rem 2.4rem;
+//   background-color: var(--color-grey-0);
 
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--color-grey-100);
-  }
-`;
+//   &:not(:last-child) {
+//     border-bottom: 1px solid var(--color-grey-100);
+//   }
+// `;
 
 const Img = styled.img`
   display: block;
@@ -67,7 +69,10 @@ function CabinRow({ cabin, curCabins }) {
   const [isOpenEditForm, setIsOpenEditForm] = useState(false);
   const isDuplicateSession = useRef(false);
 
-  const { mutateCreateEditCabin: mutateDuplicateCabin } = useCreateCabin({
+  const {
+    mutateCreateEditCabin: mutateDuplicateCabin,
+    mutateCreateEditStatus: mutateDuplicateStatus,
+  } = useCreateCabin({
     isDuplicateSession: isDuplicateSession.current,
   });
 
@@ -86,16 +91,24 @@ function CabinRow({ cabin, curCabins }) {
       image,
     };
 
-    mutateDuplicateCabin({ newCabin });
+    mutateDuplicateCabin(
+      { newCabin },
+      {
+        onSuccess: (data) => {
+          console.log(data);
+        },
+      }
+    );
   }
 
   // react query useMutation
   const { mutateDeleteCabin, mutateDeleteStatus } = useDeleteCabin();
 
-  if (mutateDeleteStatus === "pending") return <Spinner />;
+  if (mutateDeleteStatus === "pending" || mutateDuplicateStatus === "pending")
+    return <Spinner />;
   return (
     <>
-      <TableRow role="row">
+      <Table.TableRow>
         <Img src={image} />
         <Cabin>{name}</Cabin>
         <div>Fits up to {maxCapacity} guests</div>
@@ -106,14 +119,21 @@ function CabinRow({ cabin, curCabins }) {
           <span>&mdash;</span>
         )}
         <div>
-          <Button
-            variation="secondary"
-            size="small"
-            onClick={() => mutateDeleteCabin({ cabin, curCabins })}
-            disabled={mutateDeleteStatus === "pending"}
-          >
-            <HiOutlineTrash size={"18"} />
-          </Button>
+          <Modal>
+            <Modal.Open opens="deleteCabinConfirmation">
+              <Button variation="secondary" size="small">
+                <HiOutlineTrash size={"18"} />
+              </Button>
+            </Modal.Open>
+            <Modal.Window name="deleteCabinConfirmation">
+              <Confirm
+                onConfirm={() => mutateDeleteCabin({ cabin, curCabins })}
+                resourceName="cabin"
+                disabled={mutateDeleteStatus === "pending"}
+                action="delete"
+              />
+            </Modal.Window>
+          </Modal>
           <Button
             variation="secondary"
             size="small"
@@ -121,11 +141,24 @@ function CabinRow({ cabin, curCabins }) {
           >
             <HiOutlinePencilAlt size={"18"} />
           </Button>
-          <Button variation="secondary" size="small" onClick={duplicateCabin}>
-            <HiOutlineDuplicate size={"18"} />
-          </Button>
+          <Modal>
+            <Modal.Open opens="duplicateCabinConfirmation">
+              <Button variation="secondary" size="small">
+                <HiOutlineDuplicate size={"18"} />
+              </Button>
+            </Modal.Open>
+            <Modal.Window name="duplicateCabinConfirmation">
+              <Confirm
+                onConfirm={duplicateCabin}
+                resourceName="cabin"
+                disabled={mutateDuplicateStatus === "pending"}
+                action="duplicate"
+                itemName={name}
+              />
+            </Modal.Window>
+          </Modal>
         </div>
-      </TableRow>
+      </Table.TableRow>
       {isOpenEditForm && (
         <CreateCabinForm
           cabinToEdit={cabin}

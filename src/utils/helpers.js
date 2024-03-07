@@ -38,3 +38,7 @@ export function anyPropertyIsEmpty(obj) {
   }
   return false;
 }
+
+// Capitalized item
+export const capitalizedItem = (item) =>
+  item.charAt(0).toUpperCase() + item.slice(1);
