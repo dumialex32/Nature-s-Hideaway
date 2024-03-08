@@ -86,7 +86,6 @@ function Window({ children }) {
 
   useEffect(() => {
     function clickOutsideModal(e) {
-      console.log(e.target);
       if (modalRef.current && !modalRef.current.contains(e.target)) onClose();
     }
     document.addEventListener("click", clickOutsideModal, true);

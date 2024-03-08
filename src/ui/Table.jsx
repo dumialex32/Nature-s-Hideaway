@@ -84,7 +84,6 @@ function TableBody({ data, render }) {
 
 function TableRow({ children }) {
   const { columns } = useTable();
-  console.log(children);
 
   return <StyledRow columns={columns}>{children}</StyledRow>;
 }
