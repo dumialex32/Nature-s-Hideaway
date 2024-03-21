@@ -120,38 +120,30 @@ function CabinRow({ cabin, curCabins }) {
           <span>&mdash;</span>
         )}
         <div>
-          <Menus.Menu>
-            {/* <Menus.Toggle id={cabinId} />
-            <Menus.List id={cabinId}> */}
-            <Modal>
-              <Modal.Open opens="delete">
-                <Menus.Button icon={<HiOutlineTrash size={"18"} />}>
-                  Delete
-                </Menus.Button>
-              </Modal.Open>
-              <Modal.Window name="delete">
-                <Confirm
-                  resourceName="cabin"
-                  onConfirm={() => mutateDeleteCabin({ cabin, curCabins })}
-                  action="delete"
-                  onCloseModal
-                />
-              </Modal.Window>
-            </Modal>
+          <Modal>
+            <Menus.Menu>
+              <Menus.Toggle id={cabinId} />
+              <Menus.List id={cabinId}>
+                <Modal.Open opens="duplicate">
+                  <Menus.Button icon={<HiOutlineDuplicate size={"18"} />}>
+                    Duplicate
+                  </Menus.Button>
+                </Modal.Open>
 
-            <Menus.Button
-              onClick={handleIsOpenEditForm}
-              icon={<HiOutlinePencilAlt size={"18"} />}
-            >
-              Edit
-            </Menus.Button>
-
-            <Modal>
-              <Modal.Open opens="duplicate">
-                <Menus.Button icon={<HiOutlineDuplicate size={"18"} />}>
-                  Duplicate
+                <Menus.Button
+                  onClick={handleIsOpenEditForm}
+                  icon={<HiOutlinePencilAlt size={"18"} />}
+                >
+                  Edit
                 </Menus.Button>
-              </Modal.Open>
+
+                <Modal.Open opens="delete">
+                  <Menus.Button icon={<HiOutlineTrash size={"18"} />}>
+                    Delete
+                  </Menus.Button>
+                </Modal.Open>
+              </Menus.List>
+
               <Modal.Window name="duplicate">
                 <Confirm
                   onConfirm={duplicateCabin}
@@ -161,9 +153,17 @@ function CabinRow({ cabin, curCabins }) {
                   itemName={name}
                 />
               </Modal.Window>
-            </Modal>
-            {/* </Menus.List> */}
-          </Menus.Menu>
+
+              <Modal.Window name="delete">
+                <Confirm
+                  resourceName="cabin"
+                  onConfirm={() => mutateDeleteCabin({ cabin, curCabins })}
+                  action="delete"
+                  onCloseModal
+                />
+              </Modal.Window>
+            </Menus.Menu>
+          </Modal>
         </div>
       </Table.TableRow>
 

@@ -138,6 +138,7 @@ function List({ children, id }) {
 }
 
 function Button({ children, icon, onClick }) {
+  console.log(onClick);
   return (
     <li>
       <StyledButton onClick={onClick}>

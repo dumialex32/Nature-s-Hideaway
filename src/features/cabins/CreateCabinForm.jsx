@@ -1,8 +1,5 @@
 import { useForm } from "react-hook-form";
 
-import { createEditCabin } from "../../services/apiCabins";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-
 import { isString } from "lodash";
 
 import useCreateCabin from "./useCreateEditCabinHook";
@@ -14,7 +11,8 @@ import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import FormRow from "../../ui/FormRow";
 import Spinner from "../../ui/Spinner";
-import Row from "../../ui/Row";
+import Modal from "../../ui/Modal";
+import Confirm from "../../ui/Confirm";
 
 function CreateCabinForm({ onCloseEditForm, onCloseModal, cabinToEdit = {} }) {
   // Edit the current cabin
@@ -148,9 +146,21 @@ function CreateCabinForm({ onCloseEditForm, onCloseModal, cabinToEdit = {} }) {
         >
           Cancel
         </Button>
-        <Button disabled={mutateCreateEditStatus === "pending"}>
-          {(isEditSession && "Edit") || "Create cabin"}
-        </Button>
+        <Modal>
+          <Modal.Open opens="edit">
+            <Button
+              size="small"
+              variation="primary"
+              disabled={mutateCreateEditStatus === "pending"}
+            >
+              {(isEditSession && "Edit") || "Create cabin"}
+            </Button>
+
+            <Modal.Window>
+              <Confirm />
+            </Modal.Window>
+          </Modal.Open>
+        </Modal>
       </FormRow>
     </Form>
   );
