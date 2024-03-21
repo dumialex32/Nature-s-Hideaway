@@ -14,6 +14,7 @@ import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import FormRow from "../../ui/FormRow";
 import Spinner from "../../ui/Spinner";
+import Row from "../../ui/Row";
 
 function CreateCabinForm({ onCloseEditForm, onCloseModal, cabinToEdit = {} }) {
   // Edit the current cabin
@@ -136,7 +137,7 @@ function CreateCabinForm({ onCloseEditForm, onCloseModal, cabinToEdit = {} }) {
         />
       </FormRow>
 
-      <FormRow>
+      <FormRow type="horizontal">
         {/* type is an HTML attribute! */}
         <Button
           variation="secondary"

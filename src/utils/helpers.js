@@ -42,3 +42,11 @@ export function anyPropertyIsEmpty(obj) {
 // Capitalized item
 export const capitalizedItem = (item) =>
   item.charAt(0).toUpperCase() + item.slice(1);
+
+// Format date
+export const formatDate = (date) =>
+  new Intl.DateTimeFormat("en-US", {
+    month: "2-digit",
+    day: "2-digit",
+    year: "numeric",
+  }).format(new Date(date));

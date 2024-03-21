@@ -1,35 +1,63 @@
+import { filter } from "lodash";
+import { useSearchParams } from "react-router-dom";
 import styled, { css } from "styled-components";
 
 const StyledFilter = styled.div`
-  border: 1px solid var(--color-grey-100);
-  background-color: var(--color-grey-0);
-  box-shadow: var(--shadow-sm);
-  border-radius: var(--border-radius-sm);
-  padding: 0.4rem;
   display: flex;
-  gap: 0.4rem;
+  align-items: center;
+  padding: 0.4rem;
+  gap: 0.6rem;
+  border: 1px solid var(--color-grey-50);
+  background-color: var(--color-grey-50);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
 `;
 
 const FilterButton = styled.button`
-  background-color: var(--color-grey-0);
   border: none;
+  border-radius: var(--border-radius-md);
+  padding: 0.6rem 1.2rem;
+  background-color: var(--color-grey-50);
+
+  &:hover {
+    background-color: var(--color-brand-500);
+    color: var(--color-grey-50);
+  }
 
   ${(props) =>
-    props.active &&
+    props.active === "true" &&
     css`
-      background-color: var(--color-brand-600);
-      color: var(--color-brand-50);
+      background-color: var(--color-brand-500);
+      color: var(--color-grey-50);
     `}
-
-  border-radius: var(--border-radius-sm);
-  font-weight: 500;
-  font-size: 1.4rem;
-  /* To give the same height as select */
-  padding: 0.44rem 0.8rem;
-  transition: all 0.3s;
-
-  &:hover:not(:disabled) {
-    background-color: var(--color-brand-600);
-    color: var(--color-brand-50);
-  }
 `;
+
+function Filter({ filterOptions }) {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const currentValue =
+    searchParams.get("filter") || filterOptions.at(0).filterValue;
+
+  function handleClick(value) {
+    searchParams.set("filter", value);
+    setSearchParams(searchParams);
+  }
+
+  return (
+    <StyledFilter>
+      {filterOptions.map((filter) => {
+        return (
+          <FilterButton
+            active={filter.filterValue === currentValue ? "true" : "false"}
+            key={filter.filterValue}
+            onClick={() => handleClick(filter.filterValue)}
+          >
+            {filter.label}
+          </FilterButton>
+        );
+      })}
+    </StyledFilter>
+  );
+}
+
+export default Filter;

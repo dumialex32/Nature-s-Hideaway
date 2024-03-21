@@ -16,6 +16,7 @@ import useCreateCabin from "./useCreateEditCabinHook";
 import Modal from "../../ui/Modal";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
+import { deleteCabin } from "../../services/apiCabins";
 
 // const TableRow = styled.div`
 //   display: grid;
@@ -102,7 +103,6 @@ function CabinRow({ cabin, curCabins }) {
     );
   }
 
-  // react query useMutation
   const { mutateDeleteCabin, mutateDeleteStatus } = useDeleteCabin();
 
   if (mutateDeleteStatus === "pending" || mutateDuplicateStatus === "pending")
@@ -121,20 +121,21 @@ function CabinRow({ cabin, curCabins }) {
         )}
         <div>
           <Modal>
-            <Modal.Open opens="deleteCabinConfirmation">
+            <Modal.Open opens="delete">
               <Button variation="secondary" size="small">
                 <HiOutlineTrash size={"18"} />
               </Button>
             </Modal.Open>
-            <Modal.Window name="deleteCabinConfirmation">
+            <Modal.Window name="delete">
               <Confirm
-                onConfirm={() => mutateDeleteCabin({ cabin, curCabins })}
                 resourceName="cabin"
-                disabled={mutateDeleteStatus === "pending"}
+                onConfirm={() => mutateDeleteCabin({ cabin, curCabins })}
                 action="delete"
+                onCloseModal
               />
             </Modal.Window>
           </Modal>
+
           <Button
             variation="secondary"
             size="small"
@@ -143,12 +144,12 @@ function CabinRow({ cabin, curCabins }) {
             <HiOutlinePencilAlt size={"18"} />
           </Button>
           <Modal>
-            <Modal.Open opens="duplicateCabinConfirmation">
+            <Modal.Open opens="duplicate">
               <Button variation="secondary" size="small">
                 <HiOutlineDuplicate size={"18"} />
               </Button>
             </Modal.Open>
-            <Modal.Window name="duplicateCabinConfirmation">
+            <Modal.Window name="duplicate">
               <Confirm
                 onConfirm={duplicateCabin}
                 resourceName="cabin"
@@ -158,15 +159,6 @@ function CabinRow({ cabin, curCabins }) {
               />
             </Modal.Window>
           </Modal>
-
-          <Menus.Menu>
-            <Menus.Toggle id={cabinId} />
-            <Menus.List id={cabinId}>
-              <Menus.Button>cc</Menus.Button>
-              <Menus.Button>cc</Menus.Button>
-              <Menus.Button>cc</Menus.Button>
-            </Menus.List>
-          </Menus.Menu>
         </div>
       </Table.TableRow>
 
@@ -181,3 +173,43 @@ function CabinRow({ cabin, curCabins }) {
 }
 
 export default CabinRow;
+
+// function Toggle({ id }) {
+//   const { open, close, openId, setPosition } = useMenus();
+//   const toggleRef = useRef();
+
+//   useEffect(() => {
+//     function handleClickOutside(e) {
+//       if (
+//         toggleRef.current &&
+//         !toggleRef.current.contains(e.target) &&
+//         openId === id
+//       ) {
+//         close();
+//       }
+//     }
+
+//     document.body.addEventListener("click", handleClickOutside);
+
+//     return () => {
+//       document.body.removeEventListener("click", handleClickOutside);
+//     };
+//   }, [close, id, openId]);
+
+//   function handleClick(e) {
+//     const el = e.target.closest("button");
+//     const rect = el.getBoundingClientRect();
+//     setPosition({
+//       x: window.innerWidth - rect.width - rect.x,
+//       y: rect.y + rect.height + 8,
+//     });
+
+//     openId === "" || openId !== id ? open(id) : close();
+//   }
+
+//   return (
+//     <StyledToggle ref={toggleRef} onClick={handleClick}>
+//       <HiMenu />
+//     </StyledToggle>
+//   );
+// }

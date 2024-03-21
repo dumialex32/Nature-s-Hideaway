@@ -1,9 +1,11 @@
 import Spinner from "../../ui/Spinner";
 
-import useGetCabins from "./useGetCabinsHook";
 import Table from "../../ui/Table";
 import CabinRow from "./CabinRow";
 import Menus from "../../ui/Menus";
+import Empty from "../../ui/Empty";
+
+import { useCabinOperations } from "./useCabinOperationsHook";
 
 // const Table = styled.div`
 //   border: 1px solid var(--color-grey-300);
@@ -30,9 +32,10 @@ import Menus from "../../ui/Menus";
 // `;
 
 function CabinTable() {
-  const { cabins, isLoading, error } = useGetCabins();
+  const { sortedCabins, isLoading, error, cabins } = useCabinOperations();
 
   if (isLoading) return <Spinner />;
+  if (!sortedCabins.length) return <Empty resource="cabins" />;
 
   return (
     <Menus>
@@ -47,7 +50,7 @@ function CabinTable() {
         </Table.TableHeader>
 
         <Table.TableBody
-          data={cabins}
+          data={sortedCabins}
           render={(cabin) => (
             <CabinRow cabin={cabin} key={cabin.id} curCabins={cabins} />
           )}

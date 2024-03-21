@@ -1,4 +1,4 @@
-import { createContext, useContext, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { HiMenu } from "react-icons/hi";
 import styled from "styled-components";
@@ -6,7 +6,7 @@ import styled from "styled-components";
 const Menu = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
 `;
 
 const StyledToggle = styled.button`
@@ -22,7 +22,6 @@ const StyledToggle = styled.button`
   }
 
   & svg {
-    position: relative;
     width: 2.4rem;
     height: 2.4rem;
     color: var(--color-grey-700);
@@ -33,7 +32,7 @@ const StyledList = styled.ul`
   position: fixed;
 
   background-color: var(--color-grey-50);
-  /* background-color: var(--color-grey-0); */
+  border: solid 1px var(--color-grey-300);
   box-shadow: var(--shadow-md);
   border-radius: var(--border-radius-md);
 
@@ -41,7 +40,7 @@ const StyledList = styled.ul`
   top: ${(props) => props.position.y}px;
 `;
 
-const StyledButton = styled.button`
+const StyledButton = styled.div`
   width: 100%;
   text-align: left;
   background: none;
@@ -54,29 +53,31 @@ const StyledButton = styled.button`
   align-items: center;
   gap: 1.6rem;
 
-  &:hover {
-    background-color: var(--color-grey-50);
-  }
-
   & svg {
     width: 1.6rem;
     height: 1.6rem;
-    color: var(--color-grey-400);
+    color: var(--color-grey-500);
     transition: all 0.3s;
+  }
+
+  & svg:hover {
+    color: var(--color-);
   }
 `;
 
 const MenusContext = createContext();
 
 function Menus({ children }) {
-  console.log(children);
   const [openId, setOpenId] = useState("");
+  const [position, setPosition] = useState({});
 
   const open = setOpenId;
   const close = () => setOpenId("");
 
   return (
-    <MenusContext.Provider value={{ openId, open, close }}>
+    <MenusContext.Provider
+      value={{ openId, open, close, position, setPosition }}
+    >
       {children}
     </MenusContext.Provider>
   );
@@ -87,33 +88,57 @@ function Menus({ children }) {
 // }
 
 function Toggle({ id }) {
-  const { open, close, openId } = useMenus();
+  const { open, close, openId, setPosition } = useMenus();
+  const toggleRef = useRef();
+
+  useEffect(() => {
+    function handleOutsideClick(e) {
+      if (
+        toggleRef.current &&
+        !toggleRef.current.contains(e.target) &&
+        openId === id
+      )
+        close();
+    }
+
+    document.body.addEventListener("click", handleOutsideClick);
+    return () => document.body.removeEventListener("click", handleOutsideClick);
+  }, [close, id, openId]);
 
   function handleClick(e) {
-    const clicked = e.target.closest("button");
-    if (!clicked) return;
-    openId === "" || openId !== id ? open(id) : close();
+    const el = e.target.closest("button");
+
+    if (!el) return;
+
+    const rect = el.getBoundingClientRect();
+    setPosition({
+      x: window.innerWidth - rect.width - rect.x,
+      y: rect.y + rect.height + 8,
+    });
+
+    openId === id ? close() : open(id);
   }
 
   return (
-    <StyledToggle onClick={handleClick}>
+    <StyledToggle ref={toggleRef} onClick={handleClick}>
       <HiMenu />
     </StyledToggle>
   );
 }
 
 function List({ children, id }) {
-  const { openId } = useMenus();
+  const { openId, position } = useMenus();
 
   if (openId !== id) return null;
 
   return createPortal(
-    <StyledList position={{ x: 20, y: 20 }}>{children}</StyledList>,
+    <StyledList position={position}>{children}</StyledList>,
     document.body
   );
 }
 
 function Button({ children }) {
+  console.log(children);
   return (
     <li>
       <StyledButton>{children}</StyledButton>
