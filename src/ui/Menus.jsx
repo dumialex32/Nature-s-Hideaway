@@ -40,7 +40,7 @@ const StyledList = styled.ul`
   top: ${(props) => props.position.y}px;
 `;
 
-const StyledButton = styled.div`
+const StyledButton = styled.button`
   width: 100%;
   text-align: left;
   background: none;
@@ -137,11 +137,13 @@ function List({ children, id }) {
   );
 }
 
-function Button({ children }) {
-  console.log(children);
+function Button({ children, icon, onClick }) {
   return (
     <li>
-      <StyledButton>{children}</StyledButton>
+      <StyledButton onClick={onClick}>
+        {icon}
+        {children}
+      </StyledButton>
     </li>
   );
 }

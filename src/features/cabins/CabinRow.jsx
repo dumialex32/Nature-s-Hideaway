@@ -120,45 +120,50 @@ function CabinRow({ cabin, curCabins }) {
           <span>&mdash;</span>
         )}
         <div>
-          <Modal>
-            <Modal.Open opens="delete">
-              <Button variation="secondary" size="small">
-                <HiOutlineTrash size={"18"} />
-              </Button>
-            </Modal.Open>
-            <Modal.Window name="delete">
-              <Confirm
-                resourceName="cabin"
-                onConfirm={() => mutateDeleteCabin({ cabin, curCabins })}
-                action="delete"
-                onCloseModal
-              />
-            </Modal.Window>
-          </Modal>
+          <Menus.Menu>
+            {/* <Menus.Toggle id={cabinId} />
+            <Menus.List id={cabinId}> */}
+            <Modal>
+              <Modal.Open opens="delete">
+                <Menus.Button icon={<HiOutlineTrash size={"18"} />}>
+                  Delete
+                </Menus.Button>
+              </Modal.Open>
+              <Modal.Window name="delete">
+                <Confirm
+                  resourceName="cabin"
+                  onConfirm={() => mutateDeleteCabin({ cabin, curCabins })}
+                  action="delete"
+                  onCloseModal
+                />
+              </Modal.Window>
+            </Modal>
 
-          <Button
-            variation="secondary"
-            size="small"
-            onClick={handleIsOpenEditForm}
-          >
-            <HiOutlinePencilAlt size={"18"} />
-          </Button>
-          <Modal>
-            <Modal.Open opens="duplicate">
-              <Button variation="secondary" size="small">
-                <HiOutlineDuplicate size={"18"} />
-              </Button>
-            </Modal.Open>
-            <Modal.Window name="duplicate">
-              <Confirm
-                onConfirm={duplicateCabin}
-                resourceName="cabin"
-                disabled={mutateDuplicateStatus === "pending"}
-                action="duplicate"
-                itemName={name}
-              />
-            </Modal.Window>
-          </Modal>
+            <Menus.Button
+              onClick={handleIsOpenEditForm}
+              icon={<HiOutlinePencilAlt size={"18"} />}
+            >
+              Edit
+            </Menus.Button>
+
+            <Modal>
+              <Modal.Open opens="duplicate">
+                <Menus.Button icon={<HiOutlineDuplicate size={"18"} />}>
+                  Duplicate
+                </Menus.Button>
+              </Modal.Open>
+              <Modal.Window name="duplicate">
+                <Confirm
+                  onConfirm={duplicateCabin}
+                  resourceName="cabin"
+                  disabled={mutateDuplicateStatus === "pending"}
+                  action="duplicate"
+                  itemName={name}
+                />
+              </Modal.Window>
+            </Modal>
+            {/* </Menus.List> */}
+          </Menus.Menu>
         </div>
       </Table.TableRow>
 
