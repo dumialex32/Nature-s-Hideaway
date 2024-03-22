@@ -146,21 +146,14 @@ function CreateCabinForm({ onCloseEditForm, onCloseModal, cabinToEdit = {} }) {
         >
           Cancel
         </Button>
-        <Modal>
-          <Modal.Open opens="edit">
-            <Button
-              size="small"
-              variation="primary"
-              disabled={mutateCreateEditStatus === "pending"}
-            >
-              {(isEditSession && "Edit") || "Create cabin"}
-            </Button>
 
-            <Modal.Window>
-              <Confirm />
-            </Modal.Window>
-          </Modal.Open>
-        </Modal>
+        <Button
+          size="small"
+          variation="primary"
+          disabled={mutateCreateEditStatus === "pending"}
+        >
+          {(isEditSession && "Edit") || "Create cabin"}
+        </Button>
       </FormRow>
     </Form>
   );
