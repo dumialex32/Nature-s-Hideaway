@@ -29,7 +29,7 @@ export function useCabinOperations() {
 
       // Sort cabins
 
-      const sortSearchParam = searchParams.get("sort") || "name";
+      const sortSearchParam = searchParams.get("sort") || "name-asc";
 
       const direction = sortSearchParam?.split("-").at(1);
       const sortValue = sortSearchParam?.split("-").at(0);
