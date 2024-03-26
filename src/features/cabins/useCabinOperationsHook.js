@@ -20,11 +20,11 @@ export function useCabinOperations() {
       }
 
       if (filterValue === "with-discount") {
-        filteredCabins = cabins.filter((cabin) => cabin.discount === 0);
+        filteredCabins = cabins.filter((cabin) => cabin.discount > 0);
       }
 
       if (filterValue === "without-discount") {
-        filteredCabins = cabins.filter((cabin) => cabin.discount > 0);
+        filteredCabins = cabins.filter((cabin) => cabin.discount === 0);
       }
 
       // Sort cabins
