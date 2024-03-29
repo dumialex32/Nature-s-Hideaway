@@ -1,12 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import Button from "../ui/Button";
-import toast from "react-hot-toast";
 import { deleteAllData } from "../services/apiCabins";
+import toast from "react-hot-toast";
 
-function DeleteAll() {
+function useDeleteAllDataHook() {
   const queryClient = useQueryClient();
 
-  const { mutate: deleteAll, status: deleteAllStatus } = useMutation({
+  const { mutate: deleteAll, isLoading: isLoadingDeleteAll } = useMutation({
     mutationFn: deleteAllData,
     onSuccess: () => {
       queryClient.invalidateQueries(["cabins", "guests", "bookings"]);
@@ -15,11 +14,7 @@ function DeleteAll() {
     onError: (error) => toast.error(error.message),
   });
 
-  return (
-    <Button size="small" variation="danger" onClick={deleteAll}>
-      Delete All Data
-    </Button>
-  );
+  return { deleteAll, isLoadingDeleteAll };
 }
 
-export default DeleteAll;
+export default useDeleteAllDataHook;

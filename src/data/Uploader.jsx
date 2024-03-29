@@ -11,7 +11,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import Spinner from "../ui/Spinner";
 import { deleteAllData } from "../services/apiCabins";
 import { deleteBookings } from "../services/apiBookings";
-import DeleteAll from "./DeleteAll";
+import useDeleteAllDataHook from "./useDeleteAllDataHook";
 
 // const originalSettings = {
 //   minBookingLength: 3,
@@ -91,6 +91,8 @@ async function createBookings() {
 function Uploader() {
   const queryClient = useQueryClient();
 
+  const { deleteAll } = useDeleteAllDataHook();
+
   const [isLoading, setIsLoading] = useState(false);
 
   async function uploadAll() {
@@ -139,7 +141,9 @@ function Uploader() {
         Upload bookings ONLY
       </Button>
 
-      <DeleteAll />
+      <Button variation="danger" onClick={deleteAll} disabled={isLoading}>
+        Delete All Data
+      </Button>
     </div>
   );
 }

@@ -6,6 +6,7 @@ import Menus from "../../ui/Menus";
 import Empty from "../../ui/Empty";
 
 import { useCabinOperations } from "./useCabinOperationsHook";
+import useDeleteAllDataHook from "../../data/useDeleteAllDataHook";
 
 // const Table = styled.div`
 //   border: 1px solid var(--color-grey-300);
@@ -34,7 +35,10 @@ import { useCabinOperations } from "./useCabinOperationsHook";
 function CabinTable() {
   const { sortedCabins, isLoading, error, cabins } = useCabinOperations();
 
-  if (isLoading) return <Spinner />;
+  const { isLoadingDeleteAll } = useDeleteAllDataHook();
+  console.log(isLoadingDeleteAll);
+
+  if (isLoading || isLoadingDeleteAll) return <Spinner />;
   if (!sortedCabins.length) return <Empty resource="cabins" />;
 
   return (
