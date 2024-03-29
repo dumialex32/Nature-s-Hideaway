@@ -1,7 +1,10 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getCabins } from "../../services/apiCabins";
+import toast from "react-hot-toast";
 
 function useGetCabins() {
+  const queryClient = useQueryClient();
+
   const {
     data: cabins,
     error,

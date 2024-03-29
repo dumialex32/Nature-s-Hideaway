@@ -9,6 +9,9 @@ import { cabins } from "./data-cabins";
 import { guests } from "./data-guests";
 import { useQueryClient } from "@tanstack/react-query";
 import Spinner from "../ui/Spinner";
+import { deleteAllData } from "../services/apiCabins";
+import { deleteBookings } from "../services/apiBookings";
+import DeleteAll from "./DeleteAll";
 
 // const originalSettings = {
 //   minBookingLength: 3,
@@ -16,21 +19,6 @@ import Spinner from "../ui/Spinner";
 //   maxGuestsPerBooking: 10,
 //   breakfastPrice: 15,
 // };
-
-async function deleteGuests() {
-  const { error } = await supabase.from("guests").delete().gt("id", 0);
-  if (error) console.log(error.message);
-}
-
-async function deleteCabins() {
-  const { error } = await supabase.from("cabins").delete().gt("id", 0);
-  if (error) console.log(error.message);
-}
-
-async function deleteBookings() {
-  const { error } = await supabase.from("bookings").delete().gt("id", 0);
-  if (error) console.log(error.message);
-}
 
 async function createGuests() {
   const { error } = await supabase.from("guests").insert(guests);
@@ -109,10 +97,7 @@ function Uploader() {
     setIsLoading(true);
 
     // Bookings need to be deleted FIRST
-    await deleteBookings();
-    await deleteGuests();
-    await deleteCabins();
-
+    await deleteAllData();
     // Bookings need to be created LAST
     await createGuests();
     await createCabins();
@@ -130,7 +115,7 @@ function Uploader() {
     setIsLoading(false);
   }
 
-  if (isLoading) <Spinner />;
+  if (isLoading) return <Spinner />;
   return (
     <div
       style={{
@@ -153,6 +138,8 @@ function Uploader() {
       <Button onClick={uploadBookings} disabled={isLoading}>
         Upload bookings ONLY
       </Button>
+
+      <DeleteAll />
     </div>
   );
 }

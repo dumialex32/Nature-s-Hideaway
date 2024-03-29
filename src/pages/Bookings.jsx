@@ -1,5 +1,5 @@
 import BookingsTable from "../bookings/BookingsTable";
-import DeleteCabins from "../features/cabins/DeleteCabins";
+
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
 import TableOperations from "../ui/TableOperations";

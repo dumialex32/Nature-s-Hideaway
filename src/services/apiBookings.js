@@ -95,6 +95,31 @@ export async function deleteBooking(id) {
   return data;
 }
 
+export async function deleteGuests() {
+  try {
+    const { error } = await supabase.from("guests").delete().gt("id", 0);
+
+    if (error) {
+      throw new Error("Guests could not have been deleted");
+    }
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
+
+export async function deleteBookings() {
+  try {
+    const { error } = await supabase.from("bookings").delete().gt("id", 0);
+    if (error) {
+      throw new Error("Bookings could not have been deleted");
+    }
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
+
 // export async function getBookingsAfterDate(date) {
 //   const { data, error } = await supabase
 //     .from("bookings")
