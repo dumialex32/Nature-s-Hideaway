@@ -1,3 +1,4 @@
+import { guests } from "../data/data-guests";
 import supabase, { supabaseUrl } from "./supabase";
 
 import { isString } from "lodash";
@@ -40,6 +41,55 @@ export async function deleteCabin({ cabin, curCabins }) {
 
     if (deleteBucketError)
       throw new Error("There was a problem deleting the image from bucket");
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
+
+export async function deleteBookings() {
+  try {
+    const { error } = await supabase.from("bookings").delete().gt("id", 0);
+    if (error) {
+      throw new Error("Bookings could not have been deleted");
+    }
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
+
+async function deleteGuests() {
+  try {
+    const { error } = await supabase.from("guests").delete().gt("id", 0);
+
+    if (error) {
+      throw new Error("Guests could not have been deleted");
+    }
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
+
+async function deleteCabins() {
+  try {
+    const { error } = await supabase.from("cabins").delete().gt("id", 0);
+
+    if (error) {
+      throw new Error("Cabins could not have been deleted");
+    }
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
+
+export async function deleteAllCabins() {
+  try {
+    await deleteBookings();
+    await deleteGuests();
+    await deleteCabins();
   } catch (err) {
     console.error(err);
     throw err;

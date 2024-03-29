@@ -5,6 +5,7 @@ import AddCabin from "../features/cabins/AddCabin";
 import Filter from "../ui/Filter";
 import { CabinOperations } from "../features/cabins/CabinOperations";
 import SortBy from "../ui/SortBy";
+import DeleteCabins from "../features/cabins/DeleteCabins";
 
 function Cabins() {
   return (
@@ -47,7 +48,10 @@ function Cabins() {
       <Row>
         <CabinTable />
 
-        <AddCabin />
+        <Row type="horizontal">
+          <AddCabin />
+          <DeleteCabins />
+        </Row>
       </Row>
     </>
   );

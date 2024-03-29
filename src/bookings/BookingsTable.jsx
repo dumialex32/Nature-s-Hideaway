@@ -6,7 +6,7 @@ import { useBookings } from "./useBookingsHook";
 
 function BookingsTable() {
   const { bookings, isLoading, error } = useBookings();
-
+  console.log(bookings);
   if (isLoading) return <Spinner />;
   if (!bookings.length) return <Empty resource={"bookings"} />;
 
