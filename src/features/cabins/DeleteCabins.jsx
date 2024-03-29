@@ -10,9 +10,7 @@ function DeleteCabins() {
     useMutation({
       mutationFn: deleteAllCabins,
       onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ["cabins"],
-        });
+        queryClient.invalidateQueries(["cabins", "guests", "bookings"]);
         toast.success("All cabins were deleted");
       },
       onError: (error) => toast.error(error.message),
