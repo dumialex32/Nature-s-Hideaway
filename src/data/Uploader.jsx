@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { isFuture, isPast, isToday } from "date-fns";
 import supabase from "../services/supabase";
 import Button from "../ui/Button";
@@ -7,6 +7,8 @@ import { subtractDates } from "../utils/helpers";
 import { bookings } from "./data-bookings";
 import { cabins } from "./data-cabins";
 import { guests } from "./data-guests";
+import { useQueryClient } from "@tanstack/react-query";
+import Spinner from "../ui/Spinner";
 
 // const originalSettings = {
 //   minBookingLength: 3,
@@ -94,17 +96,18 @@ async function createBookings() {
     };
   });
 
-  console.log(finalBookings);
-
   const { error } = await supabase.from("bookings").insert(finalBookings);
   if (error) console.log(error.message);
 }
 
 function Uploader() {
+  const queryClient = useQueryClient();
+
   const [isLoading, setIsLoading] = useState(false);
 
   async function uploadAll() {
     setIsLoading(true);
+
     // Bookings need to be deleted FIRST
     await deleteBookings();
     await deleteGuests();
@@ -114,6 +117,8 @@ function Uploader() {
     await createGuests();
     await createCabins();
     await createBookings();
+
+    queryClient.invalidateQueries(["cabins"]);
 
     setIsLoading(false);
   }
@@ -125,6 +130,7 @@ function Uploader() {
     setIsLoading(false);
   }
 
+  if (isLoading) <Spinner />;
   return (
     <div
       style={{
