@@ -112,7 +112,7 @@ export async function deleteBookings() {
   try {
     const { error } = await supabase.from("bookings").delete().gt("id", 0);
     if (error) {
-      throw new Error("Bookings could not have been deleted");
+      throw new Error("Bookings could not been deleted");
     }
   } catch (err) {
     console.error(err);

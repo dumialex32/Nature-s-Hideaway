@@ -52,7 +52,7 @@ async function deleteCabins() {
     const { error } = await supabase.from("cabins").delete().gt("id", 0);
 
     if (error) {
-      throw new Error("Cabins could not have been deleted");
+      throw new Error("Cabins could not been deleted");
     }
   } catch (err) {
     console.error(err);

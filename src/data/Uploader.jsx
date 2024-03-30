@@ -1,17 +1,21 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { isFuture, isPast, isToday } from "date-fns";
 import supabase from "../services/supabase";
-import Button from "../ui/Button";
-import { subtractDates } from "../utils/helpers";
 
+import { subtractDates } from "../utils/helpers";
 import { bookings } from "./data-bookings";
 import { cabins } from "./data-cabins";
 import { guests } from "./data-guests";
 import { useQueryClient } from "@tanstack/react-query";
-import Spinner from "../ui/Spinner";
+
 import { deleteAllData } from "../services/apiCabins";
 import { deleteBookings } from "../services/apiBookings";
 import useDeleteAllDataHook from "./useDeleteAllDataHook";
+
+import Button from "../ui/Button";
+import Spinner from "../ui/Spinner";
+import Modal from "../ui/Modal";
+import Confirm from "../ui/Confirm";
 
 // const originalSettings = {
 //   minBookingLength: 3,
@@ -90,10 +94,15 @@ async function createBookings() {
 
 function Uploader() {
   const queryClient = useQueryClient();
-
-  const { deleteAll } = useDeleteAllDataHook();
+  const { mutateDeleteAll, mutateDeleteAllStatus } = useDeleteAllDataHook();
 
   const [isLoading, setIsLoading] = useState(false);
+
+  function handleDeleteAllData(onCloseModal) {
+    mutateDeleteAll(null, {
+      onSuccess: () => onCloseModal(),
+    });
+  }
 
   async function uploadAll() {
     setIsLoading(true);
@@ -141,9 +150,21 @@ function Uploader() {
         Upload bookings ONLY
       </Button>
 
-      <Button variation="danger" onClick={deleteAll} disabled={isLoading}>
-        Delete All Data
-      </Button>
+      <Modal>
+        <Modal.Open opens="deleteAllData">
+          <Button variation="danger">Delete All Data</Button>
+        </Modal.Open>
+
+        <Modal.Window name="deleteAllData">
+          <Confirm
+            resourceName="data"
+            onConfirm={handleDeleteAllData}
+            disabled={isLoading}
+            onCloseModal
+            action="delete"
+          />
+        </Modal.Window>
+      </Modal>
     </div>
   );
 }

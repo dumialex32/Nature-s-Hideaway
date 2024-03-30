@@ -35,10 +35,7 @@ import useDeleteAllDataHook from "../../data/useDeleteAllDataHook";
 function CabinTable() {
   const { sortedCabins, isLoading, error, cabins } = useCabinOperations();
 
-  const { isLoadingDeleteAll } = useDeleteAllDataHook();
-  console.log(isLoadingDeleteAll);
-
-  if (isLoading || isLoadingDeleteAll) return <Spinner />;
+  if (isLoading) return <Spinner />;
   if (!sortedCabins.length) return <Empty resource="cabins" />;
 
   return (

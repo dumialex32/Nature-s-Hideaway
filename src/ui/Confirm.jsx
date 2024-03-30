@@ -30,7 +30,6 @@ function Confirm({
   action,
   itemName,
 }) {
-  console.log(action);
   return (
     <StyledConfirm>
       <Heading as="h3">
@@ -57,7 +56,7 @@ function Confirm({
         <Button
           variation="danger"
           disabled={disabled}
-          onClick={() => onConfirm()}
+          onClick={() => onConfirm(onCloseModal)}
         >
           {capitalizedItem(action)}
         </Button>
