@@ -141,7 +141,8 @@ function Uploader() {
       }}
     >
       <h3>TEST DATA</h3>
-
+      <p>(cabins, bookings and guests)</p>
+      <span>&darr;</span>
       <Button onClick={uploadAll} disabled={isLoading}>
         Upload ALL
       </Button>
