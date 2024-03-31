@@ -29,7 +29,9 @@ function Confirm({
   onCloseModal,
   action,
   itemName,
+  renderError,
 }) {
+  if (renderError) return render;
   return (
     <StyledConfirm>
       <Heading as="h3">

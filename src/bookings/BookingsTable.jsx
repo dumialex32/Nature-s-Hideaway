@@ -2,10 +2,10 @@ import Table from "../ui/Table";
 import Spinner from "../ui/Spinner";
 import BookingRow from "../bookings/BookingRow";
 import Empty from "../ui/Empty";
-import { useBookings } from "./useBookingsHook";
+import { useGetBookings } from "./useBookingsHook";
 
 function BookingsTable() {
-  const { bookings, isLoading, error } = useBookings();
+  const { bookings, isLoading, error } = useGetBookings();
   console.log(bookings);
   if (isLoading) return <Spinner />;
   if (!bookings.length) return <Empty resource={"bookings"} />;

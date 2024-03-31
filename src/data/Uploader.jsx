@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { isFuture, isPast, isToday } from "date-fns";
 import supabase from "../services/supabase";
+import { isEmpty } from "lodash";
 
 import { subtractDates } from "../utils/helpers";
 import { bookings } from "./data-bookings";
@@ -10,12 +11,16 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import { deleteAllData } from "../services/apiCabins";
 import { deleteBookings } from "../services/apiBookings";
+
 import useDeleteAllDataHook from "./useDeleteAllDataHook";
 
 import Button from "../ui/Button";
 import Spinner from "../ui/Spinner";
 import Modal from "../ui/Modal";
 import Confirm from "../ui/Confirm";
+import useGetCabins from "../features/cabins/useGetCabinsHook";
+import Error from "../ui/Error";
+import { useGetBookings } from "../bookings/useBookingsHook";
 
 // const originalSettings = {
 //   minBookingLength: 3,
@@ -95,14 +100,10 @@ async function createBookings() {
 function Uploader() {
   const queryClient = useQueryClient();
   const { mutateDeleteAll, mutateDeleteAllStatus } = useDeleteAllDataHook();
+  const { cabins } = useGetCabins();
+  const { bookings } = useGetBookings();
 
   const [isLoading, setIsLoading] = useState(false);
-
-  function handleDeleteAllData(onCloseModal) {
-    mutateDeleteAll(null, {
-      onSuccess: () => onCloseModal(),
-    });
-  }
 
   async function uploadAll() {
     setIsLoading(true);
@@ -126,7 +127,13 @@ function Uploader() {
     setIsLoading(false);
   }
 
-  if (isLoading) return <Spinner />;
+  function handleDeleteAllData(onCloseModal) {
+    mutateDeleteAll(null, {
+      onSuccess: () => onCloseModal(),
+    });
+  }
+
+  if (isLoading || mutateDeleteAllStatus === "pending") return <Spinner />;
   return (
     <div
       style={{
@@ -163,6 +170,11 @@ function Uploader() {
             disabled={isLoading}
             onCloseModal
             action="delete"
+            renderError={
+              isEmpty(cabins || bookings) ? (
+                <Error>There is no data do delete</Error>
+              ) : null
+            }
           />
         </Modal.Window>
       </Modal>
