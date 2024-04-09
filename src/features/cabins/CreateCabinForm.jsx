@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 
 import { isString } from "lodash";
 
-import useCreateCabin from "./useCreateEditCabinHook";
+import useCreateCabin from "./useCreateEditCabin";
 
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
@@ -11,8 +11,6 @@ import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import FormRow from "../../ui/FormRow";
 import Spinner from "../../ui/Spinner";
-import Modal from "../../ui/Modal";
-import Confirm from "../../ui/Confirm";
 
 function CreateCabinForm({ onCloseEditForm, onCloseModal, cabinToEdit = {} }) {
   // Edit the current cabin
@@ -56,15 +54,12 @@ function CreateCabinForm({ onCloseEditForm, onCloseModal, cabinToEdit = {} }) {
     );
   }
 
-  function onError(errors) {}
+  // function onError(errors) {}
 
   if (mutateCreateEditStatus === "pending") return <Spinner />;
 
   return (
-    <Form
-      type={onCloseModal && "modal"}
-      onSubmit={handleSubmit(onSubmit, onError)}
-    >
+    <Form type={onCloseModal && "modal"} onSubmit={handleSubmit(onSubmit)}>
       <FormRow label="Cabin Name" error={errors?.name?.message}>
         <Input
           type="text"

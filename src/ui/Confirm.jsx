@@ -31,7 +31,7 @@ function Confirm({
   itemName,
   renderError,
 }) {
-  if (renderError) return render;
+  if (renderError) return renderError;
   return (
     <StyledConfirm>
       <Heading as="h3">

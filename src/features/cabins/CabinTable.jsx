@@ -5,8 +5,7 @@ import CabinRow from "./CabinRow";
 import Menus from "../../ui/Menus";
 import Empty from "../../ui/Empty";
 
-import { useCabinOperations } from "./useCabinOperationsHook";
-import useDeleteAllDataHook from "../../data/useDeleteAllDataHook";
+import useCabinOperations from "./useCabinOperations";
 
 // const Table = styled.div`
 //   border: 1px solid var(--color-grey-300);

@@ -2,7 +2,7 @@ import Table from "../ui/Table";
 import Spinner from "../ui/Spinner";
 import BookingRow from "../bookings/BookingRow";
 import Empty from "../ui/Empty";
-import { useGetBookings } from "./useBookingsHook";
+import { useGetBookings } from "./useGetBookings";
 
 function BookingsTable() {
   const { bookings, isLoading, error } = useGetBookings();

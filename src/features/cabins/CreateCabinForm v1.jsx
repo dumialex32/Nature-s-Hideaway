@@ -3,8 +3,6 @@ import { useForm } from "react-hook-form";
 import { createCabin } from "../../services/apiCabins";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { useState } from "react";
-
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 import Button from "../../ui/Button";

@@ -11,6 +11,8 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import { deleteAllData } from "../services/apiCabins";
 import { deleteBookings } from "../services/apiBookings";
+import { useGetBookings } from "../bookings/useGetBookings";
+import useGetCabins from "../features/cabins/useGetCabins";
 
 import useDeleteAllDataHook from "./useDeleteAllDataHook";
 
@@ -18,9 +20,10 @@ import Button from "../ui/Button";
 import Spinner from "../ui/Spinner";
 import Modal from "../ui/Modal";
 import Confirm from "../ui/Confirm";
-import useGetCabins from "../features/cabins/useGetCabinsHook";
 import Error from "../ui/Error";
-import { useGetBookings } from "../bookings/useBookingsHook";
+import { HiInformationCircle } from "react-icons/hi";
+import styled from "styled-components";
+import ToolTip from "../ui/ToolTip";
 
 // const originalSettings = {
 //   minBookingLength: 3,
@@ -28,6 +31,31 @@ import { useGetBookings } from "../bookings/useBookingsHook";
 //   maxGuestsPerBooking: 10,
 //   breakfastPrice: 15,
 // };
+
+const TestDataContainer = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: auto;
+  background-color: #e0e7ff;
+  padding: 8px;
+  border-radius: var(--border-radius-lg);
+  text-align: center;
+`;
+
+const ToolTipContainer = styled.div`
+  position: absolute;
+  right: 0;
+  top: 0;
+`;
+
+const TestDataTitle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+`;
 
 async function createGuests() {
   const { error } = await supabase.from("guests").insert(guests);
@@ -135,29 +163,26 @@ function Uploader() {
 
   if (isLoading || mutateDeleteAllStatus === "pending") return <Spinner />;
   return (
-    <div
-      style={{
-        marginTop: "auto",
-        backgroundColor: "#e0e7ff",
-        padding: "8px",
-        borderRadius: "5px",
-        textAlign: "center",
-        display: "flex",
-        flexDirection: "column",
-        gap: "8px",
-      }}
-    >
-      <h3>TEST DATA</h3>
-      <p>(cabins, bookings and guests)</p>
+    <TestDataContainer>
+      <TestDataTitle>
+        <h3>TEST DATA</h3>
+        <ToolTipContainer>
+          <ToolTip>
+            <ToolTip.ToggleIcon>
+              <HiInformationCircle />
+            </ToolTip.ToggleIcon>
+
+            <ToolTip.Window text="Here you can upload" positionY={2} />
+          </ToolTip>
+        </ToolTipContainer>
+      </TestDataTitle>
       <span>&darr;</span>
       <Button onClick={uploadAll} disabled={isLoading}>
         Upload ALL
       </Button>
-
       <Button onClick={uploadBookings} disabled={isLoading}>
         Upload bookings ONLY
       </Button>
-
       <Modal>
         <Modal.Open opens="deleteAllData">
           <Button variation="danger">Delete All Data</Button>
@@ -178,8 +203,29 @@ function Uploader() {
           />
         </Modal.Window>
       </Modal>
-    </div>
+    </TestDataContainer>
   );
 }
 
 export default Uploader;
+
+/* {
+    "x": 231,
+    "y": 722.921875,
+    "width": 16,
+    "height": 24,
+    "top": 722.921875,
+    "right": 247,
+    "bottom": 746.921875,
+    "left": 231
+} */
+
+/* transform: translate(calc(-50% + ${props.position.coordinates.width /
+  2}px)); */
+
+// top: calc(${(props) => props.position.coordinates.top});
+
+// left: ${(props) => props.position.coordinates.left};
+// top: ${(props) =>
+//   props.position.coordinates.top -
+//   props.position.coordinates.height * props.position.positionY}px;

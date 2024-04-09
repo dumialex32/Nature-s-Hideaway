@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 import { formatCurrency } from "../../utils/helpers";
 
-import Button from "../../ui/Button";
 import Spinner from "../../ui/Spinner";
 import Confirm from "../../ui/Confirm";
 import { HiOutlineTrash } from "react-icons/hi";
@@ -10,13 +9,12 @@ import { HiOutlineDuplicate } from "react-icons/hi";
 import { HiOutlinePencilAlt } from "react-icons/hi";
 
 import CreateCabinForm from "./CreateCabinForm";
-import useDeleteCabin from "./useDeleteCabinHook";
+import useDeleteCabin from "./useDeleteCabin";
 import { useRef, useState } from "react";
-import useCreateCabin from "./useCreateEditCabinHook";
+import useCreateCabin from "./useCreateEditCabin";
 import Modal from "../../ui/Modal";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
-import { deleteCabin } from "../../services/apiCabins";
 
 // const TableRow = styled.div`
 //   display: grid;

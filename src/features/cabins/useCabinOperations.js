@@ -1,8 +1,8 @@
 import { useSearchParams } from "react-router-dom";
-import useGetCabins from "./useGetCabinsHook";
+import useGetCabins from "./useGetCabins";
 import { useEffect, useState } from "react";
 
-export function useCabinOperations() {
+function useCabinOperations() {
   const { cabins, isLoading, error } = useGetCabins();
 
   const [searchParams] = useSearchParams();
@@ -48,3 +48,5 @@ export function useCabinOperations() {
 
   return { sortedCabins, isLoading, error, cabins };
 }
+
+export default useCabinOperations;
