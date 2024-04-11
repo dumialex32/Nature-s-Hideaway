@@ -30,6 +30,7 @@ const ToolTipWindowContainer = styled.div`
 
 const ToolTipWindowContent = styled.p`
   font-size: 1.1rem;
+  hyphens: none;
 `;
 
 const ToolTipContext = createContext();

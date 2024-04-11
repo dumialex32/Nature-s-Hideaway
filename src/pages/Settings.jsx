@@ -15,9 +15,6 @@ const Settings = () => {
   const { settings, settingsStatus, settingsError } = useGetSettings();
   const isPending = "pending" === settingsStatus;
 
-  console.log(settings);
-  console.log(settingsError);
-
   return (
     <FormContainer>
       <Row>

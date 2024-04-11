@@ -9,7 +9,9 @@ function Bookings() {
     <>
       <Row>
         <Heading as="h1">Bookings</Heading>
-        <TableOperations />
+        <TableOperations>
+          <div>fff</div>
+        </TableOperations>
       </Row>
 
       <BookingsTable />

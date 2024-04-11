@@ -6,8 +6,6 @@ const fromToday = (days, withTime) => {
   return date;
 };
 
-console.log(fromToday(-20, true));
-
 export const bookings = [
   // CABIN 001
   {

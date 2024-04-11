@@ -172,7 +172,10 @@ function Uploader() {
               <HiInformationCircle />
             </ToolTip.ToggleIcon>
 
-            <ToolTip.Window text="Here you can upload" positionY={2} />
+            <ToolTip.Window
+              text="Here you can upload bookings, guests and cabins in one click"
+              positionY={3}
+            />
           </ToolTip>
         </ToolTipContainer>
       </TestDataTitle>
@@ -208,24 +211,3 @@ function Uploader() {
 }
 
 export default Uploader;
-
-/* {
-    "x": 231,
-    "y": 722.921875,
-    "width": 16,
-    "height": 24,
-    "top": 722.921875,
-    "right": 247,
-    "bottom": 746.921875,
-    "left": 231
-} */
-
-/* transform: translate(calc(-50% + ${props.position.coordinates.width /
-  2}px)); */
-
-// top: calc(${(props) => props.position.coordinates.top});
-
-// left: ${(props) => props.position.coordinates.left};
-// top: ${(props) =>
-//   props.position.coordinates.top -
-//   props.position.coordinates.height * props.position.positionY}px;

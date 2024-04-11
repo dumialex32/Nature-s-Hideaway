@@ -102,7 +102,6 @@ function CabinRow({ cabin, curCabins }) {
   }
 
   const { mutateDeleteCabin, mutateDeleteStatus } = useDeleteCabin();
-  console.log(mutateDeleteStatus);
 
   if (mutateDeleteStatus === "pending" || mutateDuplicateStatus === "pending")
     return <Spinner />;

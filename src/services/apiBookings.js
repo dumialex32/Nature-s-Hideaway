@@ -6,7 +6,7 @@ export async function getBookings() {
     .from("bookings")
     .select(`*, guests(fullName,email), cabins(name)`);
   if (error) throw new Error("No bookings could be found");
-  console.log(data);
+
   return data;
 }
 
@@ -84,7 +84,6 @@ export async function updateBooking(id, obj) {
 }
 
 export async function deleteBooking(id) {
-  console.log(id);
   // REMEMBER RLS POLICIES
   const { data, error } = await supabase.from("bookings").delete().eq("id", id);
 
