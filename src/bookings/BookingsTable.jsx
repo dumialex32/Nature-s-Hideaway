@@ -3,6 +3,7 @@ import Spinner from "../ui/Spinner";
 import BookingRow from "../bookings/BookingRow";
 import Empty from "../ui/Empty";
 import { useGetBookings } from "./useGetBookings";
+import { useSearchParams } from "react-router-dom";
 
 function BookingsTable() {
   const { bookings, isLoading, error } = useGetBookings();
