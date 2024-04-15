@@ -1,9 +1,15 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
+<<<<<<< HEAD
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // React toaster comp
+=======
+>>>>>>> main
 import { Toaster } from "react-hot-toast";
 
 import Login from "./pages/Login";
@@ -20,6 +26,10 @@ import Users from "./pages/Users";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
+<<<<<<< HEAD
+=======
+      // staleTime: 60 * 1000,
+>>>>>>> main
       staleTime: 0,
     },
   },
@@ -28,6 +38,10 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
+<<<<<<< HEAD
+=======
+      <ReactQueryDevtools initialIsOpen={false} />
+>>>>>>> main
       <GlobalStyles />
       <BrowserRouter>
         <Routes>
@@ -47,18 +61,25 @@ function App() {
 
       <Toaster
         position="top-center"
+<<<<<<< HEAD
         glutter={8}
         containerStyle={{
           margin: "8px",
         }}
         toastOptions={{
           duration: 3000,
+=======
+        gutter={12}
+        containerStyle={{ margin: "8px" }}
+        toastOptions={{
+>>>>>>> main
           style: {
             backgroundColor: "var(--color-grey-0)",
             color: "var(--color-grey-700)",
           },
           success: {
             duration: 3000,
+<<<<<<< HEAD
             theme: {
               primary: "var(-color-brand-600)",
             },
@@ -69,6 +90,11 @@ function App() {
             theme: {
               primary: "var(--color-red-700)",
             },
+=======
+          },
+          error: {
+            duration: 5000,
+>>>>>>> main
           },
         }}
       />

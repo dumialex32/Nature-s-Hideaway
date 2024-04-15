@@ -1,6 +1,23 @@
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 
+export async function getBookings({ filter, sort }) {
+  let query = supabase
+    .from("bookings")
+    .select(`*, guests(fullName,email), cabins(name)`);
+
+  if (filter !== null)
+    query = query[filter.method || "eq"](filter.field, filter.filterValue);
+
+  if (sort) query.order(sort.sortBy, { ascending: sort.direction });
+
+  const { data, error } = await query;
+
+  if (error) throw new Error("No bookings could be found");
+
+  return data;
+}
+
 export async function getBooking(id) {
   const { data, error } = await supabase
     .from("bookings")
@@ -18,18 +35,7 @@ export async function getBooking(id) {
 
 // Returns all BOOKINGS that are were created after the given date. Useful to get bookings created in the last 30 days, for example.
 export async function getBookingsAfterDate(date) {
-  const { data, error } = await supabase
-    .from("bookings")
-    .select("created_at, totalPrice, extrasPrice")
-    .gte("created_at", date)
-    .lte("created_at", getToday({ end: true }));
-
-  if (error) {
-    console.error(error);
-    throw new Error("Bookings could not get loaded");
-  }
-
-  return data;
+  const { data, error } = await supabase.from("bookings").select("*");
 }
 
 // Returns all STAYS that are were created after the given date
@@ -95,3 +101,43 @@ export async function deleteBooking(id) {
   }
   return data;
 }
+
+export async function deleteGuests() {
+  try {
+    const { error } = await supabase.from("guests").delete().gt("id", 0);
+
+    if (error) {
+      throw new Error("Guests could not have been deleted");
+    }
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
+
+export async function deleteBookings() {
+  try {
+    const { error } = await supabase.from("bookings").delete().gt("id", 0);
+    if (error) {
+      throw new Error("Bookings could not been deleted");
+    }
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
+
+// export async function getBookingsAfterDate(date) {
+//   const { data, error } = await supabase
+//     .from("bookings")
+//     .select("created_at, totalPrice, extrasPrice")
+//     .gte("created_at", date)
+//     .lte("created_at", getToday({ end: true }));
+
+//   if (error) {
+//     console.error(error);
+//     throw new Error("Bookings could not get loaded");
+//   }
+
+//   return data;
+// }

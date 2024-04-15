@@ -1,9 +1,12 @@
+import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { HiMenu } from "react-icons/hi";
 import styled from "styled-components";
 
-const StyledMenu = styled.div`
+const Menu = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
 `;
 
 const StyledToggle = styled.button`
@@ -28,7 +31,8 @@ const StyledToggle = styled.button`
 const StyledList = styled.ul`
   position: fixed;
 
-  background-color: var(--color-grey-0);
+  background-color: var(--color-grey-50);
+  border: solid 1px var(--color-grey-300);
   box-shadow: var(--shadow-md);
   border-radius: var(--border-radius-md);
 
@@ -49,14 +53,112 @@ const StyledButton = styled.button`
   align-items: center;
   gap: 1.6rem;
 
-  &:hover {
-    background-color: var(--color-grey-50);
-  }
-
   & svg {
     width: 1.6rem;
     height: 1.6rem;
-    color: var(--color-grey-400);
+    color: var(--color-grey-500);
     transition: all 0.3s;
   }
+
+  & svg:hover {
+    color: var(--color-);
+  }
 `;
+
+const MenusContext = createContext();
+
+function Menus({ children }) {
+  const [openId, setOpenId] = useState("");
+  const [position, setPosition] = useState({});
+
+  const open = setOpenId;
+  const close = () => setOpenId("");
+
+  return (
+    <MenusContext.Provider
+      value={{ openId, open, close, position, setPosition }}
+    >
+      {children}
+    </MenusContext.Provider>
+  );
+}
+
+// function Menu({ children }) {
+//   return <StyledMenu>{children}</StyledMenu>;
+// }
+
+function Toggle({ id }) {
+  const { open, close, openId, setPosition } = useMenus();
+  const toggleRef = useRef();
+
+  useEffect(() => {
+    function handleOutsideClick(e) {
+      if (
+        toggleRef.current &&
+        !toggleRef.current.contains(e.target) &&
+        openId === id
+      )
+        close();
+    }
+
+    document.body.addEventListener("click", handleOutsideClick);
+    return () => document.body.removeEventListener("click", handleOutsideClick);
+  }, [close, id, openId]);
+
+  function handleClick(e) {
+    const el = e.target.closest("button");
+
+    if (!el) return;
+
+    const rect = el.getBoundingClientRect();
+    setPosition({
+      x: window.innerWidth - rect.width - rect.x,
+      y: rect.y + rect.height + 8,
+    });
+
+    openId === id ? close() : open(id);
+  }
+
+  return (
+    <StyledToggle ref={toggleRef} onClick={handleClick}>
+      <HiMenu />
+    </StyledToggle>
+  );
+}
+
+function List({ children, id }) {
+  const { openId, position } = useMenus();
+
+  if (openId !== id) return null;
+
+  return createPortal(
+    <StyledList position={position}>{children}</StyledList>,
+    document.body
+  );
+}
+
+function Button({ children, icon, onClick }) {
+  console.log(onClick);
+  return (
+    <li>
+      <StyledButton onClick={onClick}>
+        {icon}
+        {children}
+      </StyledButton>
+    </li>
+  );
+}
+
+Menus.Menu = Menu;
+Menus.Toggle = Toggle;
+Menus.List = List;
+Menus.Button = Button;
+
+const useMenus = () => {
+  const context = useContext(MenusContext);
+  if (context === undefined)
+    throw new Error("Menus context used outside of the Menus component");
+  return context;
+};
+
+export default Menus;

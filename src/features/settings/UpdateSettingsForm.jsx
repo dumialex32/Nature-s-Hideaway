@@ -1,23 +1,99 @@
-import Form from '../../ui/Form';
-import FormRow from '../../ui/FormRow';
-import Input from '../../ui/Input';
+import { useForm } from "react-hook-form";
+import Form from "../../ui/Form";
+import FormRow from "../../ui/FormRow";
+import Input from "../../ui/Input";
+import Button from "../../ui/Button";
+import styled from "styled-components";
+import { useUpdateSettings } from "./useUpdateSettingsHook";
+import Row from "../../ui/Row";
 
-function UpdateSettingsForm() {
+const StyledError = styled.div`
+  color: var(--color-red-700);
+  font-weight: 500;
+`;
+
+function UpdateSettingsForm({ curSettings, defaultSettings }) {
+  const { updateSettings, settingsStatus } = useUpdateSettings();
+
+  const defSettings = {
+    breakfastPrice: defaultSettings.breakfastPrice,
+    maxBookingLength: defaultSettings.maxBookingLength,
+    maxGuestsPerBooking: defaultSettings.maxGuestsPerBooking,
+    minBookingLength: defaultSettings.minBookingLength,
+  };
+
+  const {
+    minBookingLength,
+    breakfastPrice,
+    maxGuestsPerBooking,
+    maxBookingLength,
+  } = curSettings;
+
+  function handleSettingChange(e, field) {
+    const { value } = e.target;
+    if (!value) return;
+
+    const newSetting = { [field]: value };
+    updateSettings(newSetting);
+  }
+
+  function handleDefaultSettingsChange() {
+    updateSettings(defSettings);
+  }
+
   return (
-    <Form>
-      <FormRow label='Minimum nights/booking'>
-        <Input type='number' id='min-nights' />
-      </FormRow>
-      <FormRow label='Maximum nights/booking'>
-        <Input type='number' id='max-nights' />
-      </FormRow>
-      <FormRow label='Maximum guests/booking'>
-        <Input type='number' id='max-guests' />
-      </FormRow>
-      <FormRow label='Breakfast price'>
-        <Input type='number' id='breakfast-price' />
-      </FormRow>
-    </Form>
+    <>
+      <Form>
+        <FormRow label="Minimum nights/booking">
+          <Input
+            type="number"
+            id="minNights"
+            value={minBookingLength}
+            disabled={settingsStatus === "pending"}
+            onChange={(e) => handleSettingChange(e, "minBookingLength")}
+          />
+        </FormRow>
+
+        <FormRow label="Maximum nights/booking">
+          <Input
+            type="number"
+            id="maxNights"
+            value={maxBookingLength}
+            disabled={settingsStatus === "pending"}
+            onChange={(e) => handleSettingChange(e, "maxBookingLength")}
+          />
+        </FormRow>
+
+        <FormRow label="Maximum guests/booking">
+          <Input
+            type="number"
+            id="maxGuests"
+            value={maxGuestsPerBooking}
+            disabled={settingsStatus === "pending"}
+            onChange={(e) => handleSettingChange(e, "maxGuestsPerBooking")}
+          />
+        </FormRow>
+
+        <FormRow label="Breakfast price">
+          <Input
+            type="number"
+            id="breakfastPrice"
+            value={breakfastPrice}
+            disabled={settingsStatus === "pending"}
+            onChange={(e) => handleSettingChange(e, "breakfastPrice")}
+          />
+        </FormRow>
+      </Form>
+      <Row type="">
+        <Button
+          variation="primary"
+          size="medium"
+          onClick={handleDefaultSettingsChange}
+        >
+          Default settings
+        </Button>
+      </Row>
+    </>
   );
 }
 
