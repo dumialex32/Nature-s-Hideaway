@@ -32,10 +32,10 @@ import useCabinOperations from "./useCabinOperations";
 // `;
 
 function CabinTable() {
-  const { sortedCabins, isLoading, error, cabins } = useCabinOperations();
+  const { cabins, isLoading, error, curCabins } = useCabinOperations();
 
   if (isLoading) return <Spinner />;
-  if (!sortedCabins.length) return <Empty resource="cabins" />;
+  if (!cabins.length) return <Empty resource="cabins" />;
 
   return (
     <Menus>
@@ -50,9 +50,9 @@ function CabinTable() {
         </Table.TableHeader>
 
         <Table.TableBody
-          data={sortedCabins}
+          data={cabins}
           render={(cabin) => (
-            <CabinRow cabin={cabin} key={cabin.id} curCabins={cabins} />
+            <CabinRow cabin={cabin} key={cabin.id} curCabins={curCabins} />
           )}
         />
       </Table>

@@ -7,8 +7,6 @@ import {
   formatDistanceFromNow,
   subtractDates,
 } from "../utils/helpers";
-import { add } from "date-fns";
-import { bookings } from "../data/data-bookings";
 
 const Breakfast = styled.div`
   font-weight: 600;

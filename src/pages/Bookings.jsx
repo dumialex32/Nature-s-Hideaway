@@ -23,15 +23,21 @@ function Bookings() {
 
           <SortBy
             sortOptions={[
-              { sortValue: "name-desc", label: "Sorty by name [A-Z]" },
-              { sortValue: "name-asc", label: "Sorty by name [Z-A]" },
               {
-                sortValue: "capacity-asc",
-                label: "Sorty by capacity (Highest)",
+                sortValue: "startDate-asc",
+                label: "Sort by Dates (Lowest)",
               },
               {
-                sortValue: "capacity-desc",
-                label: "Sort by capacity (Lowest)",
+                sortValue: "startDate-desc",
+                label: "Sort by Dates (Highest)",
+              },
+              {
+                sortValue: "totalPrice-asc",
+                label: "Sort by Amount (Lowest)",
+              },
+              {
+                sortValue: "totalPrice-desc",
+                label: "Sort by Amount (Highest)",
               },
             ]}
           />

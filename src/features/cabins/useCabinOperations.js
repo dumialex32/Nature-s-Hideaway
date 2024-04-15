@@ -28,7 +28,6 @@ function useCabinOperations() {
       }
 
       // Sort cabins
-
       const sortSearchParam = searchParams.get("sort") || "name-asc";
 
       const direction = sortSearchParam?.split("-").at(1);
@@ -46,7 +45,7 @@ function useCabinOperations() {
     }
   }, [cabins, error, isLoading, searchParams]);
 
-  return { sortedCabins, isLoading, error, cabins };
+  return { cabins: sortedCabins, isLoading, error, curCabins: cabins };
 }
 
 export default useCabinOperations;

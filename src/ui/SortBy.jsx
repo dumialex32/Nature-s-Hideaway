@@ -19,7 +19,7 @@ function SortBy({ sortOptions }) {
 
   function handleChange(value) {
     searchParams.set("sort", value);
-    setSearchParams(searchParams);
+    setSearchParams(searchParams); // with `searchParams.set("sort", value);`, since SearchParams object is a reference type, setting it to itself doesn't trigger a re-render so the purpose of calling setSearchParams(searchParams) is to trigger a re-render
   }
 
   return (
