@@ -1,9 +1,7 @@
-import { sortBy } from "lodash";
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 
 export async function getBookings({ filter, sort }) {
-  console.log(sort);
   let query = supabase
     .from("bookings")
     .select(`*, guests(fullName,email), cabins(name)`);
@@ -14,7 +12,6 @@ export async function getBookings({ filter, sort }) {
   if (sort) query.order(sort.sortBy, { ascending: sort.direction });
 
   const { data, error } = await query;
-  console.log(data);
 
   if (error) throw new Error("No bookings could be found");
 

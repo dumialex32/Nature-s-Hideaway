@@ -24,20 +24,20 @@ function Bookings() {
           <SortBy
             sortOptions={[
               {
-                sortValue: "startDate-asc",
-                label: "Sort by Dates (Lowest)",
-              },
-              {
                 sortValue: "startDate-desc",
                 label: "Sort by Dates (Highest)",
               },
               {
-                sortValue: "totalPrice-asc",
-                label: "Sort by Amount (Lowest)",
+                sortValue: "startDate-asc",
+                label: "Sort by Dates (Lowest)",
               },
               {
                 sortValue: "totalPrice-desc",
                 label: "Sort by Amount (Highest)",
+              },
+              {
+                sortValue: "totalPrice-asc",
+                label: "Sort by Amount (Lowest)",
               },
             ]}
           />
