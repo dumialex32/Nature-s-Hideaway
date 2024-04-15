@@ -60,47 +60,6 @@ const Discount = styled.div`
   color: var(--color-green-700);
 `;
 
-<<<<<<< HEAD
-function CabinRow({ cabin }) {
-  const queryClient = useQueryClient();
-
-  const { mutate } = useMutation({
-    mutationFn: deleteCabins,
-    onSuccess: () => {
-      toast.success("Cabin has successfuly deleted");
-      queryClient.invalidateQueries({ queryKey: ["cabins"] });
-    },
-    onError: (err) => {
-      toast.error(err.message);
-    },
-  });
-
-  const {
-    id: cabinId,
-    image,
-    name,
-    regularPrice: price,
-    maxCapacity: capacity,
-    discount,
-  } = cabin;
-
-  return (
-    <TableRow>
-      <Img src={image} />
-      <Cabin>{name}</Cabin>
-      <div>Can have up to {capacity}</div>
-      <Discount>{discount}</Discount>
-      <Price>{price}</Price>
-
-      <Button
-        variation="secondary"
-        size="small"
-        onClick={() => mutate(cabinId)}
-      >
-        Delete
-      </Button>
-    </TableRow>
-=======
 function CabinRow({ cabin, curCabins }) {
   const {
     id: cabinId,
@@ -217,13 +176,10 @@ function CabinRow({ cabin, curCabins }) {
         />
       )}
     </>
->>>>>>> main
   );
 }
 
 export default CabinRow;
-<<<<<<< HEAD
-=======
 
 // function Toggle({ id }) {
 //   const { open, close, openId, setPosition } = useMenus();
@@ -264,4 +220,3 @@ export default CabinRow;
 //     </StyledToggle>
 //   );
 // }
->>>>>>> main

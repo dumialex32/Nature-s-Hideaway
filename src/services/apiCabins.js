@@ -1,24 +1,3 @@
-<<<<<<< HEAD
-import supabase from "./supabase.js";
-
-export async function getCabins() {
-  try {
-    let { data, error } = await supabase.from("cabins").select("*");
-
-    if (error) throw new Error("No cabins has been found");
-
-    return data;
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-export async function deleteCabins(cabinId) {
-  try {
-    const { error } = await supabase.from("cabins").delete().eq("id", cabinId);
-
-    if (error) throw new Error("Cabin could not be deleted");
-=======
 import { deleteBookings, deleteGuests } from "./apiBookings";
 import supabase, { supabaseUrl } from "./supabase";
 
@@ -62,16 +41,13 @@ export async function deleteCabin({ cabin, curCabins }) {
 
     if (deleteBucketError)
       throw new Error("There was a problem deleting the image from bucket");
->>>>>>> main
   } catch (err) {
     console.error(err);
     throw err;
   }
 }
-<<<<<<< HEAD
-=======
 
-async function deleteCabins() {
+export async function deleteCabins() {
   try {
     const { error } = await supabase.from("cabins").delete().gt("id", 0);
 
@@ -188,4 +164,3 @@ export async function createEditCabin({ newCabin, editId, prevImg }) {
   }
 }
   */
->>>>>>> main
