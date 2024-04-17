@@ -10,23 +10,26 @@ export async function getBookings({ filter, sort, page }) {
     .select(`*, guests(fullName,email), cabins(name)`, { count: "exact" });
 
   // Filter
-  if (filter !== null)
-    query[filter.method || "eq"](filter.field, filter.filterValue);
+  if (filter)
+    query = query[filter.method || "eq"](filter.field, filter.filterValue);
 
-  if (sort)
-    // Sort
-    query.order(sort.sortBy, { ascending: sort.direction });
+  // Sort
+  if (sort) query = query.order(sort.sortBy, { ascending: sort.direction });
 
   // Pagination
-  const from = (page - 1) * PAGE_SIZE;
-  const to = page * PAGE_SIZE - 1;
 
-  if (page) query = query.range(from, to);
+  if (page) {
+    const from = (page - 1) * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1;
+
+    query = query.range(from, to);
+  }
 
   const { data, error, count } = await query;
 
   if (error) throw new Error("No bookings could be found");
   console.log(count);
+
   return { data, count };
 }
 

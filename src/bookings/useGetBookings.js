@@ -22,7 +22,7 @@ export function useGetBookings() {
   const sort = { sortBy, direction: direction === "asc" ? true : false };
 
   // Pagination
-  const page = searchParams.get("page") || 1;
+  const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
   console.log(page);
 
   const {

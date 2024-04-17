@@ -104,13 +104,13 @@ function Pagination({ count }) {
     : Number(searchParams.get("page"));
 
   function prevPage() {
-    const prev = curPage > 1 ? curPage - 1 : curPage;
+    const prev = curPage === 1 ? curPage : curPage - 1;
     searchParams.set("page", prev);
     setSearchParams(searchParams);
   }
 
   function nextPage() {
-    const next = curPage < pageCount ? curPage + 1 : curPage;
+    const next = curPage === pageCount ? curPage : curPage + 1;
     searchParams.set("page", next);
     setSearchParams(searchParams);
   }
@@ -131,10 +131,7 @@ function Pagination({ count }) {
           </p>
 
           <Buttons>
-            <PaginationButton
-              disabled={curPage === 1 && true}
-              onClick={prevPage}
-            >
+            <PaginationButton disabled={curPage === 1} onClick={prevPage}>
               <HiChevronLeft /> <span>Previous</span>
             </PaginationButton>
 
