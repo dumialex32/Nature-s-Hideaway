@@ -28,6 +28,7 @@ export function useGetBookings() {
     from: page ? (page - 1) * PAGE_SIZE : null,
     to: page ? page * PAGE_SIZE : null,
   };
+  console.log(pageRange.from, pageRange.to);
 
   const {
     data: { data: bookings, count } = {},

@@ -114,6 +114,11 @@ function Pagination({ count }) {
     setSearchParams(searchParams);
   }
 
+  function goToPage(value) {
+    searchParams.set("page", value);
+    setSearchParams(searchParams);
+  }
+
   return (
     <StyledPagination>
       {count > PAGE_SIZE ? (
@@ -135,7 +140,7 @@ function Pagination({ count }) {
             <Pages>
               {Array.from({ length: pageCount }, (_, i) => (
                 <Page key={i} active={i + 1 === curPage ? "true" : "false"}>
-                  <button>{i + 1}</button>
+                  <button onClick={() => goToPage(i + 1)}>{i + 1}</button>
                 </Page>
               ))}
             </Pages>

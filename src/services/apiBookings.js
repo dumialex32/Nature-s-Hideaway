@@ -2,7 +2,6 @@ import { getToday, hasNullProperty } from "../utils/helpers";
 import supabase from "./supabase";
 
 export async function getBookings({ filter, sort, pageRange }) {
-  console.log(pageRange.from, pageRange.to);
   let query = supabase
     .from("bookings")
     .select(`*, guests(fullName,email), cabins(name)`, { count: "exact" });
@@ -11,11 +10,13 @@ export async function getBookings({ filter, sort, pageRange }) {
   if (filter !== null)
     query[filter.method || "eq"](filter.field, filter.filterValue);
 
-  // Sort
-  if (sort) query.order(sort.sortBy, { ascending: sort.direction });
+  if (sort)
+    // Sort
+    query.order(sort.sortBy, { ascending: sort.direction });
 
   // Pagination
-  if (!hasNullProperty(pageRange)) query.range(pageRange.from, pageRange.to);
+  if (!filter && !hasNullProperty(pageRange))
+    query.range(pageRange.from, pageRange.to);
 
   const { data, error, count } = await query;
 
