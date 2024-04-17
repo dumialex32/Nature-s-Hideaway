@@ -23,20 +23,15 @@ export function useGetBookings() {
 
   // Pagination
   const page = searchParams.get("page") || 1;
-
-  const pageRange = {
-    from: page ? (page - 1) * PAGE_SIZE : null,
-    to: page ? page * PAGE_SIZE : null,
-  };
-  console.log(pageRange.from, pageRange.to);
+  console.log(page);
 
   const {
     data: { data: bookings, count } = {},
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["bookings", filter, sortValue, pageRange],
-    queryFn: () => getBookings({ filter, sort, pageRange }),
+    queryKey: ["bookings", filter, sortValue, page],
+    queryFn: () => getBookings({ filter, sort, page }),
   });
 
   return { bookings, isLoading, error, count };
