@@ -4,6 +4,7 @@ import supabase from "./supabase";
 
 export async function getBookings({ filter, sort, page }) {
   console.log(page);
+  console.log(filter);
   let query = supabase
     .from("bookings")
     .select(`*, guests(fullName,email), cabins(name)`, { count: "exact" });
@@ -19,7 +20,8 @@ export async function getBookings({ filter, sort, page }) {
   // Pagination
   const from = (page - 1) * PAGE_SIZE;
   const to = page * PAGE_SIZE - 1;
-  if (page && !filter) query = query.range(from, to);
+
+  if (page) query = query.range(from, to);
 
   const { data, error, count } = await query;
 
