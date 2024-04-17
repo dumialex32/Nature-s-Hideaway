@@ -1,35 +1,72 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
+import { useSearchParams } from "react-router-dom";
+import { PAGE_SIZE } from "../utils/variables";
 
 const StyledPagination = styled.div`
   width: 100%;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr;
   align-items: center;
-  justify-content: space-between;
-`;
+  padding: 0.4rem 0.8rem;
 
-const P = styled.p`
-  font-size: 1.4rem;
-  margin-left: 0.8rem;
-
-  & span {
+  & p > span {
     font-weight: 600;
   }
 `;
 
 const Buttons = styled.div`
   display: flex;
-  gap: 0.6rem;
+  align-items: center;
+  justify-self: center;
+  grid-row: 1;
+  gap: 2rem;
+`;
+
+const Pages = styled.ul`
+  display: flex;
+  gap: 1rem;
+`;
+
+const Page = styled.li`
+  list-style: none;
+  ${(props) =>
+    props.active === "true" &&
+    css`
+      & button {
+        font-weight: 600;
+        background: var(--color-brand-500);
+        color: var(--color-grey-100);
+      }
+    `}
+
+  & button {
+    display: block;
+    border: none;
+    padding: 0.2rem 0.4rem;
+    border-radius: var(--border-radius-sm);
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: var(--color-brand-500);
+      color: var(--color-grey-100);
+    }
+  }
 `;
 
 const PaginationButton = styled.button`
-  background-color: ${(props) =>
-    props.active ? " var(--color-brand-600)" : "var(--color-grey-50)"};
-  color: ${(props) => (props.active ? " var(--color-brand-50)" : "inherit")};
+  ${(props) =>
+    props.active &&
+    css`
+      background-color: var(--color-brand-500);
+      color: var(--color-grey-100);
+    `};
+
   border: none;
   border-radius: var(--border-radius-sm);
   font-weight: 500;
   font-size: 1.4rem;
-
+  background: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,6 +89,72 @@ const PaginationButton = styled.button`
 
   &:hover:not(:disabled) {
     background-color: var(--color-brand-600);
-    color: var(--color-brand-50);
+    color: var(--color-grey-100);
   }
 `;
+
+function Pagination({ count }) {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const curPage = !searchParams.get("page")
+    ? 1
+    : Number(searchParams.get("page"));
+
+  const pageCount = Math.ceil(count / PAGE_SIZE);
+
+  function prevPage() {
+    const prev = curPage > 1 ? curPage - 1 : curPage;
+    searchParams.set("page", prev);
+    setSearchParams(searchParams);
+  }
+
+  function nextPage() {
+    const next = curPage < pageCount ? curPage + 1 : curPage;
+    searchParams.set("page", next);
+    setSearchParams(searchParams);
+  }
+
+  return (
+    <StyledPagination>
+      {count > PAGE_SIZE ? (
+        <>
+          <p>
+            Showing <span>{(curPage - 1) * PAGE_SIZE + 1}</span> to{" "}
+            <span>{curPage === pageCount ? count : curPage * PAGE_SIZE}</span>{" "}
+            of <span>{count}</span> results
+          </p>
+
+          <Buttons>
+            <PaginationButton
+              disabled={curPage === 1 && true}
+              onClick={prevPage}
+            >
+              <HiChevronLeft /> <span>Previous</span>
+            </PaginationButton>
+
+            <Pages>
+              {Array.from({ length: pageCount }, (_, i) => (
+                <Page key={i} active={i + 1 === curPage ? "true" : "false"}>
+                  <button>{i + 1}</button>
+                </Page>
+              ))}
+            </Pages>
+
+            <PaginationButton
+              disabled={curPage === pageCount}
+              onClick={nextPage}
+            >
+              <span>Next</span> <HiChevronRight />
+            </PaginationButton>
+          </Buttons>
+        </>
+      ) : (
+        <p>
+          <span>{count}</span> results
+        </p>
+      )}
+    </StyledPagination>
+  );
+}
+
+export default Pagination;

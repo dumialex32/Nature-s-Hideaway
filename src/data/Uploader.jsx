@@ -177,7 +177,7 @@ function Uploader() {
             </ToolTip.ToggleIcon>
 
             <ToolTip.Window
-              text="Here you can upload bookings, guests and cabins in one click"
+              text="Here you can upload / delete fake generated data including bookings, guests, and cabins."
               positionY={3}
             />
           </ToolTip>

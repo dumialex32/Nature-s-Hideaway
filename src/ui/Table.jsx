@@ -91,6 +91,7 @@ function TableRow({ children }) {
 Table.TableHeader = TableHeader;
 Table.TableRow = TableRow;
 Table.TableBody = TableBody;
+Table.TableFooter = Footer;
 
 export default Table;
 

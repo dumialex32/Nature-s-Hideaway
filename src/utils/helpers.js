@@ -56,3 +56,11 @@ export const formatDate = (date) =>
     day: "2-digit",
     year: "numeric",
   }).format(new Date(date));
+
+// Check if 1 or > properties are null ( If it completes the loop without finding any null values, it returns false, indicating that none of the properties are null.)
+export const hasNullProperty = (obj) => {
+  for (let key in obj) {
+    if (obj[key] === null) return true;
+  }
+  return false;
+};

@@ -1,21 +1,27 @@
-import { getToday } from "../utils/helpers";
+import { getToday, hasNullProperty } from "../utils/helpers";
 import supabase from "./supabase";
 
-export async function getBookings({ filter, sort }) {
+export async function getBookings({ filter, sort, pageRange }) {
+  console.log(pageRange.from, pageRange.to);
   let query = supabase
     .from("bookings")
-    .select(`*, guests(fullName,email), cabins(name)`);
+    .select(`*, guests(fullName,email), cabins(name)`, { count: "exact" });
 
+  // Filter
   if (filter !== null)
-    query = query[filter.method || "eq"](filter.field, filter.filterValue);
+    query[filter.method || "eq"](filter.field, filter.filterValue);
 
+  // Sort
   if (sort) query.order(sort.sortBy, { ascending: sort.direction });
 
-  const { data, error } = await query;
+  // Pagination
+  if (!hasNullProperty(pageRange)) query.range(pageRange.from, pageRange.to);
+
+  const { data, error, count } = await query;
 
   if (error) throw new Error("No bookings could be found");
-
-  return data;
+  console.log(count);
+  return { data, count };
 }
 
 export async function getBooking(id) {
