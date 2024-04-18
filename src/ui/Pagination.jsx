@@ -97,7 +97,6 @@ function Pagination({ count }) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const pageCount = Math.ceil(count / PAGE_SIZE);
-  console.log(pageCount);
 
   const curPage = !searchParams.get("page")
     ? 1

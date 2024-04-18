@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import styled, { css } from "styled-components";
 
 const StyledFilter = styled.div`
@@ -33,12 +33,14 @@ const FilterButton = styled.button`
 
 function Filter({ filterOptions }) {
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const currentFilter =
     searchParams.get("filter") || filterOptions.at(0).filterValue;
 
   function handleClick(value) {
     searchParams.set("filter", value);
+    searchParams.set("page", 1); // Reset page to 1
     setSearchParams(searchParams);
   }
 

@@ -64,3 +64,5 @@ export const hasNullProperty = (obj) => {
   }
   return false;
 };
+
+const x = { field: "status", filterValue: "checked-in", method: "eq" };

@@ -10,6 +10,7 @@ export async function getBookings({ filter, sort, page }) {
     .select(`*, guests(fullName,email), cabins(name)`, { count: "exact" });
 
   // Filter
+
   if (filter)
     query = query[filter.method || "eq"](filter.field, filter.filterValue);
 

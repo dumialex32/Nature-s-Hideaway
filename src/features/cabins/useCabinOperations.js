@@ -45,7 +45,7 @@ function useCabinOperations() {
     }
   }, [cabins, error, isLoading, searchParams]);
 
-  return { cabins: sortedCabins, isLoading, error, curCabins: cabins };
+  return { cabins: sortedCabins, isLoading, error };
 }
 
 export default useCabinOperations;

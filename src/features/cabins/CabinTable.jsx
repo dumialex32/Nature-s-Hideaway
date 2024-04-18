@@ -32,7 +32,8 @@ import useCabinOperations from "./useCabinOperations";
 // `;
 
 function CabinTable() {
-  const { cabins, isLoading, error, curCabins } = useCabinOperations();
+  const { cabins, isLoading, error } = useCabinOperations();
+  console.log(cabins);
 
   if (isLoading) return <Spinner />;
   if (!cabins.length) return <Empty resource="cabins" />;
@@ -52,7 +53,7 @@ function CabinTable() {
         <Table.TableBody
           data={cabins}
           render={(cabin) => (
-            <CabinRow cabin={cabin} key={cabin.id} curCabins={curCabins} />
+            <CabinRow cabin={cabin} key={cabin.id} curCabins={cabins} />
           )}
         />
       </Table>

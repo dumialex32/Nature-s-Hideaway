@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { getBookings } from "../services/apiBookings";
 import { useSearchParams } from "react-router-dom";
-import { PAGE_SIZE } from "../utils/variables";
 
 export function useGetBookings() {
   const [searchParams] = useSearchParams();
 
   // Filter bookings
+
   const filterValue = searchParams.get("filter") || "all";
 
   const filter =
@@ -23,7 +23,6 @@ export function useGetBookings() {
 
   // Pagination
   const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
-  console.log(page);
 
   const {
     data: { data: bookings, count } = {},
