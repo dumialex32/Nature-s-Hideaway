@@ -3,8 +3,6 @@ import { PAGE_SIZE } from "../utils/variables";
 import supabase from "./supabase";
 
 export async function getBookings({ filter, sort, page }) {
-  console.log(page);
-  console.log(filter);
   let query = supabase
     .from("bookings")
     .select(`*, guests(fullName,email), cabins(name)`, { count: "exact" });
@@ -29,7 +27,6 @@ export async function getBookings({ filter, sort, page }) {
   const { data, error, count } = await query;
 
   if (error) throw new Error("No bookings could be found");
-  console.log(count);
 
   return { data, count };
 }
