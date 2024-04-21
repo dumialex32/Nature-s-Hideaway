@@ -37,9 +37,6 @@ export function useGetBookings() {
 
   // PRE-FETCHING
   const pageCount = Math.ceil(count / PAGE_SIZE);
-  console.log(page < pageCount);
-  console.log(page);
-  console.log(pageCount);
 
   if (page > 1) {
     queryClient.prefetchQuery({

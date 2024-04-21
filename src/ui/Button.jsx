@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import styled, { css } from "styled-components";
 
 const sizes = {
@@ -48,12 +49,54 @@ const variations = {
   `,
 };
 
-const Button = styled.button`
+function linkColor(color) {
+  return css`
+    color: ${color};
+  `;
+}
+
+const StyledButton = styled.button`
   ${(props) => sizes[props.size]};
   ${(props) => variations[props.variation]}
   border: none;
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-sm);
 `;
+
+const StyledNavLink = styled(NavLink)`
+  ${(props) =>
+    props.color ? linkColor(props.color) : linkColor("var(--color-brand-500)")}
+
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+`;
+
+function Button({
+  type = "button",
+  size,
+  variation,
+  children,
+  onClick,
+  color,
+  to,
+}) {
+  return (
+    <>
+      {type === "link" && (
+        <StyledNavLink color={color} to={to} onClick={onClick}>
+          {children}
+        </StyledNavLink>
+      )}
+
+      {type === "button" && (
+        <StyledButton size={size} variation={variation} onClick={onClick}>
+          {children}
+        </StyledButton>
+      )}
+    </>
+  );
+}
 
 export default Button;

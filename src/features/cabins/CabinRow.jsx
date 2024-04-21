@@ -1,8 +1,4 @@
 import styled from "styled-components";
-import Button from "../../ui/Button";
-import { useMutation, useQueryClient } from "react-query";
-import { deleteCabins } from "../../services/apiCabins";
-import toast from "react-hot-toast";
 
 import { formatCurrency } from "../../utils/helpers";
 

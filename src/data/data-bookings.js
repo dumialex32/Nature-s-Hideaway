@@ -1,4 +1,4 @@
-import { add } from "date-fns";
+import { add, formatDistance } from "date-fns";
 
 const fromToday = (days, withTime) => {
   const date = add(new Date(), { days: days });

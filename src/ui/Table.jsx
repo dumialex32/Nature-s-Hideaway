@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const StyledTable = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -19,9 +19,23 @@ const CommonRow = styled.div`
 `;
 
 const StyledHeader = styled(CommonRow)`
-  padding: 1.6rem 2.4rem;
+  ${(props) =>
+    (props.color === "brand" &&
+      css`
+        background-color: var(--color-brand-500);
+        & > * {
+          color: var(--color-grey-50);
+        }
+      `) ||
+    css`
+      background-color: var(--color-grey-100);
 
-  background-color: var(--color-grey-50);
+      & > * {
+        color: var(--color-grey-600);
+      }
+    `}
+
+  padding: 1.6rem 2.4rem;
   border-bottom: 1px solid var(--color-grey-100);
   text-transform: uppercase;
   letter-spacing: 0.4px;
@@ -63,8 +77,6 @@ const Empty = styled.p`
 const TableContext = createContext();
 
 function Table({ children, columns }) {
-  const [tableFor, setTableFor] = useState("");
-
   return (
     <TableContext.Provider value={{ columns }}>
       <StyledTable>{children}</StyledTable>
@@ -72,13 +84,18 @@ function Table({ children, columns }) {
   );
 }
 
-function TableHeader({ children }) {
+function TableHeader({ children, color }) {
   const { columns } = useTable();
 
-  return <StyledHeader columns={columns}>{children}</StyledHeader>;
+  return (
+    <StyledHeader columns={columns} color={color}>
+      {children}
+    </StyledHeader>
+  );
 }
 
 function TableBody({ data, render }) {
+  console.log(data);
   return <StyledBody>{data.map(render)}</StyledBody>;
 }
 

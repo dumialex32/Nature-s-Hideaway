@@ -4,6 +4,7 @@ import BookingRow from "../bookings/BookingRow";
 import Empty from "../ui/Empty";
 import { useGetBookings } from "./useGetBookings";
 import Pagination from "../ui/Pagination";
+import Menus from "../ui/Menus";
 
 function BookingsTable() {
   const { bookings, isLoading, error, count } = useGetBookings();
@@ -12,8 +13,8 @@ function BookingsTable() {
   if (!bookings) return <Empty resource={"bookings"} />;
 
   return (
-    <>
-      <Table columns="0.6fr 1fr 1.5fr 1fr 1fr 1fr 1fr">
+    <Menus>
+      <Table columns="0.6fr 1fr 1.5fr 1fr 1fr 1fr 1fr 0.2fr">
         <Table.TableHeader>
           <div>Cabin</div>
           <div>Guests</div>
@@ -35,7 +36,7 @@ function BookingsTable() {
           <Pagination count={count} />
         </Table.TableFooter>
       </Table>
-    </>
+    </Menus>
   );
 }
 

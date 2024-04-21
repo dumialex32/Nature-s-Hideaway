@@ -5,7 +5,10 @@ import supabase from "./supabase";
 export async function getBookings({ filter, sort, page }) {
   let query = supabase
     .from("bookings")
-    .select(`*, guests(fullName,email), cabins(name)`, { count: "exact" });
+    .select(
+      `id,totalPrice, status, hasBreakfast, startDate, endDate,observation, guests(fullName,email), cabins(name)`,
+      { count: "exact" }
+    );
 
   // Filter
 
@@ -40,7 +43,7 @@ export async function getBooking(id) {
 
   if (error) {
     console.error(error);
-    throw new Error("Booking not found");
+    throw new Error(`The booking with id: ${id} could not be found`);
   }
 
   return data;

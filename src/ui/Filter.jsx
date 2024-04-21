@@ -33,7 +33,6 @@ const FilterButton = styled.button`
 
 function Filter({ filterOptions }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
 
   const currentFilter =
     searchParams.get("filter") || filterOptions.at(0).filterValue;
