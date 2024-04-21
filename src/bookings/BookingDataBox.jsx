@@ -94,11 +94,11 @@ function BookingDataBox({ booking }) {
       <TableSection>
         <Guest>
           <img src={countryFlag} />
-          <span>
-            {fullName} + {numGuests} guests
-          </span>{" "}
+          <span>{`${fullName} + ${numGuests} ${
+            numGuests === 1 ? "guest" : "guests"
+          }`}</span>{" "}
           &bull; <span>{email}</span> &bull;{" "}
-          <span>National ID {nationalID}</span>
+          <span>{`National ID: ${nationalID}`}</span>
         </Guest>
       </TableSection>
     </StyledBookingDataBox>
