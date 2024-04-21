@@ -44,9 +44,7 @@ function BookingDetails() {
   const { booking, isLoading } = useGetBooking();
   const navigate = useNavigate();
 
-  console.log(booking);
   const { id, status } = booking || {};
-  console.log(status);
 
   if (isLoading) return <Spinner />;
   if (!booking) return <Empty resource={"booking"} />;
