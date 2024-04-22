@@ -1,10 +1,4 @@
-import { add, formatDistance } from "date-fns";
-
-const fromToday = (days, withTime) => {
-  const date = add(new Date(), { days: days });
-  if (!withTime) date.setUTCHours(0, 0, 0, 0);
-  return date;
-};
+import { fromToday } from "../utils/helpers";
 
 export const bookings = [
   // CABIN 001

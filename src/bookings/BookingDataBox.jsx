@@ -2,6 +2,7 @@ import { formatDistance } from "date-fns/formatDistance";
 import { HiOutlineHome } from "react-icons/hi";
 import styled from "styled-components";
 import { format } from "date-fns/format";
+import { fromToday } from "../utils/helpers";
 
 const StyledBookingDataBox = styled.div`
   border: 1px solid var(--color-grey-50);
@@ -84,10 +85,10 @@ function BookingDataBox({ booking }) {
 
         <div>
           <span>
-            {format(startDate, "EEEE, MMM dd yyyy")} (in{" "}
-            {formatDistance(startDate, endDate)})
-          </span>{" "}
-          - <span>{format(endDate, "EEE, MMM dd yyyy")}</span>
+            {`${format(startDate, "EEEE, MMM dd yyyy")} in
+            ${formatDistance(startDate, new Date())} -
+            ${format(endDate, "EEE, MMM dd yyyy")}`}
+          </span>
         </div>
       </StyledHeader>
 

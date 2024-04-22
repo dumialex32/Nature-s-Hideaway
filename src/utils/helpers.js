@@ -1,5 +1,11 @@
-import { differenceInDays, formatDistance, parseISO } from "date-fns";
+import { add, differenceInDays, formatDistance, parseISO } from "date-fns";
 import { isEmpty } from "lodash";
+
+export const fromToday = (days, withTime) => {
+  const date = add(new Date(), { days: days });
+  if (!withTime) date.setUTCHours(0, 0, 0, 0);
+  return date;
+};
 
 // We want to make this function work for both Date objects and strings (which come from Supabase)
 export const subtractDates = (dateStr1, dateStr2) => {
