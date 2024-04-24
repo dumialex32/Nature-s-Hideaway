@@ -90,7 +90,7 @@ const Breakfast = styled.div`
   span:nth-of-type(1) {
     display: flex;
     align-items: center;
-    gap: 1.2rem;
+    gap: 1rem;
   }
 
   span > svg {
@@ -183,7 +183,7 @@ function BookingDataBox({ booking }) {
       <TableSection>
         <Guest>
           <GuestInfo>
-            <img src={countryFlag} />
+            <img src={countryFlag} alt={`Country flag of `} />
             <span>{`${fullName} + ${numGuests} ${
               numGuests === 1 ? "guest" : "guests"
             }`}</span>{" "}
@@ -214,9 +214,13 @@ function BookingDataBox({ booking }) {
               <span>Total Price</span>
             </span>
 
-            <span>{`${formatCurrency(totalPrice)} (${formatCurrency(
-              cabinPrice
-            )} + ${formatCurrency(extrasPrice)} breakfast) `}</span>
+            <span>
+              {extrasPrice
+                ? `${formatCurrency(totalPrice)} (${formatCurrency(
+                    totalPrice
+                  )} + ${formatCurrency(extrasPrice)})`
+                : formatCurrency(totalPrice)}
+            </span>
           </div>
 
           <div>{isPaid ? "Paid" : "WILL PAY AT PROPERTY"}</div>
