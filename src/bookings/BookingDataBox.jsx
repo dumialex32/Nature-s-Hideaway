@@ -74,7 +74,7 @@ const Observation = styled.div`
   box-shadow: 0px 0px 2px 0px var(--color-brand-200);
   border-radius: var(--border-radius-md);
 
-  & p {
+  & div:first-of-type {
     font-weight: 600;
     color: var(--color-grey-700);
     text-align: center;
@@ -173,8 +173,8 @@ function BookingDataBox({ booking }) {
 
         <div>
           <span>
-            {`${format(startDate, "EEE, MMM dd yyyy")} in
-            ${formatDistance(startDate, new Date())} -
+            {`${format(startDate, "EEE, MMM dd yyyy")} (in
+            ${formatDistance(startDate, new Date()).replace("about", "")}) -
             ${format(endDate, "EEE, MMM dd yyyy")}`}
           </span>
         </div>
@@ -193,8 +193,8 @@ function BookingDataBox({ booking }) {
 
           {observation && (
             <Observation>
-              <p>Observation</p>
-              {`"${observation}"`}
+              <div>Observation</div>
+              <p>{`"${observation}"`}</p>
             </Observation>
           )}
         </Guest>
@@ -218,7 +218,7 @@ function BookingDataBox({ booking }) {
               {extrasPrice
                 ? `${formatCurrency(totalPrice)} (${formatCurrency(
                     totalPrice
-                  )} + ${formatCurrency(extrasPrice)})`
+                  )} cabin + ${formatCurrency(extrasPrice)} breakfast)`
                 : formatCurrency(totalPrice)}
             </span>
           </div>
