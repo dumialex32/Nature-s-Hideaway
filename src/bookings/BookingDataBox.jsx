@@ -159,8 +159,6 @@ function BookingDataBox({ booking }) {
     totalPrice,
   } = booking;
 
-  console.log(isPaid);
-
   return (
     <StyledBookingDataBox>
       <StyledHeader>
