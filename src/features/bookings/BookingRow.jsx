@@ -1,14 +1,14 @@
 import styled from "styled-components";
-import Table from "../ui/Table";
-import Tag from "../ui/Tag";
+import Table from "../../ui/Table";
+import Tag from "../../ui/Tag";
 import {
   formatCurrency,
   formatDate,
   formatDistanceFromNow,
   subtractDates,
-} from "../utils/helpers";
-import Menus from "../ui/Menus";
-import { HiLink } from "react-icons/hi";
+} from "../../utils/helpers";
+import Menus from "../../ui/Menus";
+import { HiLink, HiOutlineCheck } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 
 const Breakfast = styled.div`
@@ -113,6 +113,14 @@ function BookingRow({ booking }) {
           >
             More Details
           </Menus.Button>
+          {status === "unconfirmed" && (
+            <Menus.Button
+              icon={<HiOutlineCheck />}
+              onClick={() => navigate(`/checkIn/${bookingId}`)}
+            >
+              Check In
+            </Menus.Button>
+          )}
         </Menus.List>
       </Menus.Menu>
     </Table.TableRow>

@@ -95,7 +95,6 @@ function TableHeader({ children, color }) {
 }
 
 function TableBody({ data, render }) {
-  console.log(data);
   return <StyledBody>{data.map(render)}</StyledBody>;
 }
 

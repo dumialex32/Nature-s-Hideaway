@@ -1,70 +1,102 @@
-import styled from "styled-components";
-import { format, isToday } from "date-fns";
+import { formatDistance } from "date-fns/formatDistance";
 import {
-  HiOutlineChatBubbleBottomCenterText,
-  HiOutlineCheckCircle,
+  HiOutlineClock,
   HiOutlineCurrencyDollar,
-  HiOutlineHomeModern,
-} from "react-icons/hi2";
+  HiOutlineHome,
+} from "react-icons/hi";
+import styled, { css } from "styled-components";
+import { format } from "date-fns/format";
+import { formatCurrency } from "../../utils/helpers";
 
-import DataItem from "../../ui/DataItem";
-import { Flag } from "../../ui/Flag";
-
-import { formatDistanceFromNow, formatCurrency } from "../../utils/helpers";
-
-const StyledBookingDataBox = styled.section`
-  /* Box */
-  background-color: var(--color-grey-0);
-  border: 1px solid var(--color-grey-100);
+const StyledBookingDataBox = styled.div`
+  border: 1px solid var(--color-grey-50);
   border-radius: var(--border-radius-md);
 
   overflow: hidden;
 `;
 
-const Header = styled.header`
-  background-color: var(--color-brand-500);
-  padding: 2rem 4rem;
-  color: #e0e7ff;
-  font-size: 1.8rem;
-  font-weight: 500;
+const StyledHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background-color: var(--color-brand-500);
+  color: var(--color-grey-200);
+  padding: 1rem 3.4rem;
 
-  svg {
-    height: 3.2rem;
-    width: 3.2rem;
-  }
-
-  & div:first-child {
+  & div {
     display: flex;
-    align-items: center;
-    gap: 1.6rem;
+    align-items: self-end;
+    gap: 1rem;
+    font-size: 1.6rem;
     font-weight: 600;
-    font-size: 1.8rem;
   }
 
-  & span {
-    font-family: "Sono";
-    font-size: 2rem;
-    margin-left: 4px;
+  & svg {
+    height: 2.4rem;
+    width: 2.4rem;
   }
 `;
 
-const Section = styled.section`
-  padding: 3.2rem 4rem 1.2rem;
+const TableSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem 3.4rem;
+  background-color: var(--color-grey-0);
 `;
 
 const Guest = styled.div`
   display: flex;
   align-items: center;
-  gap: 1.2rem;
-  margin-bottom: 1.6rem;
-  color: var(--color-grey-500);
+  justify-content: space-between;
+  color: var(--color-grey-400);
+`;
 
-  & p:first-of-type {
-    font-weight: 500;
+const GuestInfo = styled.div`
+  display: flex;
+  gap: 1rem;
+
+  & img {
+    max-width: 2.4rem;
+    border-radius: var(--border-radius-tiny);
+    display: block;
+    border: 1px solid var(--color-grey-100);
+  }
+
+  & span:first-of-type {
+    font-weight: 600;
     color: var(--color-grey-700);
+  }
+`;
+
+const Observation = styled.div`
+  padding: 2rem;
+  box-shadow: 0px 0px 2px 0px var(--color-brand-200);
+  border-radius: var(--border-radius-md);
+
+  & div:first-of-type {
+    font-weight: 600;
+    color: var(--color-grey-700);
+    text-align: center;
+  }
+`;
+
+const Breakfast = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-weight: 600;
+
+  span:nth-of-type(1) {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  span > svg {
+    color: var(--color-brand-500);
+    width: 2.4rem;
+    height: 2.4rem;
   }
 `;
 
@@ -72,114 +104,130 @@ const Price = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.6rem 3.2rem;
-  border-radius: var(--border-radius-sm);
-  margin-top: 2.4rem;
+  padding: 2rem;
+  font-weight: 600;
+  border-radius: var(--border-radius-md);
+  ${(props) =>
+    props.$isPaid
+      ? css`
+          background-color: var(--color-green-100);
+          color: var(--color-green-700);
+        `
+      : css`
+          background-color: var(--color-yellow-100);
+          color: #bd9016c9;
+        `}
 
-  background-color: ${(props) =>
-    props.isPaid ? "var(--color-green-100)" : "var(--color-yellow-100)"};
-  color: ${(props) =>
-    props.isPaid ? "var(--color-green-700)" : "var(--color-yellow-700)"};
+  & div {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 
-  & p:last-child {
-    text-transform: uppercase;
-    font-size: 1.4rem;
-    font-weight: 600;
-  }
+    & span:first-of-type {
+      display: flex;
+      gap: 0.2rem;
+    }
 
-  svg {
-    height: 2.4rem;
-    width: 2.4rem;
-    color: currentColor !important;
+    & svg {
+      width: 2.4rem;
+      height: 2.4rem;
+    }
   }
 `;
 
-const Footer = styled.footer`
-  padding: 1.6rem 4rem;
-  font-size: 1.2rem;
-  color: var(--color-grey-500);
-  text-align: right;
+const BookingDate = styled.div`
+  margin-left: auto;
+  color: var(--color-grey-400);
+  font-size: 1.4rem;
 `;
 
-// A purely presentational component
 function BookingDataBox({ booking }) {
   const {
-    created_at,
-    startDate,
-    endDate,
-    numNights,
-    numGuests,
     cabinPrice,
     extrasPrice,
-    totalPrice,
     hasBreakfast,
-    observations,
-    isPaid,
-    guests: { fullName: guestName, email, country, countryFlag, nationalID },
+    status,
     cabins: { name: cabinName },
+    guests: { fullName, email, nationalID, nationality, countryFlag },
+    numNights,
+    created_at: createdAt,
+    startDate,
+    endDate,
+    isPaid,
+    numGuests,
+    observation,
+    totalPrice,
   } = booking;
 
   return (
     <StyledBookingDataBox>
-      <Header>
+      <StyledHeader>
         <div>
-          <HiOutlineHomeModern />
-          <p>
-            {numNights} nights in Cabin <span>{cabinName}</span>
-          </p>
+          <HiOutlineHome />
+          <span>
+            {numNights} nights in Cabin {cabinName}
+          </span>
         </div>
 
-        <p>
-          {format(new Date(startDate), "EEE, MMM dd yyyy")} (
-          {isToday(new Date(startDate))
-            ? "Today"
-            : formatDistanceFromNow(startDate)}
-          ) &mdash; {format(new Date(endDate), "EEE, MMM dd yyyy")}
-        </p>
-      </Header>
+        <div>
+          <span>
+            {`${format(startDate, "EEE, MMM dd yyyy")} (in
+            ${formatDistance(startDate, new Date()).replace("about", "")}) -
+            ${format(endDate, "EEE, MMM dd yyyy")}`}
+          </span>
+        </div>
+      </StyledHeader>
 
-      <Section>
+      <TableSection>
         <Guest>
-          {countryFlag && <Flag src={countryFlag} alt={`Flag of ${country}`} />}
-          <p>
-            {guestName} {numGuests > 1 ? `+ ${numGuests - 1} guests` : ""}
-          </p>
-          <span>&bull;</span>
-          <p>{email}</p>
-          <span>&bull;</span>
-          <p>National ID {nationalID}</p>
+          <GuestInfo>
+            <img src={countryFlag} alt={`Country flag of `} />
+            <span>{`${fullName} + ${numGuests} ${
+              numGuests === 1 ? "guest" : "guests"
+            }`}</span>{" "}
+            &bull; <span>{email}</span> &bull;{" "}
+            <span>{`National ID: ${nationalID}`}</span>
+          </GuestInfo>
+
+          {observation && (
+            <Observation>
+              <div>Observation</div>
+              <p>{`"${observation}"`}</p>
+            </Observation>
+          )}
         </Guest>
 
-        {observations && (
-          <DataItem
-            icon={<HiOutlineChatBubbleBottomCenterText />}
-            label="Observations"
-          >
-            {observations}
-          </DataItem>
-        )}
+        <Breakfast>
+          <span>
+            <HiOutlineClock />
+            Breakfast Included?
+          </span>
+          <span>{hasBreakfast ? "Yes" : "No"}</span>
+        </Breakfast>
 
-        <DataItem icon={<HiOutlineCheckCircle />} label="Breakfast included?">
-          {hasBreakfast ? "Yes" : "No"}
-        </DataItem>
+        <Price $isPaid={isPaid}>
+          <div>
+            <span>
+              <HiOutlineCurrencyDollar />
+              <span>Total Price</span>
+            </span>
 
-        <Price isPaid={isPaid}>
-          <DataItem icon={<HiOutlineCurrencyDollar />} label={`Total price`}>
-            {formatCurrency(totalPrice)}
+            <span>
+              {extrasPrice
+                ? `${formatCurrency(totalPrice)} (${formatCurrency(
+                    totalPrice
+                  )} cabin + ${formatCurrency(extrasPrice)} breakfast)`
+                : formatCurrency(totalPrice)}
+            </span>
+          </div>
 
-            {hasBreakfast &&
-              ` (${formatCurrency(cabinPrice)} cabin + ${formatCurrency(
-                extrasPrice
-              )} breakfast)`}
-          </DataItem>
-
-          <p>{isPaid ? "Paid" : "Will pay at property"}</p>
+          <div>{isPaid ? "Paid" : "WILL PAY AT PROPERTY"}</div>
         </Price>
-      </Section>
 
-      <Footer>
-        <p>Booked {format(new Date(created_at), "EEE, MMM dd yyyy, p")}</p>
-      </Footer>
+        <BookingDate>
+          {`Booked ${format(createdAt, "EEE, MMM dd yyyy, H:mm")}`}
+        </BookingDate>
+      </TableSection>
     </StyledBookingDataBox>
   );
 }

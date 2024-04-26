@@ -81,6 +81,7 @@ function Button({
   onClick,
   color,
   to,
+  disabled,
 }) {
   return (
     <>
@@ -91,7 +92,12 @@ function Button({
       )}
 
       {type === "button" && (
-        <StyledButton size={size} variation={variation} onClick={onClick}>
+        <StyledButton
+          size={size}
+          variation={variation}
+          onClick={onClick}
+          disabled={disabled}
+        >
           {children}
         </StyledButton>
       )}

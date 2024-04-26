@@ -33,7 +33,6 @@ import useCabinOperations from "./useCabinOperations";
 
 function CabinTable() {
   const { cabins, isLoading, error } = useCabinOperations();
-  console.log(cabins);
 
   if (isLoading) return <Spinner />;
   if (!cabins.length) return <Empty resource="cabins" />;

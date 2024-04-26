@@ -11,7 +11,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import { deleteAllData } from "../services/apiCabins";
 import { deleteBookings } from "../services/apiBookings";
-import { useGetBookings } from "../bookings/useGetBookings";
+import { useGetBookings } from "../features/bookings/useGetBookings";
 import useGetCabins from "../features/cabins/useGetCabins";
 
 import useDeleteAllDataHook from "./useDeleteAllDataHook";
