@@ -6,17 +6,18 @@ const StyledCheckbox = styled.div`
   gap: 1rem;
 `;
 
-function Checkbox({ children, value, onChange, disabled }) {
+function Checkbox({ children, checked, onChange, id, disabled }) {
   return (
     <StyledCheckbox>
       <input
+        id={id}
         type="checkbox"
-        value={value}
+        checked={checked}
         onChange={onChange}
         disabled={disabled}
       />
 
-      <label>{children}</label>
+      <label htmlFor={!disabled ? id : ""}>{children}</label>
     </StyledCheckbox>
   );
 }
