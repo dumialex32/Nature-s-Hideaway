@@ -1,10 +1,10 @@
-import Table from "../ui/Table";
-import Spinner from "../ui/Spinner";
+import Table from "../../ui/Table";
+import Spinner from "../../ui/Spinner";
 import BookingRow from "../bookings/BookingRow";
-import Empty from "../ui/Empty";
+import Empty from "../../ui/Empty";
 import { useGetBookings } from "./useGetBookings";
-import Pagination from "../ui/Pagination";
-import Menus from "../ui/Menus";
+import Pagination from "../../ui/Pagination";
+import Menus from "../../ui/Menus";
 
 function BookingsTable() {
   const { bookings, isLoading, error, count } = useGetBookings();

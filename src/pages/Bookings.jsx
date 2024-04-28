@@ -1,4 +1,4 @@
-import BookingsTable from "../bookings/BookingsTable";
+import BookingsTable from "../features/bookings/BookingsTable";
 
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";

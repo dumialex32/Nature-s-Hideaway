@@ -1,13 +1,13 @@
 import styled from "styled-components";
-import Table from "../ui/Table";
-import Tag from "../ui/Tag";
+import Table from "../../ui/Table";
+import Tag from "../../ui/Tag";
 import {
   formatCurrency,
   formatDate,
   formatDistanceFromNow,
   subtractDates,
-} from "../utils/helpers";
-import Menus from "../ui/Menus";
+} from "../../utils/helpers";
+import Menus from "../../ui/Menus";
 import { HiLink } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 

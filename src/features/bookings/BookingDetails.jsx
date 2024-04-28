@@ -1,12 +1,12 @@
 import styled, { css } from "styled-components";
-import Empty from "../ui/Empty";
-import Heading from "../ui/Heading";
-import Row from "../ui/Row";
-import Spinner from "../ui/Spinner";
+import Empty from "../../ui/Empty";
+import Heading from "../../ui/Heading";
+import Row from "../../ui/Row";
+import Spinner from "../../ui/Spinner";
 import useGetBooking from "./useGetBooking";
 import { useNavigate } from "react-router-dom";
 import { HiArrowNarrowLeft } from "react-icons/hi";
-import Button from "../ui/Button";
+import Button from "../../ui/Button";
 import BookingDataBox from "./BookingDataBox";
 
 const statusColor = {

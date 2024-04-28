@@ -15,7 +15,7 @@ import Account from "./pages/Account";
 import GlobalStyles from "./styles/GlobalStyles";
 import AppLayout from "./ui/AppLayout";
 import Users from "./pages/Users";
-import Booking from "./bookings/Booking";
+import Booking from "./features/bookings/Booking";
 
 const queryClient = new QueryClient({
   defaultOptions: {
