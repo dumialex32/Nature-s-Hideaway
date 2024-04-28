@@ -8,7 +8,7 @@ import {
   subtractDates,
 } from "../../utils/helpers";
 import Menus from "../../ui/Menus";
-import { HiLink } from "react-icons/hi";
+import { HiCheck, HiLink } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 
 const Breakfast = styled.div`
@@ -112,6 +112,13 @@ function BookingRow({ booking }) {
             onClick={() => navigate(`/bookings/${bookingId}`)}
           >
             More Details
+          </Menus.Button>
+
+          <Menus.Button
+            icon={<HiCheck />}
+            onClick={() => navigate(`/checkIn/${bookingId}`)}
+          >
+            Check In
           </Menus.Button>
         </Menus.List>
       </Menus.Menu>
