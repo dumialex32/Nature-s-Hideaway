@@ -6,7 +6,7 @@ import {
 } from "react-icons/hi";
 import styled, { css } from "styled-components";
 import { format } from "date-fns/format";
-import { formatCurrency } from "../utils/helpers";
+import { formatCurrency } from "../../utils/helpers";
 
 const StyledBookingDataBox = styled.div`
   border: 1px solid var(--color-grey-50);
