@@ -215,7 +215,7 @@ function BookingDataBox({ booking }) {
             <span>
               {extrasPrice
                 ? `${formatCurrency(totalPrice)} (${formatCurrency(
-                    totalPrice
+                    cabinPrice
                   )} cabin + ${formatCurrency(extrasPrice)} breakfast)`
                 : formatCurrency(totalPrice)}
             </span>

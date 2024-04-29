@@ -26,7 +26,7 @@ const variations = {
     color: var(--color-brand-50);
     background-color: var(--color-brand-600);
 
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: var(--color-brand-700);
     }
   `,
@@ -35,7 +35,7 @@ const variations = {
     background: var(--color-grey-0);
     border: 1px solid var(--color-grey-200);
 
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: var(--color-grey-50);
     }
   `,
@@ -43,7 +43,7 @@ const variations = {
     color: var(--color-red-100);
     background-color: var(--color-red-700);
 
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: var(--color-red-800);
     }
   `,
@@ -58,6 +58,11 @@ function linkColor(color) {
 const StyledButton = styled.button`
   ${(props) => sizes[props.size]};
   ${(props) => variations[props.variation]}
+  ${(props) =>
+    props.disabled &&
+    css`
+      filter: grayscale(100%);
+    `}
   border: none;
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-sm);

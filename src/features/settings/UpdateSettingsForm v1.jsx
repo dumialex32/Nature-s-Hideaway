@@ -7,11 +7,6 @@ import styled from "styled-components";
 import { useUpdateSettings } from "./useUpdateSettingsHook";
 import Row from "../../ui/Row";
 
-const StyledError = styled.div`
-  color: var(--color-red-700);
-  font-weight: 500;
-`;
-
 function UpdateSettingsForm({ settings }) {
   const defaultValues = {
     minNights: settings.minBookingLength,

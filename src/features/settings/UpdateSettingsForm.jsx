@@ -1,16 +1,9 @@
-import { useForm } from "react-hook-form";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
-import styled from "styled-components";
-import { useUpdateSettings } from "./useUpdateSettingsHook";
+import useUpdateSettings from "./useUpdateSettings";
 import Row from "../../ui/Row";
-
-const StyledError = styled.div`
-  color: var(--color-red-700);
-  font-weight: 500;
-`;
 
 function UpdateSettingsForm({ curSettings, defaultSettings }) {
   const { updateSettings, settingsStatus } = useUpdateSettings();
@@ -51,6 +44,7 @@ function UpdateSettingsForm({ curSettings, defaultSettings }) {
             value={minBookingLength}
             disabled={settingsStatus === "pending"}
             onChange={(e) => handleSettingChange(e, "minBookingLength")}
+            error={"error"}
           />
         </FormRow>
 

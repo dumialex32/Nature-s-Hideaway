@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 function useUpdateBookingStatus() {
   const queryClient = useQueryClient();
 
-  const { mutate: mutateConfirm, status: mutateConfirmStatus } = useMutation({
+  const { mutate: mutateBooking, status: mutateBookingStatus } = useMutation({
     mutationKey: ["bookingId"],
     mutationFn: (obj) => updateBooking(obj),
     onSuccess: (data) => {
@@ -16,7 +16,7 @@ function useUpdateBookingStatus() {
     onError: (err) => toast.error(err.message),
   });
 
-  return { mutateConfirm, mutateConfirmStatus };
+  return { mutateBooking, mutateBookingStatus };
 }
 
 export default useUpdateBookingStatus;

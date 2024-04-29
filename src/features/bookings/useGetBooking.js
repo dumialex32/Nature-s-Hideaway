@@ -10,7 +10,7 @@ function useGetBooking() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["bookingId"],
+    queryKey: ["booking", "bookingId"],
     queryFn: () => getBooking(bookingId),
     retry: false,
   });

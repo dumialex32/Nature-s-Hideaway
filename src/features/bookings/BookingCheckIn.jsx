@@ -12,27 +12,46 @@ import useMoveBack from "../../hooks/useMoveBack";
 import { useEffect, useState } from "react";
 import Empty from "../../ui/Empty";
 import useUpdateBookingStatus from "./useUpdateBookingStatus";
+import useGetSettings from "../settings/useGetSettings";
 
 const Box = styled.div`
   background-color: var(--color-grey-0);
   border-radius: var(--border-radius-md);
   padding: 2rem 3.4rem;
+  display: flex;
+  justify-content: space-between;
 `;
 
 function BookingCheckIn() {
   const [confirmPaid, setConfirmPaid] = useState(false);
-  const { booking, isLoading } = useGetBooking();
-  const moveBack = useMoveBack();
-  const { mutateConfirm, mutateConfirmStatus } = useUpdateBookingStatus();
+  const [confirmBreakfast, setConfirmBreakfast] = useState(false);
 
-  const { id: bookingId, guests: { fullName } = {}, isPaid } = booking || {};
+  const { booking, isLoading } = useGetBooking();
+  const { curSettings: { breakfastPrice } = {} } = useGetSettings();
+  const moveBack = useMoveBack();
+
+  const { mutateBooking, mutateBookingStatus } = useUpdateBookingStatus();
+
+  const {
+    id: bookingId,
+    guests: { fullName } = {},
+    isPaid,
+    hasBreakfast,
+    numNights,
+    numGuests,
+  } = booking || {};
 
   useEffect(() => {
     setConfirmPaid(isPaid || false);
-  }, [isPaid]);
+    setConfirmBreakfast(hasBreakfast || false);
+  }, [isPaid, hasBreakfast]);
 
   function handleConfirmPaid(e) {
     setConfirmPaid(e.target.checked);
+  }
+
+  function handleConfirBreakfast(e) {
+    setConfirmBreakfast(e.target.checked);
   }
 
   function handleBookingConfirm() {
@@ -41,10 +60,19 @@ function BookingCheckIn() {
       status: (confirmPaid && "checked-in") || "unconfirmed",
     };
 
-    mutateConfirm({ bookingId, obj });
+    mutateBooking({ bookingId, obj });
   }
 
-  if (isLoading || mutateConfirmStatus === "pending") return <Spinner />;
+  function handleBookingBreakfast() {
+    const obj = {
+      hasBreakfast: confirmBreakfast,
+      extrasPrice: numNights * breakfastPrice * numGuests,
+    };
+
+    mutateBooking({ bookingId, obj });
+  }
+
+  if (isLoading || mutateBookingStatus === "pending") return <Spinner />;
   if (!booking) return <Empty resource={"booking"} />;
 
   return (
@@ -62,12 +90,40 @@ function BookingCheckIn() {
 
       <Box>
         <Checkbox
+          id="orderBreakfast"
+          checked={confirmBreakfast}
+          onChange={handleConfirBreakfast}
+          disabled={hasBreakfast}
+        >
+          {confirmBreakfast && hasBreakfast ? (
+            <span>Breakfast included</span>
+          ) : (
+            <span>Include breakfast</span>
+          )}
+        </Checkbox>
+
+        <Button
+          variation="primary"
+          size="small"
+          disabled={!confirmBreakfast || hasBreakfast}
+          onClick={handleBookingBreakfast}
+        >
+          Include Breakfast
+        </Button>
+      </Box>
+
+      <Box>
+        <Checkbox
           checked={confirmPaid}
           onChange={handleConfirmPaid}
           disabled={confirmPaid}
           id="confirm"
         >
-          I confirm that {fullName} has paid the rent.
+          {confirmPaid && isPaid ? (
+            <span>{fullName} has already paid the rent</span>
+          ) : (
+            <span> I confirm that {fullName} has paid the rent.</span>
+          )}
         </Checkbox>
       </Box>
 
