@@ -7,10 +7,10 @@ function useUpdateBookingStatus() {
   const queryClient = useQueryClient();
 
   const { mutate: mutateConfirm, status: mutateConfirmStatus } = useMutation({
-    mutationKey: ["booking"],
+    mutationKey: ["bookingId"],
     mutationFn: (obj) => updateBooking(obj),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["booking"] });
+      queryClient.invalidateQueries({ queryKey: ["bookingId"] });
       toast.success(`Booking ${data.id} was succesfully updated`);
     },
     onError: (err) => toast.error(err.message),

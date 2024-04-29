@@ -108,7 +108,7 @@ const Price = styled.div`
   font-weight: 600;
   border-radius: var(--border-radius-md);
   ${(props) =>
-    props.isPaid === "true"
+    props.$isPaid
       ? css`
           background-color: var(--color-green-100);
           color: var(--color-green-700);
@@ -159,8 +159,6 @@ function BookingDataBox({ booking }) {
     totalPrice,
   } = booking;
 
-  console.log(isPaid);
-
   return (
     <StyledBookingDataBox>
       <StyledHeader>
@@ -207,7 +205,7 @@ function BookingDataBox({ booking }) {
           <span>{hasBreakfast ? "Yes" : "No"}</span>
         </Breakfast>
 
-        <Price isPaid={(isPaid && "true") || "false"}>
+        <Price $isPaid={isPaid}>
           <div>
             <span>
               <HiOutlineCurrencyDollar />

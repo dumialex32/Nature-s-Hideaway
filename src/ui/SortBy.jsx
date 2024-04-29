@@ -25,6 +25,7 @@ function SortBy({ sortOptions }) {
   return (
     <StyledSortBy>
       <Select
+        id="sortBySelect"
         type="white"
         value={currentValue}
         sortOptions={sortOptions}
