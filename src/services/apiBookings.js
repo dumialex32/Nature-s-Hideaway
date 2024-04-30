@@ -104,7 +104,6 @@ export async function updateBooking({ bookingId, obj }) {
     throw new Error("Booking could not be updated");
   }
 
-  console.log(data);
   return data;
 }
 

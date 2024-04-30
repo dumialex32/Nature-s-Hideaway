@@ -11,7 +11,7 @@ import ButtonGroup from "../../ui/ButtonGroup";
 import useMoveBack from "../../hooks/useMoveBack";
 import { useEffect, useState } from "react";
 import Empty from "../../ui/Empty";
-import useUpdateBookingStatus from "./useUpdateBookingStatus";
+import useCheckIn from "./useCheckIn";
 import useGetSettings from "../settings/useGetSettings";
 import { formatCurrency } from "../../utils/helpers";
 
@@ -35,7 +35,7 @@ function BookingCheckIn() {
   const { curSettings: { breakfastPrice } = {} } = useGetSettings();
   const moveBack = useMoveBack();
 
-  const { mutateBooking, mutateBookingStatus } = useUpdateBookingStatus();
+  const { checkIn, checkInStatus } = useCheckIn();
 
   const {
     id: bookingId,
@@ -53,6 +53,7 @@ function BookingCheckIn() {
   useEffect(() => {
     if (status === "unconfirmed" && isPaid) setConfirmPaid(false);
     if (status === "unconfirmed" && !isPaid) setConfirmPaid(isPaid || false);
+    if (status !== "unconfirmed" && isPaid) setConfirmPaid(isPaid);
     setConfirmBreakfast(hasBreakfast || false);
   }, [isPaid, hasBreakfast, status]);
 
@@ -68,7 +69,7 @@ function BookingCheckIn() {
       extrasPrice: optionalBreakfastPrice,
     };
 
-    mutateBooking({ bookingId, obj });
+    checkIn({ bookingId, obj });
   }
 
   function handleBookingConfirm() {
@@ -77,10 +78,10 @@ function BookingCheckIn() {
       status: (confirmPaid && "checked-in") || "unconfirmed",
     };
 
-    mutateBooking({ bookingId, obj });
+    checkIn({ bookingId, obj });
   }
 
-  if (isLoading || mutateBookingStatus === "pending") return <Spinner />;
+  if (isLoading || checkInStatus === "pending") return <Spinner />;
   if (!booking) return <Empty resource={"booking"} />;
 
   return (
@@ -126,12 +127,13 @@ function BookingCheckIn() {
         >
           {confirmPaid && isPaid ? (
             <p>
-              {fullName} has already paid the rent {totalPrice}
+              {fullName} has already paid{" "}
+              <span>{formatCurrency(totalPrice)}</span> for the rent.
             </p>
           ) : (
             <p>
-              I confirm that {fullName} has paid the rent{" "}
-              <span>{formatCurrency(totalPrice)}</span>
+              I confirm that {fullName} has paid{" "}
+              <span>{formatCurrency(totalPrice)}</span> for the rent.
             </p>
           )}
         </Checkbox>
