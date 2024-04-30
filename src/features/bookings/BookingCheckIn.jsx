@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import Empty from "../../ui/Empty";
 import useUpdateBookingStatus from "./useUpdateBookingStatus";
 import useGetSettings from "../settings/useGetSettings";
+import { formatCurrency } from "../../utils/helpers";
 
 const Box = styled.div`
   background-color: var(--color-grey-0);
@@ -20,6 +21,10 @@ const Box = styled.div`
   padding: 2rem 3.4rem;
   display: flex;
   justify-content: space-between;
+
+  p:last-child span {
+    font-weight: 600;
+  }
 `;
 
 function BookingCheckIn() {
@@ -39,12 +44,17 @@ function BookingCheckIn() {
     hasBreakfast,
     numNights,
     numGuests,
+    totalPrice,
+    status,
   } = booking || {};
 
+  const optionalBreakfastPrice = numNights * breakfastPrice * numGuests;
+
   useEffect(() => {
-    setConfirmPaid(isPaid || false);
+    if (status === "unconfirmed" && isPaid) setConfirmPaid(false);
+    if (status === "unconfirmed" && !isPaid) setConfirmPaid(isPaid || false);
     setConfirmBreakfast(hasBreakfast || false);
-  }, [isPaid, hasBreakfast]);
+  }, [isPaid, hasBreakfast, status]);
 
   function handleConfirmPaid(e) {
     setConfirmPaid(e.target.checked);
@@ -52,21 +62,19 @@ function BookingCheckIn() {
 
   function handleConfirBreakfast(e) {
     setConfirmBreakfast(e.target.checked);
+
+    const obj = {
+      hasBreakfast: e.target.checked,
+      extrasPrice: optionalBreakfastPrice,
+    };
+
+    mutateBooking({ bookingId, obj });
   }
 
   function handleBookingConfirm() {
     const obj = {
       isPaid: confirmPaid,
       status: (confirmPaid && "checked-in") || "unconfirmed",
-    };
-
-    mutateBooking({ bookingId, obj });
-  }
-
-  function handleBookingBreakfast() {
-    const obj = {
-      hasBreakfast: confirmBreakfast,
-      extrasPrice: numNights * breakfastPrice * numGuests,
     };
 
     mutateBooking({ bookingId, obj });
@@ -88,30 +96,27 @@ function BookingCheckIn() {
 
       <BookingDataBox booking={booking} />
 
-      <Box>
-        <Checkbox
-          id="orderBreakfast"
-          checked={confirmBreakfast}
-          onChange={handleConfirBreakfast}
-          disabled={hasBreakfast}
-        >
-          {confirmBreakfast && hasBreakfast ? (
-            <span>Breakfast included</span>
-          ) : (
-            <span>Include breakfast</span>
-          )}
-        </Checkbox>
-
-        <Button
-          variation="primary"
-          size="small"
-          disabled={!confirmBreakfast || hasBreakfast}
-          onClick={handleBookingBreakfast}
-        >
-          Include Breakfast
-        </Button>
-      </Box>
-
+      {!confirmBreakfast && (
+        <Box>
+          <Checkbox
+            id="orderBreakfast"
+            checked={confirmBreakfast}
+            onChange={handleConfirBreakfast}
+            disabled={confirmBreakfast}
+          >
+            {confirmBreakfast && hasBreakfast ? (
+              <p>
+                Breakfast included for{" "}
+                <span>{formatCurrency(optionalBreakfastPrice)}</span>
+              </p>
+            ) : (
+              <span>
+                Include breakfast for {formatCurrency(optionalBreakfastPrice)}
+              </span>
+            )}
+          </Checkbox>
+        </Box>
+      )}
       <Box>
         <Checkbox
           checked={confirmPaid}
@@ -120,16 +125,23 @@ function BookingCheckIn() {
           id="confirm"
         >
           {confirmPaid && isPaid ? (
-            <span>{fullName} has already paid the rent</span>
+            <p>
+              {fullName} has already paid the rent {totalPrice}
+            </p>
           ) : (
-            <span> I confirm that {fullName} has paid the rent.</span>
+            <p>
+              I confirm that {fullName} has paid the rent{" "}
+              <span>{formatCurrency(totalPrice)}</span>
+            </p>
           )}
         </Checkbox>
       </Box>
 
       <ButtonGroup>
         <Button
-          disabled={!confirmPaid || isPaid}
+          disabled={
+            !confirmPaid || (confirmPaid && isPaid && status !== "unconfirmed")
+          }
           variation="primary"
           size="medium"
           onClick={handleBookingConfirm}

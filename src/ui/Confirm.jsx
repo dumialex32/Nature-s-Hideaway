@@ -44,7 +44,15 @@ function Confirm({
         </p>
       )}
       {action === "duplicate" && (
-        <p>Are you sure you want to duplicate the cabin {itemName} ?</p>
+        <p>
+          Are you sure you want to duplicate the {resourceName}
+          {itemName} ?
+        </p>
+      )}
+      {action === "update" && (
+        <p>
+          Are you sure you want to {action} the {resourceName} ?
+        </p>
       )}
 
       <div>
