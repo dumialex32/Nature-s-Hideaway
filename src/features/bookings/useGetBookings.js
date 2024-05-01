@@ -30,12 +30,15 @@ export function useGetBookings() {
     data: { data: bookings, count } = {},
     isLoading,
     error,
+    isSuccess,
   } = useQuery({
     queryKey: ["bookings", filter, sortValue, page],
+
     queryFn: () => getBookings({ filter, sort, page }),
   });
 
   // PRE-FETCHING
+
   const pageCount = Math.ceil(count / PAGE_SIZE);
 
   if (page > 1) {
@@ -44,7 +47,8 @@ export function useGetBookings() {
       queryFn: () => getBookings({ filter, sort, page: page - 1 }),
     });
   }
-  if (page < pageCount) {
+
+  if (page > 1 && page < pageCount) {
     queryClient.prefetchQuery({
       queryKey: ["bookings", filter, sortValue, page + 1],
       queryFn: () => getBookings({ filter, sort, page: page + 1 }),

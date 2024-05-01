@@ -31,7 +31,7 @@ function BookingCheckIn() {
   const [confirmPaid, setConfirmPaid] = useState(false);
   const [confirmBreakfast, setConfirmBreakfast] = useState(false);
 
-  const { booking, isLoading } = useGetBooking();
+  const { booking, isLoading, error } = useGetBooking();
   const { curSettings: { breakfastPrice } = {} } = useGetSettings();
   const moveBack = useMoveBack();
 
@@ -82,7 +82,7 @@ function BookingCheckIn() {
   }
 
   if (isLoading || checkInStatus === "pending") return <Spinner />;
-  if (!booking) return <Empty resource={"booking"} />;
+  if (!booking || error) return <Empty resource={"booking"} />;
 
   return (
     <>

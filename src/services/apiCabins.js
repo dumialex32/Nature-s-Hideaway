@@ -20,7 +20,6 @@ export async function getCabins() {
 }
 
 export async function deleteCabin({ cabin, curCabins }) {
-  console.log(cabin, curCabins);
   try {
     const matchingImgCabins = curCabins.filter(
       (cab) => cab.image === cabin.image

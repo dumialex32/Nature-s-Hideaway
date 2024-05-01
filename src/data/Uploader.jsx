@@ -24,6 +24,7 @@ import Error from "../ui/Error";
 import { HiInformationCircle } from "react-icons/hi";
 import styled from "styled-components";
 import ToolTip from "../ui/ToolTip";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 // const originalSettings = {
 //   minBookingLength: 3,
@@ -130,6 +131,10 @@ async function createBookings() {
 }
 
 function Uploader() {
+  // const [searchParams, setSearchParams] = useSearchParams();
+  // console.log(searchParams);
+
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { mutateDeleteAll, mutateDeleteAllStatus } = useDeleteAllDataHook();
   const { cabins } = useGetCabins();
@@ -161,7 +166,10 @@ function Uploader() {
 
   function handleDeleteAllData(onCloseModal) {
     mutateDeleteAll(null, {
-      onSuccess: () => onCloseModal(),
+      onSuccess: () => {
+        onCloseModal();
+        navigate("/dashboard");
+      },
     });
   }
 
