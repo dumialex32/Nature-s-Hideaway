@@ -22,15 +22,19 @@ export function useGetBookings() {
   const [sortBy, direction] = sortValue.split("-");
 
   const sort = { sortBy, direction: direction === "asc" ? true : false };
+  console.log(searchParams.get("page"));
 
   // Pagination
-  const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
-
+  const page =
+    !searchParams.get("page") && searchParams.get("page") !== 0
+      ? 1
+      : Number(searchParams.get("page"));
+  console.log(searchParams.get("page"));
+  console.log(page);
   const {
     data: { data: bookings, count } = {},
     isLoading,
     error,
-    isSuccess,
   } = useQuery({
     queryKey: ["bookings", filter, sortValue, page],
 
@@ -48,7 +52,7 @@ export function useGetBookings() {
     });
   }
 
-  if (page > 1 && page < pageCount) {
+  if (page < pageCount) {
     queryClient.prefetchQuery({
       queryKey: ["bookings", filter, sortValue, page + 1],
       queryFn: () => getBookings({ filter, sort, page: page + 1 }),

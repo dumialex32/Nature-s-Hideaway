@@ -131,8 +131,7 @@ async function createBookings() {
 }
 
 function Uploader() {
-  // const [searchParams, setSearchParams] = useSearchParams();
-  // console.log(searchParams);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -165,6 +164,8 @@ function Uploader() {
   }
 
   function handleDeleteAllData(onCloseModal) {
+    searchParams.set("page", 0);
+    setSearchParams(searchParams);
     mutateDeleteAll(null, {
       onSuccess: () => {
         onCloseModal();
