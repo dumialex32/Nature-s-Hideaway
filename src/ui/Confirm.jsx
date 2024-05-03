@@ -35,25 +35,13 @@ function Confirm({
   return (
     <StyledConfirm>
       <Heading as="h3">
-        {capitalizedItem(action)} {resourceName}
+        {capitalizedItem(action)} {resourceName} {itemName && itemName}
       </Heading>
-      {action === "delete" && (
-        <p>
-          Are you sure you want to {action} this {resourceName} permanently?
-          This action cannot be undone.
-        </p>
-      )}
-      {action === "duplicate" && (
-        <p>
-          Are you sure you want to duplicate the {resourceName}
-          {itemName} ?
-        </p>
-      )}
-      {action === "update" && (
-        <p>
-          Are you sure you want to {action} the {resourceName} ?
-        </p>
-      )}
+
+      <p>
+        Are you sure you want to {action} {resourceName} {itemName && itemName}{" "}
+        ?
+      </p>
 
       <div>
         <Button

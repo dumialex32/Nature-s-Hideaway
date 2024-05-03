@@ -13,6 +13,8 @@ import { useNavigate } from "react-router-dom";
 import { GrFormClose } from "react-icons/gr";
 import useCheckOut from "./useCheckOut";
 import Spinner from "../../ui/Spinner";
+import Modal from "../../ui/Modal";
+import Confirm from "../../ui/Confirm";
 
 const Breakfast = styled.div`
   font-weight: 600;
@@ -88,62 +90,73 @@ function BookingRow({ booking }) {
   }
 
   return (
-    <Table.TableRow>
-      <Cabin>{cabinName}</Cabin>
+    <Modal>
+      <Table.TableRow>
+        <Cabin>{cabinName}</Cabin>
 
-      <Stacked>
-        <div>{guestName}</div>
-        <div>{email}</div>
-      </Stacked>
+        <Stacked>
+          <div>{guestName}</div>
+          <div>{email}</div>
+        </Stacked>
 
-      <Stacked>
-        <span>
-          {formatDistanceFromNow(startDate, endDate)} &rarr;{" "}
-          {subtractDates(endDate, startDate)} nights stay
-        </span>
-        <span>
-          {formatDate(startDate)} &rarr; {formatDate(endDate)}
-        </span>
-      </Stacked>
+        <Stacked>
+          <span>
+            {formatDistanceFromNow(startDate, endDate)} &rarr;{" "}
+            {subtractDates(endDate, startDate)} nights stay
+          </span>
+          <span>
+            {formatDate(startDate)} &rarr; {formatDate(endDate)}
+          </span>
+        </Stacked>
 
-      <Tag type={bookingStatus[status]}>{status}</Tag>
+        <Tag type={bookingStatus[status]}>{status}</Tag>
 
-      <Amount>{formatCurrency(totalPrice)}</Amount>
+        <Amount>{formatCurrency(totalPrice)}</Amount>
 
-      <Breakfast breakfast={hasBreakfast.toString()}>
-        {hasBreakfast ? "Yes" : "No"}
-      </Breakfast>
+        <Breakfast breakfast={hasBreakfast.toString()}>
+          {hasBreakfast ? "Yes" : "No"}
+        </Breakfast>
 
-      <Observation>{observation || "No observation provided"}</Observation>
+        <Observation>{observation || "No observation provided"}</Observation>
 
-      <Menus.Menu>
-        <Menus.Toggle id={bookingId} />
+        <Menus.Menu>
+          <Menus.Toggle id={bookingId} />
 
-        <Menus.List id={bookingId}>
-          <Menus.Button
-            icon={<HiLink />}
-            onClick={() => navigate(`/bookings/${bookingId}`)}
-          >
-            More Details
-          </Menus.Button>
-
-          {status === "unconfirmed" && (
+          <Menus.List id={bookingId}>
             <Menus.Button
-              icon={<HiCheck />}
-              onClick={() => navigate(`/checkIn/${bookingId}`)}
+              icon={<HiLink />}
+              onClick={() => navigate(`/bookings/${bookingId}`)}
             >
-              Check In
+              More Details
             </Menus.Button>
-          )}
 
-          {status === "checked-in" && (
-            <Menus.Button icon={<GrFormClose />} onClick={handleCheckOut}>
-              Check Out
-            </Menus.Button>
-          )}
-        </Menus.List>
-      </Menus.Menu>
-    </Table.TableRow>
+            {status === "unconfirmed" && (
+              <Menus.Button
+                icon={<HiCheck />}
+                onClick={() => navigate(`/checkIn/${bookingId}`)}
+              >
+                Check In
+              </Menus.Button>
+            )}
+
+            {status === "checked-in" && (
+              <Modal.Open opens="bookingCheckout">
+                <Menus.Button icon={<GrFormClose />}>Check Out</Menus.Button>
+              </Modal.Open>
+            )}
+          </Menus.List>
+        </Menus.Menu>
+
+        <Modal.Window name="bookingCheckout">
+          <Confirm
+            resourceName="booking"
+            onConfirm={handleCheckOut}
+            action="checkout"
+            itemName={bookingId}
+          />
+        </Modal.Window>
+      </Table.TableRow>
+    </Modal>
   );
 }
 
