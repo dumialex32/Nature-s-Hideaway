@@ -11,7 +11,7 @@ function useDeleteBooking() {
 
       onSuccess: ({ id }) => {
         toast.success(`Booking ${id} has been sucesfully deleted`);
-        queryClient.invalidateQueries({ active: true });
+        queryClient.invalidateQueries({ queryKey: ["bookings"] });
       },
 
       onError: (err) => {

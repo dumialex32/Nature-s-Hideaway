@@ -9,6 +9,7 @@ import { HiArrowNarrowLeft } from "react-icons/hi";
 import Button from "../../ui/Button";
 import BookingDataBox from "./BookingDataBox";
 import ButtonGroup from "../../ui/ButtonGroup";
+import DeleteBookingButton from "./DeleteBookingButton";
 
 const statusColor = {
   unconfirmed: css`
@@ -74,6 +75,12 @@ function BookingDetails() {
         >
           Check In
         </Button>
+
+        <DeleteBookingButton bookingId={bookingId}>
+          <Button variation="danger" size="medium">
+            Delete
+          </Button>
+        </DeleteBookingButton>
       </ButtonGroup>
     </>
   );
