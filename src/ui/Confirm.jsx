@@ -35,7 +35,7 @@ function Confirm({
   return (
     <StyledConfirm>
       <Heading as="h3">
-        {capitalizedItem(action)} {resourceName} {itemName && itemName}
+        {capitalizedItem(action)} {resourceName}
       </Heading>
 
       <p>

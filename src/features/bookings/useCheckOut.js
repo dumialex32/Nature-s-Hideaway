@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 function useCheckOut() {
   const queryClient = useQueryClient();
 
-  const { mutate: checkOut, status: checkOutStatus } = useMutation({
+  const { mutate: checkOut, isLoading: isLoadingCheckOut } = useMutation({
     mutationFn: (bookingUpdateObj) => updateBooking(bookingUpdateObj),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ active: true });
@@ -13,7 +13,7 @@ function useCheckOut() {
     },
   });
 
-  return { checkOut, checkOutStatus };
+  return { checkOut, isLoadingCheckOut };
 }
 
 export default useCheckOut;

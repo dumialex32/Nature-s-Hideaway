@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { HiArrowNarrowLeft } from "react-icons/hi";
 import Button from "../../ui/Button";
 import BookingDataBox from "./BookingDataBox";
+import ButtonGroup from "../../ui/ButtonGroup";
 
 const statusColor = {
   unconfirmed: css`
@@ -44,7 +45,7 @@ function BookingDetails() {
   const { booking, isLoading } = useGetBooking();
   const navigate = useNavigate();
 
-  const { id, status } = booking || {};
+  const { id: bookingId, status } = booking || {};
 
   if (isLoading) return <Spinner />;
   if (!booking) return <Empty resource={"booking"} />;
@@ -53,7 +54,7 @@ function BookingDetails() {
     <>
       <Row type="horizontal">
         <HeadingGroup>
-          <Heading as="h1">Booking #{id}</Heading>
+          <Heading as="h1">Booking #{bookingId}</Heading>
 
           <Status status={status}>{status}</Status>
         </HeadingGroup>
@@ -64,6 +65,16 @@ function BookingDetails() {
       </Row>
 
       <BookingDataBox booking={booking} />
+
+      <ButtonGroup>
+        <Button
+          variation="primary"
+          size="medium"
+          onClick={() => navigate(`/checkIn/${bookingId}`)}
+        >
+          Check In
+        </Button>
+      </ButtonGroup>
     </>
   );
 }

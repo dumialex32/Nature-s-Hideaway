@@ -8,13 +8,15 @@ import {
   subtractDates,
 } from "../../utils/helpers";
 import Menus from "../../ui/Menus";
-import { HiCheck, HiLink } from "react-icons/hi";
+import { HiCheck, HiLink, HiOutlineTrash } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import { GrFormClose } from "react-icons/gr";
 import useCheckOut from "./useCheckOut";
 import Spinner from "../../ui/Spinner";
 import Modal from "../../ui/Modal";
 import Confirm from "../../ui/Confirm";
+import useDeleteBooking from "./useDeleteBooking";
+import { TbListDetails } from "react-icons/tb";
 
 const Breakfast = styled.div`
   font-weight: 600;
@@ -66,9 +68,10 @@ const bookingStatus = {
 
 function BookingRow({ booking }) {
   const navigate = useNavigate();
-  const { checkOut, checkOutStatus } = useCheckOut();
+  const { checkOut, isLoadingCheckOut } = useCheckOut();
+  const { deleteBookingMutation, isLoadingDeleteBooking } = useDeleteBooking();
 
-  if (checkOutStatus === "pending") return <Spinner />;
+  if (isLoadingCheckOut || isLoadingDeleteBooking) return <Spinner />;
 
   const {
     id: bookingId,
@@ -124,7 +127,7 @@ function BookingRow({ booking }) {
 
           <Menus.List id={bookingId}>
             <Menus.Button
-              icon={<HiLink />}
+              icon={<TbListDetails />}
               onClick={() => navigate(`/bookings/${bookingId}`)}
             >
               More Details
@@ -144,6 +147,12 @@ function BookingRow({ booking }) {
                 <Menus.Button icon={<GrFormClose />}>Check Out</Menus.Button>
               </Modal.Open>
             )}
+
+            <Modal.Open opens="deleteBooking">
+              <Menus.Button icon={<HiOutlineTrash size={"18"} />}>
+                Delete Booking
+              </Menus.Button>
+            </Modal.Open>
           </Menus.List>
         </Menus.Menu>
 
@@ -153,6 +162,15 @@ function BookingRow({ booking }) {
             onConfirm={handleCheckOut}
             action="checkout"
             itemName={bookingId}
+          />
+        </Modal.Window>
+
+        <Modal.Window name="deleteBooking">
+          <Confirm
+            resourceName="booking"
+            action="delete"
+            itemName={bookingId}
+            onConfirm={() => deleteBookingMutation(bookingId)}
           />
         </Modal.Window>
       </Table.TableRow>
