@@ -8,10 +8,10 @@ function useCheckIn() {
 
   const { mutate: checkIn, status: checkInStatus } = useMutation({
     mutationKey: ["booking"],
-    mutationFn: (obj) => updateBooking(obj),
+    mutationFn: (bookingUpdateObj) => updateBooking(bookingUpdateObj),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["booking"] });
       toast.success(`Booking ${data.id} was succesfully updated`);
+      queryClient.invalidateQueries({ queryKey: ["booking"] });
     },
     onError: (err) => toast.error(err.message),
   });

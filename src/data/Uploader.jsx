@@ -131,8 +131,7 @@ async function createBookings() {
 }
 
 function Uploader() {
-  const [searchParams, setSearchParams] = useSearchParams();
-
+  // const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { mutateDeleteAll, mutateDeleteAllStatus } = useDeleteAllDataHook();
@@ -151,7 +150,7 @@ function Uploader() {
     await createCabins();
     await createBookings();
 
-    queryClient.invalidateQueries(["cabins"]);
+    queryClient.invalidateQueries(["cabins", "bookings", "guests"]);
 
     setIsLoading(false);
   }
@@ -164,8 +163,6 @@ function Uploader() {
   }
 
   function handleDeleteAllData(onCloseModal) {
-    searchParams.set("page", 0);
-    setSearchParams(searchParams);
     mutateDeleteAll(null, {
       onSuccess: () => {
         onCloseModal();

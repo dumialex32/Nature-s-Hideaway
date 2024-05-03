@@ -26,10 +26,12 @@ export async function getBookings({ filter, sort, page }) {
 
     query = query.range(from, to);
   }
-
   const { data, error, count } = await query;
 
-  if (error) throw new Error("No bookings could be found");
+  if (error) {
+    console.error(error);
+    throw new Error("Unknown error");
+  }
 
   return { data, count };
 }
@@ -91,10 +93,10 @@ export async function getStaysTodayActivity() {
   return data;
 }
 
-export async function updateBooking({ bookingId, obj }) {
+export async function updateBooking({ bookingId, bookingUpdate }) {
   const { data, error } = await supabase
     .from("bookings")
-    .update(obj)
+    .update(bookingUpdate)
     .eq("id", bookingId)
     .select()
     .single();

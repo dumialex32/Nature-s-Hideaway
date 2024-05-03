@@ -22,15 +22,10 @@ export function useGetBookings() {
   const [sortBy, direction] = sortValue.split("-");
 
   const sort = { sortBy, direction: direction === "asc" ? true : false };
-  console.log(searchParams.get("page"));
 
   // Pagination
-  const page =
-    !searchParams.get("page") && searchParams.get("page") !== 0
-      ? 1
-      : Number(searchParams.get("page"));
-  console.log(searchParams.get("page"));
-  console.log(page);
+  const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
+
   const {
     data: { data: bookings, count } = {},
     isLoading,
@@ -42,7 +37,6 @@ export function useGetBookings() {
   });
 
   // PRE-FETCHING
-
   const pageCount = Math.ceil(count / PAGE_SIZE);
 
   if (page > 1) {

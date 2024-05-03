@@ -10,7 +10,9 @@ function useDeleteAllDataHook() {
       mutationFn: deleteAllData,
       onSuccess: () => {
         queryClient.invalidateQueries(["cabins", "guests", "bookings"]);
-        toast.success("All cabins were deleted");
+        toast.success(
+          "All data, including bookings, cabins and users has been deleted"
+        );
       },
       onError: (error) => toast.error(error.message),
     });

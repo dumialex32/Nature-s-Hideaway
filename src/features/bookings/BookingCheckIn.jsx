@@ -73,12 +73,12 @@ function BookingCheckIn() {
   }
 
   function handleBookingConfirm() {
-    const obj = {
+    const bookingUpdate = {
       isPaid: confirmPaid,
       status: (confirmPaid && "checked-in") || "unconfirmed",
     };
 
-    checkIn({ bookingId, obj });
+    checkIn({ bookingId, bookingUpdate });
   }
 
   if (isLoading || checkInStatus === "pending") return <Spinner />;

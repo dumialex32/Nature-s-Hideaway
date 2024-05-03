@@ -10,6 +10,9 @@ import {
 import Menus from "../../ui/Menus";
 import { HiCheck, HiLink } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
+import { GrFormClose } from "react-icons/gr";
+import useCheckOut from "./useCheckOut";
+import Spinner from "../../ui/Spinner";
 
 const Breakfast = styled.div`
   font-weight: 600;
@@ -61,6 +64,9 @@ const bookingStatus = {
 
 function BookingRow({ booking }) {
   const navigate = useNavigate();
+  const { checkOut, checkOutStatus } = useCheckOut();
+
+  if (checkOutStatus === "pending") return <Spinner />;
 
   const {
     id: bookingId,
@@ -73,6 +79,13 @@ function BookingRow({ booking }) {
     guests: { fullName: guestName, email },
     cabins: { name: cabinName },
   } = booking;
+
+  function handleCheckOut() {
+    const bookingUpdate = {
+      status: "checked-out",
+    };
+    checkOut({ bookingId, bookingUpdate });
+  }
 
   return (
     <Table.TableRow>
@@ -120,6 +133,12 @@ function BookingRow({ booking }) {
               onClick={() => navigate(`/checkIn/${bookingId}`)}
             >
               Check In
+            </Menus.Button>
+          )}
+
+          {status === "checked-in" && (
+            <Menus.Button icon={<GrFormClose />} onClick={handleCheckOut}>
+              Check Out
             </Menus.Button>
           )}
         </Menus.List>
