@@ -9,7 +9,9 @@ import { HiArrowNarrowLeft } from "react-icons/hi";
 import Button from "../../ui/Button";
 import BookingDataBox from "./BookingDataBox";
 import ButtonGroup from "../../ui/ButtonGroup";
-import DeleteBookingButton from "./DeleteBookingButton";
+import Modal from "../../ui/Modal";
+import Confirm from "../../ui/Confirm";
+import useDeleteBooking from "./useDeleteBooking";
 
 const statusColor = {
   unconfirmed: css`
@@ -45,6 +47,7 @@ const Status = styled.div`
 function BookingDetails() {
   const { booking, isLoading } = useGetBooking();
   const navigate = useNavigate();
+  const { deleteBookingMutation, isLoadingDeleteBooking } = useDeleteBooking();
 
   const { id: bookingId, status } = booking || {};
 
@@ -53,35 +56,49 @@ function BookingDetails() {
 
   return (
     <>
-      <Row type="horizontal">
-        <HeadingGroup>
-          <Heading as="h1">Booking #{bookingId}</Heading>
+      <Modal>
+        <Row type="horizontal">
+          <HeadingGroup>
+            <Heading as="h1">Booking #{bookingId}</Heading>
 
-          <Status status={status}>{status}</Status>
-        </HeadingGroup>
-        <Button type="link" onClick={() => navigate(-1)}>
-          <HiArrowNarrowLeft />
-          Back
-        </Button>
-      </Row>
-
-      <BookingDataBox booking={booking} />
-
-      <ButtonGroup>
-        <Button
-          variation="primary"
-          size="medium"
-          onClick={() => navigate(`/checkIn/${bookingId}`)}
-        >
-          Check In
-        </Button>
-
-        <DeleteBookingButton bookingId={bookingId}>
-          <Button variation="danger" size="medium">
-            Delete
+            <Status status={status}>{status}</Status>
+          </HeadingGroup>
+          <Button type="link" onClick={() => navigate(-1)}>
+            <HiArrowNarrowLeft />
+            Back
           </Button>
-        </DeleteBookingButton>
-      </ButtonGroup>
+        </Row>
+
+        <BookingDataBox booking={booking} />
+
+        <ButtonGroup>
+          <Button
+            variation="primary"
+            size="medium"
+            onClick={() => navigate(`/checkIn/${bookingId}`)}
+          >
+            Check In
+          </Button>
+
+          <Modal.Open opens="deleteBooking">
+            <Button variation="danger" size="medium">
+              Delete
+            </Button>
+          </Modal.Open>
+
+          <Modal.Window name="deleteBooking">
+            <Confirm
+              resourceName="booking"
+              action="delete"
+              onConfirm={() =>
+                deleteBookingMutation(bookingId, {
+                  onSuccess: () => navigate("/bookings"),
+                })
+              }
+            />
+          </Modal.Window>
+        </ButtonGroup>
+      </Modal>
     </>
   );
 }
