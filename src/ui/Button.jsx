@@ -25,6 +25,7 @@ const variations = {
   primary: css`
     color: var(--color-brand-50);
     background-color: var(--color-brand-600);
+    font-weight: 600;
 
     &:hover:not(:disabled) {
       background-color: var(--color-brand-700);

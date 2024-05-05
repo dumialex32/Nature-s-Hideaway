@@ -80,7 +80,7 @@ function LoginForm() {
       <FormRow orientation="vertical" error={loginError?.message}>
         <Button variation="primary" size="medium">
           {loginStatus === "pending" ? (
-            <ButtonWithSpinner spinner={<VscLoading />}>
+            <ButtonWithSpinner spinner={<VscLoading color="white" />}>
               Is Loading
             </ButtonWithSpinner>
           ) : (
