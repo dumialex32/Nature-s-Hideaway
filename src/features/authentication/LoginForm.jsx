@@ -1,58 +1,27 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Button from "../../ui/Button";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
-
-import { login } from "../../services/apiAuth";
-import { useMutation } from "@tanstack/react-query";
 import { VscLoading } from "react-icons/vsc";
 import ButtonWithSpinner from "../../ui/ButtonWithSpinner";
+import { useAuthProvider } from "./AuthContext/useAuthProvider";
 
 function LoginForm() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [loginError, setLoginError] = useState(null);
+  const {
+    username,
+    password,
+    loginError,
+    loginStatus,
+    trackPassChange,
+    trackUsernameChange,
+    onSubmit,
+  } = useAuthProvider();
 
   const usernameRef = useRef();
-
-  const {
-    mutate: userLogin,
-    error,
-    status: loginStatus,
-  } = useMutation({
-    mutationFn: login,
-    onSuccess: (data) => {
-      console.log(data);
-    },
-    onError: (err) => {
-      setLoginError(err);
-    },
-  });
 
   useEffect(() => {
     usernameRef.current.focus();
   }, []);
-
-  function trackPassChange(e) {
-    setPassword(e.target.value);
-
-    if (loginError) setLoginError(null);
-  }
-
-  function trackUsernameChange(e) {
-    setUsername(e.target.value);
-
-    if (loginError) setLoginError(null);
-  }
-
-  function onSubmit(e) {
-    e.preventDefault();
-
-    if (!username || !password) return;
-
-    userLogin({ username, password });
-  }
 
   return (
     <Form onSubmit={onSubmit}>
