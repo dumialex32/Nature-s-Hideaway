@@ -4,7 +4,7 @@ import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import { VscLoading } from "react-icons/vsc";
 import ButtonWithSpinner from "../../ui/ButtonWithSpinner";
-import { useAuthProvider } from "./AuthContext/useAuthProvider";
+import { useLoginProvider } from "./LoginContext/useLoginProvider";
 
 function LoginForm() {
   const {
@@ -12,10 +12,10 @@ function LoginForm() {
     password,
     loginError,
     loginStatus,
-    trackPassChange,
-    trackUsernameChange,
+    trackPasswordChange,
+    trackEmailChange,
     onSubmit,
-  } = useAuthProvider();
+  } = useLoginProvider();
 
   const usernameRef = useRef();
 
@@ -32,7 +32,7 @@ function LoginForm() {
           id="email"
           value={username}
           autoComplete="email"
-          onChange={(e) => trackUsernameChange(e)}
+          onChange={(e) => trackEmailChange(e)}
         />
       </FormRow>
 
@@ -42,7 +42,7 @@ function LoginForm() {
           id="password"
           value={password}
           autoComplete="password"
-          onChange={(e) => trackPassChange(e)}
+          onChange={(e) => trackPasswordChange(e)}
         />
       </FormRow>
 

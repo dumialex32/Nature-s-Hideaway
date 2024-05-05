@@ -2,7 +2,7 @@ import styled from "styled-components";
 import LoginForm from "../features/authentication/LoginForm";
 import Logo from "../ui/Logo";
 import Heading from "../ui/Heading";
-import AuthProvider from "../features/authentication/AuthContext/AuthProvider";
+import AuthProvider from "../features/authentication/LoginContext/LoginProvider";
 
 const LoginLayout = styled.div`
   min-height: 100vh;

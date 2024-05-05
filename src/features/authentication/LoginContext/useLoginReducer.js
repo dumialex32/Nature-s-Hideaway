@@ -1,20 +1,20 @@
 import { useReducer } from "react";
-
 import { useNavigate } from "react-router-dom";
 import { login } from "../../../services/apiAuth";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import toast from "react-hot-toast";
-import { useMutation } from "@tanstack/react-query";
 
 const initialState = {
-  username: "",
+  email: "",
   password: "",
   loginError: "",
 };
 
 function reducer(state, action) {
   switch (action.type) {
-    case "setUsername":
-      return { ...state, username: action.payload };
+    case "setEmail":
+      return { ...state, email: action.payload };
 
     case "setPassword":
       return { ...state, password: action.payload };
@@ -27,14 +27,15 @@ function reducer(state, action) {
   }
 }
 
-function useAuthReducer() {
-  const [{ username, password, loginError }, dispatch] = useReducer(
+function useLoginReducer() {
+  const [{ email, password, loginError }, dispatch] = useReducer(
     reducer,
     initialState
   );
 
-  const setUsername = (username) =>
-    dispatch({ type: "setUsername", payload: username });
+  const queryClient = useQueryClient();
+
+  const setEmail = (email) => dispatch({ type: "setEmail", payload: email });
 
   const setPassword = (password) =>
     dispatch({ type: "setPassword", payload: password });
@@ -56,18 +57,18 @@ function useAuthReducer() {
     },
     onError: (err) => {
       setLoginError(err);
-      toast.error("Provided email or password are incorrect");
+      toast.error(err.message);
     },
   });
 
-  function trackPassChange(e) {
+  function trackPasswordChange(e) {
     setPassword(e.target.value);
 
     if (loginError) setLoginError(null);
   }
 
-  function trackUsernameChange(e) {
-    setUsername(e.target.value);
+  function trackEmailChange(e) {
+    setEmail(e.target.value);
 
     if (loginError) setLoginError(null);
   }
@@ -75,24 +76,24 @@ function useAuthReducer() {
   function onSubmit(e) {
     e.preventDefault(e);
 
-    if (!username || !password) return;
+    if (!email || !password) return;
 
-    userLogin({ username, password });
+    userLogin({ email, password });
   }
 
   return {
-    username,
+    email,
     password,
     loginError,
     loginStatus,
     error,
-    setUsername,
+    setEmail,
     setPassword,
     setLoginError,
-    trackPassChange,
-    trackUsernameChange,
+    trackPasswordChange,
+    trackEmailChange,
     onSubmit,
   };
 }
 
-export default useAuthReducer;
+export default useLoginReducer;

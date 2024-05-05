@@ -17,6 +17,7 @@ import AppLayout from "./ui/AppLayout";
 import Users from "./pages/Users";
 import Booking from "./features/bookings/Booking";
 import CheckIn from "./pages/CheckIn";
+import ProtectedRoute from "./features/authentication/ProtectedRoute";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,8 +35,13 @@ function App() {
       <GlobalStyles />
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route element={<AppLayout />}>
+          <Route
+            element={
+              <ProtectedRoute>
+                <AppLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<Navigate replace to="/dashboard" />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="bookings" element={<Bookings />} />
@@ -47,6 +53,8 @@ function App() {
             <Route path="/checkIn/:bookingId" element={<CheckIn />} />
             <Route path="*" element={<ElementNotFound />} />
           </Route>
+
+          <Route path="/login" element={<Login />} />
         </Routes>
       </BrowserRouter>
 
