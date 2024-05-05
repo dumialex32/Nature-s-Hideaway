@@ -6,17 +6,14 @@ const rotate = keyframes`
   }
 `;
 
-const SpinnerContainer = styled.div`
+const StyledButtonSpinnerContainer = styled.div`
   display: flex;
+  gap: 1rem;
   align-items: center;
-  height: 100%;
+  justify-content: center;
 `;
 
-const StyledSpinner = styled.div`
-  margin: 4.8rem auto;
-
-  width: 6.4rem;
-
+const StyledButtonSpinner = styled.div`
   aspect-ratio: 1;
   border-radius: 50%;
   background: radial-gradient(farthest-side, var(--color-brand-600) 94%, #0000)
@@ -26,12 +23,13 @@ const StyledSpinner = styled.div`
   animation: ${rotate} 1.5s infinite linear;
 `;
 
-function Spinner() {
+function ButtonWithSpinner({ children, spinner }) {
   return (
-    <SpinnerContainer>
-      <StyledSpinner />
-    </SpinnerContainer>
+    <StyledButtonSpinnerContainer>
+      {children}
+      <StyledButtonSpinner>{spinner}</StyledButtonSpinner>
+    </StyledButtonSpinnerContainer>
   );
 }
 
-export default Spinner;
+export default ButtonWithSpinner;

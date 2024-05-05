@@ -12,7 +12,10 @@ const Img = styled.img`
 function Logo() {
   return (
     <StyledLogo>
-      <Img src="public\nhaLogo-ts-bg.png" alt="Logo" />
+      <Img
+        src="https://hggwcxcmcukexjiqisjq.supabase.co/storage/v1/object/public/company-logo/nhaLogo-ts-bg.png?t=2024-05-04T16%3A18%3A35.495Z"
+        alt="Logo"
+      />
     </StyledLogo>
   );
 }

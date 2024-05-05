@@ -1,39 +1,93 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "../../ui/Button";
 import Form from "../../ui/Form";
-import Input from "../../ui/Input";
-import FormRowVertical from "../../ui/FormRowVertical";
+import FormRow from "../../ui/FormRow";
+
+import { login } from "../../services/apiAuth";
+import { useMutation } from "@tanstack/react-query";
+import { VscLoading } from "react-icons/vsc";
+import ButtonWithSpinner from "../../ui/ButtonWithSpinner";
 
 function LoginForm() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  function handleSubmit() {}
+  const [loginError, setLoginError] = useState(null);
+
+  const usernameRef = useRef();
+
+  const {
+    mutate: userLogin,
+    error,
+    status: loginStatus,
+  } = useMutation({
+    mutationFn: login,
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (err) => {
+      setLoginError(err);
+    },
+  });
+
+  useEffect(() => {
+    usernameRef.current.focus();
+  }, []);
+
+  function trackPassChange(e) {
+    setPassword(e.target.value);
+
+    if (loginError) setLoginError(null);
+  }
+
+  function trackUsernameChange(e) {
+    setUsername(e.target.value);
+
+    if (loginError) setLoginError(null);
+  }
+
+  function onSubmit(e) {
+    e.preventDefault();
+
+    if (!username || !password) return;
+
+    userLogin({ username, password });
+  }
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <FormRowVertical label="Email address">
-        <Input
+    <Form onSubmit={onSubmit}>
+      <FormRow label="Email address" orientation="vertical">
+        <input
+          ref={usernameRef}
           type="email"
           id="email"
-          // This makes this form better for password managers
-          autoComplete="username"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={username}
+          autoComplete="email"
+          onChange={(e) => trackUsernameChange(e)}
         />
-      </FormRowVertical>
-      <FormRowVertical label="Password">
-        <Input
+      </FormRow>
+
+      <FormRow label="Password" orientation="vertical">
+        <input
           type="password"
           id="password"
-          autoComplete="current-password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          autoComplete="password"
+          onChange={(e) => trackPassChange(e)}
         />
-      </FormRowVertical>
-      <FormRowVertical>
-        <Button size="large">Login</Button>
-      </FormRowVertical>
+      </FormRow>
+
+      <FormRow orientation="vertical" error={loginError?.message}>
+        <Button variation="primary" size="medium">
+          {loginStatus === "pending" ? (
+            <ButtonWithSpinner spinner={<VscLoading />}>
+              Is Loading
+            </ButtonWithSpinner>
+          ) : (
+            <span>Login</span>
+          )}
+        </Button>
+      </FormRow>
     </Form>
   );
 }

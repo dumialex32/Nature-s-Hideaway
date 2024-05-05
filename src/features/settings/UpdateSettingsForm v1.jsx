@@ -33,7 +33,7 @@ function UpdateSettingsForm({ settings }) {
       maxGuestsPerBooking: data.maxGuests,
       breakfastPrice: data.breakfastPrice,
     };
-    console.log(newSetting);
+
     updateSettings(newSetting);
   }
 
