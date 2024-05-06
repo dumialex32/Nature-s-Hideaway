@@ -11,9 +11,6 @@ function useUser() {
     queryFn: getCurrentUser,
   });
 
-  console.log(isLoadingUser);
-  console.log(user);
-
   return {
     user,
     isLoadingUser,

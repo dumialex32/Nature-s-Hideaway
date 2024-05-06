@@ -16,7 +16,7 @@ const Form = styled.form`
       border: 1px solid var(--color-grey-100);
       border-radius: var(--border-radius-md);
     `}
-
+  background: linear-gradient(to left, var(--color-green-700), #5ba677);
   overflow: hidden;
   font-size: 1.4rem;
 `;

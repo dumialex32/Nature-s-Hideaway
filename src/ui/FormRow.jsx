@@ -31,7 +31,7 @@ const StyledFormRow = styled.div`
     css`
       grid-template-columns: 1fr;
       gap: 1rem;
-      color: var(--color-grey-600);
+      color: var(--color-grey-800);
 
       & input {
         border: 2px solid var(--color-grey-300);

@@ -1,11 +1,10 @@
 import { createContext } from "react";
-
-import useAuthReducer from "./useLoginReducer";
+import useLoginReducer from "./useLoginReducer";
 
 export const LoginContext = createContext();
 
 function LoginProvider({ children }) {
-  const loginProviderValues = useAuthReducer();
+  const loginProviderValues = useLoginReducer();
 
   return (
     <LoginContext.Provider value={loginProviderValues}>

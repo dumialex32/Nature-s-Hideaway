@@ -15,7 +15,7 @@ function useLogin(setLoginError) {
     mutationFn: login,
     onSuccess: (data) => {
       console.log(data);
-      queryClient.setQueriesData("user", data.user);
+      queryClient.setQueriesData(["user"], data.user);
       navigate("/dashboard");
     },
     onError: (err) => {
