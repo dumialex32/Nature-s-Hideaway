@@ -1,9 +1,6 @@
 import { useReducer } from "react";
-import { useNavigate } from "react-router-dom";
-import { login } from "../../../services/apiAuth";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import toast from "react-hot-toast";
+import useLogin from "./useLogin";
 
 const initialState = {
   email: "",
@@ -33,33 +30,19 @@ function useLoginReducer() {
     initialState
   );
 
-  const queryClient = useQueryClient();
+  // Get the user login data
+  const { userLogin, error, loginStatus } = useLogin(setLoginError);
+
+  // Action creator functions
+  function setLoginError(err) {
+    dispatch({ type: "setLoginError", payload: err });
+  }
 
   const setEmail = (email) => dispatch({ type: "setEmail", payload: email });
 
-  const setPassword = (password) =>
+  function setPassword(password) {
     dispatch({ type: "setPassword", payload: password });
-
-  const setLoginError = (err) =>
-    dispatch({ type: "setLoginError", payload: err });
-
-  const navigate = useNavigate();
-
-  const {
-    mutate: userLogin,
-    error,
-    status: loginStatus,
-  } = useMutation({
-    mutationFn: login,
-    onSuccess: (user) => {
-      console.log(user);
-      navigate("/dashboard");
-    },
-    onError: (err) => {
-      setLoginError(err);
-      toast.error(err.message);
-    },
-  });
+  }
 
   function trackPasswordChange(e) {
     setPassword(e.target.value);
@@ -73,6 +56,7 @@ function useLoginReducer() {
     if (loginError) setLoginError(null);
   }
 
+  // On submit function called on submiting the `LoginForm`
   function onSubmit(e) {
     e.preventDefault(e);
 
@@ -81,6 +65,7 @@ function useLoginReducer() {
     userLogin({ email, password });
   }
 
+  // Returned state/functions by the reducer custom hook used as values for the `Login Context Provider`
   return {
     email,
     password,

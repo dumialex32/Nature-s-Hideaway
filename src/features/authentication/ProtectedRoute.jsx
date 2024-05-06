@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { getCurrentUser } from "../../services/apiAuth";
 import Spinner from "../../ui/Spinner";
 import useUser from "./useUser";
 import { useEffect } from "react";
@@ -17,18 +16,17 @@ function ProtectedRoute({ children }) {
   const navigate = useNavigate();
 
   //1. Load the authendicated user
-  const { data, isAuthenticated, isLoadingCurrentUser, currentUserError } =
-    useUser();
-  console.log(data);
+  const { user, isAuthenticated, isLoadingUser, userError } = useUser();
+  console.log(user);
 
   //2.If there is NO authenticated user, redirect to the /login
   useEffect(() => {
-    if (!isAuthenticated && !isLoadingCurrentUser) navigate("/login");
-  }, [isAuthenticated, isLoadingCurrentUser, navigate]);
+    if (!isAuthenticated && !isLoadingUser) navigate("/login");
+  }, [isAuthenticated, isLoadingUser, navigate]);
 
   //3. If loading, show spinner
-  console.log(isLoadingCurrentUser);
-  if (isLoadingCurrentUser)
+  console.log(isLoadingUser);
+  if (isLoadingUser)
     return (
       <FullPageSpinner>
         <Spinner />

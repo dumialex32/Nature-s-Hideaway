@@ -3,21 +3,22 @@ import { getCurrentUser } from "../../services/apiAuth";
 
 function useUser() {
   const {
-    data: currentUser,
-    isLoading: isLoadingCurrentUser,
-    error: currentUserError,
+    data: user,
+    isLoading: isLoadingUser,
+    error: userError,
   } = useQuery({
-    queryKey: ["role"],
+    queryKey: ["user"],
     queryFn: getCurrentUser,
   });
 
-  console.log(isLoadingCurrentUser);
+  console.log(isLoadingUser);
+  console.log(user);
 
   return {
-    currentUser,
-    isLoadingCurrentUser,
-    currentUserError,
-    isAuthenticated: currentUser?.role === "authenticated",
+    user,
+    isLoadingUser,
+    userError,
+    isAuthenticated: user?.role === "authenticated",
   };
 }
 
