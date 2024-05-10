@@ -1,3 +1,4 @@
+import { VscLoading } from "react-icons/vsc";
 import styled, { keyframes } from "styled-components";
 
 const rotate = keyframes`
@@ -23,11 +24,13 @@ const StyledButtonSpinner = styled.div`
   animation: ${rotate} 1.5s infinite linear;
 `;
 
-function ButtonSpinner({ children, spinner }) {
+function ButtonSpinner({ children }) {
   return (
     <StyledButtonSpinnerContainer>
       {children}
-      <StyledButtonSpinner>{spinner}</StyledButtonSpinner>
+      <StyledButtonSpinner>
+        <VscLoading color="white" />
+      </StyledButtonSpinner>
     </StyledButtonSpinnerContainer>
   );
 }

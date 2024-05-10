@@ -10,6 +10,7 @@ import FormRow from "../../../ui/FormRow";
 import ButtonGroup from "../../../ui/ButtonGroup";
 import Button from "../../../ui/Button";
 import useSignup from "./useSignup";
+import { AiOutlineFieldString } from "react-icons/ai";
 
 const SignupContainer = styled.div`
   max-width: 80rem;
