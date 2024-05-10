@@ -68,10 +68,10 @@ function App() {
             color: "var(--color-grey-700)",
           },
           success: {
-            duration: 3000,
+            duration: 6000,
           },
           error: {
-            duration: 5000,
+            duration: 6000,
           },
         }}
       />

@@ -63,7 +63,7 @@ function BookingDetails() {
 
             <Status status={status}>{status}</Status>
           </HeadingGroup>
-          <Button type="link" onClick={() => navigate(-1)}>
+          <Button customType="link" onClick={() => navigate(-1)}>
             <HiArrowNarrowLeft />
             Back
           </Button>

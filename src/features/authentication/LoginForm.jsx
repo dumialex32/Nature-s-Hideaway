@@ -3,7 +3,7 @@ import Button from "../../ui/Button";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import { VscLoading } from "react-icons/vsc";
-import ButtonWithSpinner from "../../ui/ButtonWithSpinner";
+import ButtonSpinner from "../../ui/ButtonSpinner";
 import { useLoginProvider } from "./LoginContext/useLoginProvider";
 
 function LoginForm() {
@@ -24,7 +24,7 @@ function LoginForm() {
   }, []);
 
   return (
-    <Form onSubmit={onSubmit}>
+    <Form color="green-radiant" onSubmit={onSubmit}>
       <FormRow label="Email address" orientation="vertical">
         <input
           ref={usernameRef}
@@ -49,9 +49,9 @@ function LoginForm() {
       <FormRow orientation="vertical" error={loginError?.message}>
         <Button variation="primary" size="medium">
           {loginStatus === "pending" ? (
-            <ButtonWithSpinner spinner={<VscLoading color="white" />}>
+            <ButtonSpinner spinner={<VscLoading color="white" />}>
               Is Loading
-            </ButtonWithSpinner>
+            </ButtonSpinner>
           ) : (
             <span>Login</span>
           )}

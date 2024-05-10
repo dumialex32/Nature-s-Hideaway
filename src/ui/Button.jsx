@@ -85,7 +85,7 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 function Button({
-  type = "button",
+  customType = "button",
   size,
   variation,
   children,
@@ -96,12 +96,12 @@ function Button({
 }) {
   return (
     <>
-      {type === "link" && (
+      {customType === "link" && (
         <StyledNavLink color={color} to={to} onClick={onClick}>
           {children}
         </StyledNavLink>
       )}
-      {type === "button" && (
+      {customType === "button" && (
         <StyledButton
           size={size}
           variation={variation}

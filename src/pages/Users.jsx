@@ -1,5 +1,14 @@
+import SignupForm from "../features/authentication/SignupContext/SignupForm";
+import Heading from "../ui/Heading";
+
 function Users() {
-  return <div>Users</div>;
+  return (
+    <>
+      <Heading as="h1">Create a new user</Heading>
+
+      <SignupForm />
+    </>
+  );
 }
 
 export default Users;

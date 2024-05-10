@@ -40,12 +40,16 @@ const StyledList = styled.ul`
   top: ${(props) => props.position.y}px;
 `;
 
+const StyledListItem = styled.li`
+  padding: 1.2rem 2.4rem;
+`;
+
 const StyledButton = styled.button`
-  width: 100%;
+  /* width: 100%; */
   text-align: left;
   background: none;
   border: none;
-  padding: 1.2rem 2.4rem;
+
   font-size: 1.4rem;
   transition: all 0.2s;
 
@@ -60,8 +64,8 @@ const StyledButton = styled.button`
     transition: all 0.3s;
   }
 
-  & svg:hover {
-    color: var(--color-);
+  &:hover {
+    color: var(--color-brand-700);
   }
 `;
 
@@ -87,7 +91,7 @@ function Menus({ children }) {
 //   return <StyledMenu>{children}</StyledMenu>;
 // }
 
-function Toggle({ id }) {
+function Toggle({ id, toggleIcon }) {
   const { open, close, openId, setPosition } = useMenus();
   const toggleRef = useRef();
 
@@ -121,7 +125,7 @@ function Toggle({ id }) {
 
   return (
     <StyledToggle ref={toggleRef} onClick={handleClick}>
-      <HiMenu />
+      {toggleIcon || <HiMenu />}
     </StyledToggle>
   );
 }
@@ -139,12 +143,12 @@ function List({ children, id }) {
 
 function Button({ children, icon, onClick }) {
   return (
-    <li>
+    <StyledListItem>
       <StyledButton onClick={onClick}>
         {icon}
         {children}
       </StyledButton>
-    </li>
+    </StyledListItem>
   );
 }
 

@@ -23,7 +23,7 @@ const StyledButtonSpinner = styled.div`
   animation: ${rotate} 1.5s infinite linear;
 `;
 
-function ButtonWithSpinner({ children, spinner }) {
+function ButtonSpinner({ children, spinner }) {
   return (
     <StyledButtonSpinnerContainer>
       {children}
@@ -32,4 +32,4 @@ function ButtonWithSpinner({ children, spinner }) {
   );
 }
 
-export default ButtonWithSpinner;
+export default ButtonSpinner;

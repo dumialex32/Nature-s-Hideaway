@@ -11,7 +11,7 @@ const LoginLayout = styled.div`
   align-content: center;
   justify-content: center;
   gap: 2.4rem;
-  background-color: var(--color-grey-50);
+  background-color: var(--color-grey-100);
 `;
 
 function Login() {

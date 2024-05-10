@@ -62,14 +62,15 @@ function BookingCheckIn() {
   }
 
   function handleConfirBreakfast(e) {
+    console.log(e);
     setConfirmBreakfast(e.target.checked);
 
-    const obj = {
+    const bookingUpdate = {
       hasBreakfast: e.target.checked,
       extrasPrice: optionalBreakfastPrice,
     };
 
-    checkIn({ bookingId, obj });
+    checkIn({ bookingId, bookingUpdate });
   }
 
   function handleBookingConfirm() {
@@ -89,7 +90,7 @@ function BookingCheckIn() {
       <Row type="horizontal">
         <Heading as="h1">Check In #{bookingId}</Heading>
 
-        <Button type="link" onClick={() => moveBack()}>
+        <Button customType="link" onClick={() => moveBack()}>
           <HiArrowNarrowLeft />
           Back
         </Button>
