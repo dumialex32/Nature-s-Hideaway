@@ -190,10 +190,20 @@ function Uploader() {
         </ToolTipContainer>
       </TestDataTitle>
       <span>&darr;</span>
-      <Button onClick={uploadAll} disabled={isLoading}>
+      <Button
+        variation="primary"
+        size="small"
+        onClick={uploadAll}
+        disabled={isLoading}
+      >
         Upload ALL
       </Button>
-      <Button onClick={uploadBookings} disabled={isLoading}>
+      <Button
+        variation="primary"
+        size="small"
+        onClick={uploadBookings}
+        disabled={isLoading}
+      >
         Upload bookings ONLY
       </Button>
       <Modal>

@@ -11,6 +11,7 @@ import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import FormRow from "../../ui/FormRow";
 import Spinner from "../../ui/Spinner";
+import ButtonGroup from "../../ui/ButtonGroup";
 
 function CreateCabinForm({ onCloseEditForm, onCloseModal, cabinToEdit = {} }) {
   // Edit the current cabin
@@ -132,23 +133,26 @@ function CreateCabinForm({ onCloseEditForm, onCloseModal, cabinToEdit = {} }) {
 
       <FormRow type="horizontal">
         {/* type is an HTML attribute! */}
-        <Button
-          variation="secondary"
-          type="reset"
-          onClick={() =>
-            isEditSession ? onCloseEditForm?.() : onCloseModal?.()
-          }
-        >
-          Cancel
-        </Button>
+        <ButtonGroup>
+          <Button
+            variation="secondary"
+            size="small"
+            type="reset"
+            onClick={() =>
+              isEditSession ? onCloseEditForm?.() : onCloseModal?.()
+            }
+          >
+            Cancel
+          </Button>
 
-        <Button
-          size="small"
-          variation="primary"
-          disabled={mutateCreateEditStatus === "pending"}
-        >
-          {(isEditSession && "Edit") || "Create cabin"}
-        </Button>
+          <Button
+            size="small"
+            variation="primary"
+            disabled={mutateCreateEditStatus === "pending"}
+          >
+            {(isEditSession && "Edit") || "Create cabin"}
+          </Button>
+        </ButtonGroup>
       </FormRow>
     </Form>
   );

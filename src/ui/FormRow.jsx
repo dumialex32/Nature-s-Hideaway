@@ -4,7 +4,7 @@ import styled, { css } from "styled-components";
 const StyledFormRow = styled.div`
   display: grid;
   align-items: center;
-  grid-template-columns: 20rem 0.5fr;
+  grid-template-columns: 18rem 0.5fr;
   gap: 2.4rem;
 
   padding: 1.2rem 0;
@@ -38,7 +38,7 @@ const StyledFormRow = styled.div`
     }
   }
 
-  & input {
+  & input:not([type="file"]) {
     border: 2px solid var(--color-grey-300);
     border-radius: var(--border-radius-sm);
     padding: 0.4rem 0.8rem;

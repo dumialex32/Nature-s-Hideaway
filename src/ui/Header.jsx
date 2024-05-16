@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import UserMenu from "./UserMenu";
 import Menus from "../ui/Menus";
+import { AiOutlineUser } from "react-icons/ai";
 
 const SyledHeader = styled.header`
   background-color: var(--color-grey-0);

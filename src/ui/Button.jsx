@@ -34,7 +34,6 @@ const variations = {
   secondary: css`
     color: var(--color-grey-600);
     background: var(--color-grey-0);
-    border: 1px solid var(--color-grey-200);
 
     &:hover:not(:disabled) {
       background-color: var(--color-grey-50);
@@ -57,6 +56,8 @@ function linkColor(color) {
 }
 
 const StyledButton = styled.button`
+  border: none;
+  background: none;
   ${(props) => sizes[props.size]};
   ${(props) => variations[props.variation]}
   ${(props) =>
@@ -65,13 +66,12 @@ const StyledButton = styled.button`
       filter: grayscale(100%);
     `}
 
-/* 
+  /* 
   display: flex;
   align-items: center; */
   /* gap: 1rem; */
-  border: none;
+  overflow:hidden;
   border-radius: var(--border-radius-sm);
-  box-shadow: var(--shadow-sm);
 `;
 
 const StyledNavLink = styled(NavLink)`

@@ -23,3 +23,28 @@ const FileInput = styled.input.attrs({ type: "file" })`
 `;
 
 export default FileInput;
+
+// const FileInput = styled.input.attrs({ type: "file" })`
+//   display: flex;
+//   align-items: center;
+//   gap: 1rem;
+
+//   &::file-selector-button {
+//     border-radius: var(--border-radius-sm);
+//     border: none;
+//     background-color: var(--color-brand-600);
+//     color: var(--color-grey-50);
+//     font-size: 1.2rem;
+//     padding: 0.4rem 0.8rem;
+//     text-transform: uppercase;
+//     font-weight: 600;
+//     text-align: center;
+//     cursor: pointer;
+
+//     &:hover {
+//       background-color: var(--color-brand-700);
+//     }
+//   }
+// `;
+
+// export default FileInput;

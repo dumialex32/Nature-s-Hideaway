@@ -1,18 +1,18 @@
 import supabase from "./supabase";
 
 export async function signup({ fullName, email, password }) {
-  console.log(fullName, email, password);
   const { data, error } = await supabase.auth.signUp({
-    email: email,
-    password: password,
-    data: {
-      fullName: fullName,
-      avatar: "",
+    email,
+    password,
+    options: {
+      data: {
+        fullName,
+        avatar: "",
+      },
     },
   });
 
-  if (error)
-    throw new Error(`Signup failed. ${`${error?.message} (${error?.status})`}`);
+  if (error) throw new Error(error.message);
 
   return data;
 }
@@ -38,8 +38,6 @@ export async function getCurrentUser() {
 
   const { data, error } = await supabase.auth.getUser();
 
-  console.log(data.user);
-
   if (error) throw new Error(error.message);
 
   return data?.user;
@@ -52,4 +50,28 @@ export async function logout() {
     console.error(error);
     throw new Error(error.message);
   }
+}
+
+export async function updateCurrentUser({ fullName, password, avatar }) {
+  //1. Update the fullname and password
+
+  let updateObj;
+
+  if (password) updateObj = { password: password };
+
+  if (fullName)
+    updateObj = {
+      data: {
+        fullName: fullName,
+      },
+    };
+
+  const { data, error } = await supabase.auth.getUser(updateObj);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  //2. Add avatar
+  //3. Update avatar
 }
